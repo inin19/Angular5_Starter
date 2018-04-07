@@ -1,0 +1,102 @@
+.tornadoChart {
+  height: 500px;
+}
+
+#combinedDemographic {
+  height: 550px;
+}
+
+.bar--positive.benchmark {
+  fill: #9BCCF5;
+}
+
+.bar--negative.benchmark {
+  fill: pink;
+}
+
+.bar--positive.client {
+  fill: #6b9be2;
+}
+
+.bar--negative.client {
+  fill: #ff9eaf;
+}
+
+
+
+
+.tick text {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 12px;
+  fill: #666;
+}
+
+ul {
+  list-style: none;
+}
+
+.y.axis path {
+  stroke: #666;
+  stroke-width: 1px;
+  stroke-dasharray : 10, 5;
+}
+
+
+.demographicTooltip{
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  min-width: 50px;
+  height: auto;
+  background: none repeat scroll 0 0 #ffffff;
+  padding: 6px 14px 6px 14px;
+  border-radius: 4px;
+  text-align: left;
+  line-height: 1.3;
+  color: #5B6770;
+  box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+}
+
+#regionDropdown li {
+  font-size: 0.8em;
+}
+
+#relationDropdown li {
+  font-size: 0.8em;
+}
+
+.dropdown-menu {
+  max-height: 400px;
+  overflow: hidden;
+  overflow-y: auto;
+}
+
+// .dropdown-toggle {
+//   width: 200px;
+// }
+
+#demographicCombinedChartArea {
+  display: none;
+}
+
+
+.y.axis path {
+  visibility: hidden;
+}
+
+
+.y.axis .tick line {
+  stroke: darkgrey;
+  stroke-dasharray: 5, 1;
+  stroke-width: 0.5px;
+}
+
+// .grid .tick line {
+//   /* stroke-dasharray: "5, 5"; */
+//   stroke: darkgrey;
+//   stroke-width: 0.5px;
+// }
+
+// #proposalDemographic .x.axis .tick:nth-last-child(5) line {
+
+// }

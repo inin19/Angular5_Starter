@@ -1,0 +1,102 @@
+<div class="row">
+  <div class="col">
+    <div class="float-right">
+      <div class="btn-group" id="regionDropdown" dropdown #dropdown="bs-dropdown" [autoClose]="false" [isOpen]="regionStatus.isopen"
+        (isOpenChange)="toggleRegionStatus($event)" (clickOutside)="onClickedOutsideRegion($event)" placement="top">
+        <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+          Region
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="selectedRegionAll" (change)="selectRegionAll()" /> (All Regions)
+            </label>
+          </li>
+
+          <li *ngFor="let n of regionSelector" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.selected" (change)="checkIfAllRegionSelected()"> {{n.region}}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+      <div class="btn-group" id="relationDropdown" dropdown #dropdown="bs-dropdown" [autoClose]="false" [isOpen]="relationStatus.isopen"
+        (isOpenChange)="toggleRelationStatus($event)" (clickOutside)="onClickedOutsideRelation($event)" placement="top">
+        <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+          Relation
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="selectedRelationAll" (change)="selectRelationAll()" /> (All Relation)
+            </label>
+          </li>
+
+          <li *ngFor="let n of relationSelector" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.selected" (change)="checkIfAllRelationSelected()"> {{n.relation}}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+
+      <label class="switch switch-3d switch-primary" title="Zoom">
+        <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+
+    </div>
+  </div>
+</div>
+
+<!-- <div class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+  <div [ngClass]="{'col-md-6': zoom === false, 'col':zoom === true }" #proposalDemographicWrapper>
+    <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
+  </div>
+
+  <div id="hideMe" class="col-md-6">
+    <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
+  </div>
+  <div id="demographicTooltip">Tooltip</div>
+</div> -->
+
+
+<!-- <div class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+  <div class="col-md-6" #proposalDemographicWrapper>
+    <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
+  </div>
+
+  <div class="col-md-6" #benchmarkDemographicWrapper>
+    <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
+  </div>
+  <div id="demographicTooltip" class="demographicTooltip" >Tooltip</div>
+</div> -->
+
+
+
+<div class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+  <div class="col-6">
+    <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
+  </div>
+  <div class="col-6">
+    <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
+  </div>
+  <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
+</div>
+
+
+
+
+<div class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
+  <div class="col">
+    <div id="combinedDemographic" #combinedDemographic></div>
+  </div>
+  <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
+</div>

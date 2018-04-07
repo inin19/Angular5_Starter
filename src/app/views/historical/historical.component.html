@@ -1,0 +1,17 @@
+<div class="card-body">
+  <tabset type="pills">
+    <tab id="historicalDemographic" (select)="onSelect($event)">
+      <ng-template tabHeading>Demographic</ng-template>
+      <app-tornado-chart *ngIf="benchmarkDemographicData" [proposalDemographicJSON]="proposalDemographicData" [benchmarkDemographicJSON]="benchmarkDemographicData"
+        [ageGroup]="UKAgeGroup" #demographic>
+      </app-tornado-chart>
+
+    </tab>
+    <tab id="historicalClaims" (select)="onSelect($event)">
+      <ng-template tabHeading>Claims</ng-template>
+      <!-- *ngIf="benchmarkClaimData" -->
+      <app-waterfall-chart *ngIf="benchmarkClaimData"  [benchmarkClaimsJSON]="benchmarkClaimData" [benchmakrTotalMemberCount]="benchmarkMemberCount" [proposalClaimsJSON]="proposalClaimData" [proposalTotalMemberCount]="proposalMemberCount" #claims ></app-waterfall-chart>
+    </tab>
+
+  </tabset>
+</div>
