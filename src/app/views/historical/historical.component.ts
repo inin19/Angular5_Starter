@@ -18,23 +18,23 @@ import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.compo
 export class HistoricalComponent implements OnInit, OnDestroy {
 
   // to-do get age Group for each country
-  private UKAgeGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
+  UKAgeGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
 
 
   @ViewChild('claims') private waterfall: WaterfallChartComponent;
 
 
   // demographic
-  private benchmarkDemographicData: any[];
-  private proposalDemographicData: any[];
+  benchmarkDemographicData: any[];
+  proposalDemographicData: any[];
 
 
   // claims
-  private proposalClaimData: any[];
-  private proposalMemberCount: any[];
+  proposalClaimData: any[];
+  proposalMemberCount: any[];
 
-  private benchmarkClaimData: any[];
-  private benchmarkMemberCount: any[];
+  benchmarkClaimData: any[];
+  benchmarkMemberCount: any[];
 
   constructor(private demographicService: DemographicService, private claimDataService: ClaimDataService) { }
 

@@ -1,8 +1,8 @@
-<div class="animated fadeIn">
-  <div class="container">
-
-    <!-- <app-demographic-chart *ngIf="benchmarkDemographicData" [proposalDemographicJson]="proposalDemographicData" [benchmarkDemographicJson]="benchmarkDemographicData" ></app-demographic-chart> -->
-
-    dashboard works!
+<div class="card">
+  <div class="card-header bg-primary text-white">
+    Projection
+  </div>
+  <div class="card-body">
+    <app-projection #projection *ngIf="projectionData" [projectionJSON]= "projectionData" ></app-projection>
   </div>
 </div>

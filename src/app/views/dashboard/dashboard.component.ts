@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProjectionService } from '../../services/projection.service';
 // import { DemographicService } from '../../services/demographic.service';
 
 @Component({
@@ -7,29 +8,26 @@ import { Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
 
-  private benchmarkDemographicData: any[];
-  private proposalDemographicData: any[];
+  projectionData: any[];
 
 
-  // constructor(private demographicService: DemographicService) { }
 
-  constructor() { }
+  constructor(private projectionService: ProjectionService) { }
+
 
 
   ngOnInit() {
-    // this.fetchBenchmarkProposalDemograpic();
+    this.fetchProjection();
+  }
+
+  fetchProjection(): void {
+    this.projectionService.getProjectionData()
+      .subscribe(
+        data => { this.projectionData = data; }
+      );
   }
 
 
-  // fetchBenchmarkProposalDemograpic(): void {
-  //   this.demographicService.getBenchmarkProposalDemographicData()
-  //     .subscribe(
-  //       data => {
-  //         this.benchmarkDemographicData = data[0];
-  //         this.proposalDemographicData = data[1];
-  //       }
-  //     );
-  // }
 
 
 }
