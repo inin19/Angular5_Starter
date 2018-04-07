@@ -132,14 +132,14 @@ export class WaterfallD3Chart {
     groups.exit().remove();
 
     // update eixisitng group
-    groups
-      .attr('fill', d => (chartConfig.stackColor[d]));
+    // groups
+    //   .attr('fill', d => (chartConfig.stackColor[d]));
 
     // adding new groups
     groups
       .enter().append('g')
-      .classed('group', true)
-      .attr('fill', d => (chartConfig.stackColor[d]));
+      .classed('group', true);
+    // .attr('fill', d => (chartConfig.stackColor[d]));
 
     groups = this.chart.selectAll('.group')
       .data(['Fall', 'Rise']);
@@ -179,6 +179,15 @@ export class WaterfallD3Chart {
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
+        }
+      })
+      .attr('fill', d => {
+        if (!isNaN(d.data.key)) {
+          return 'blue';
+        } else if (d.data.Fall > 0) {
+          return 'green';
+        } else {
+          return 'orange';
         }
       })
       .on('mouseover', this.handleMouseOver(chartConfig))

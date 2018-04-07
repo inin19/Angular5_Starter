@@ -70,11 +70,19 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
 
     // listen to div resize event
     this.resizeDetector.listenTo(this.benchmarkWaterfall.nativeElement, (elem: HTMLElement) => {
-
-      setTimeout(() => {
-        this.updateChart_benchmark();
-      }, 100);
+      this.updateChart_benchmark();
+      // setTimeout(() => {
+      //   this.updateChart_benchmark();
+      // }, 100);
     });
+
+
+    this.resizeDetector.listenTo(this.proposalWaterfall.nativeElement, (elem: HTMLElement) => {
+      this.updateChart_proposal();
+
+    });
+
+    // proposalWaterfall
 
 
   }
@@ -91,6 +99,8 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
 
       if (this.proposalClaimsJSON) {
         this.createChart_proposal();
+        this.updateChart_proposal();
+
       }
 
       console.log('waterfall data created');
@@ -159,20 +169,29 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
 
 
     this.benchmarkD3Chart.updateChart(config);
+  }
 
-    // const chartConfig = {
-    //   chartContainer: this.benchmarkDemoChartContainer,
-    //   ageGroup: this.ageGroup,
-    //   maxPercentage: this.maxPercentage,
-    //   createGrid: true
-    // };
-    // this.benchmarkD3Chart.updateChart('#benchmarkDemographic', chartConfig, this.benchmarkgraphData, this.demographicParent, '#demographicTooltip');
+  updateChart_proposal() {
+    const config: WaterfallChartConfig = {
+      chartContainer: this.proposalWaterfall,
+      domID: '#' + this.proposalWaterfall.nativeElement.id,
+      tooltipDomID: '#' + 'waterfallTooltip',
+      xScaleDomain: this.proposalClaim.getGraphData()[0].map(val => (val.data.key)),
+      yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
+      stackColor: WaterfallChartComponent.stackColor,
+      zoom: this.zoom,
+      barData: this.proposalGraphData,
+      previousYearKey: '2015',
+      currentYearKey: '2016',
+      toolTipParent: this.waterfallContainer
+    }
+
+    this.proposalD3Chart.updateChart(config);
 
   }
 
 
   ngOnDestroy() {
-    // this.sensor.detachSensor();
 
     this.resizeDetector.removeAllListeners(this.benchmarkWaterfall.nativeElement);
 
