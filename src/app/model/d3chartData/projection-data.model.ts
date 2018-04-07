@@ -18,10 +18,10 @@ export class ProjectionData {
   private graphData: ProjectionOutput[];
 
 
-  private graphPeriod: number[];
-  private graphCurrentProposed: string[];
-  private graphPlan: number[];
-  private graphCategory: string[];
+  // private graphPeriod: number[];
+  // private graphCurrentProposed: string[];
+  // private graphPlan: number[];
+  // private graphCategory: string[];
 
 
   private allPeriod: number[];
@@ -29,7 +29,7 @@ export class ProjectionData {
   private allPlans: number[];
   private allCategories: string[];
 
-  private maxStack: number;
+  private maxStackValue: number;
 
   constructor(data: ProjectionJSONInput[], categories: string[]) {
     this.createDimentionGroup(data, categories);
@@ -62,30 +62,20 @@ export class ProjectionData {
 
   }
 
+  // categories is country specific
   createGraphData(data: ProjectionJSONInput[], categories: string[]) {
-
     this.proposalAggregateData = this.otherDimensionGroup.reduceSum((d) => (d.value)).all();
     this.graphData = [];
 
-
-    // this.proposalAggregateData.forEach(element => {
-    //   console.log(element.key.period, element.key.category);
-    // });
-
     for (const period of this.allPeriod) {
-      const yColumn = new Array();
-      const Current = new Array();
-      const Proposed = new Array();
-
       let yCurrentBegin = 0;
       let yProposedBegin = 0;
 
       // order matters
       for (const category of categories) {
         // populate current
-        const currentValue = this.proposalAggregateData.filter((d) => {
-          return (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === 'CURRENT'
-        })[0].value;
+        const currentValue = this.proposalAggregateData.filter((d) =>
+          (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === 'CURRENT')[0].value;
 
         const currentItem: ProjectionOutput = {
           period: period,
@@ -97,16 +87,11 @@ export class ProjectionData {
         }
 
         yCurrentBegin = currentValue + yCurrentBegin;
-
         this.graphData.push(currentItem);
 
-        // console.log('Period: ', period, ' Category: ', category, ' Current ', curr);
         // populate proposed
-
-        // populate current
-        const proposedValue = this.proposalAggregateData.filter((d) => {
-          return (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === 'PROPOSED'
-        })[0].value;
+        const proposedValue = this.proposalAggregateData.filter((d) =>
+          (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === 'PROPOSED')[0].value;
 
         const proposedItem: ProjectionOutput = {
           period: period,
@@ -116,20 +101,80 @@ export class ProjectionData {
           yBegin: yProposedBegin,
           yEnd: proposedValue + yProposedBegin
         }
+
         yProposedBegin = proposedValue + yProposedBegin;
         this.graphData.push(proposedItem);
       }
     }
 
-    this.maxStack = d3.max(this.graphData, (d) => d.yEnd);
+    this.maxStackValue = d3.max(this.graphData, (d) => d.yEnd);
 
-    console.log(this.maxStack);
-
-    // this.graphData.forEach(element => {
-    //   console.log(element);
-    // });
+    // console.log(this.maxStack);
   }
 
+  updateGraphData(plans: number[], periods: number[], categories: string[], currentProposed: string[]) {
+    // reset filter
+    this.planDimension.filterAll();
+    this.planDimension.filter((d) => plans.indexOf(Number(d)) !== -1);
+
+    this.proposalAggregateData = this.otherDimensionGroup.reduceSum((d) => (d.value)).all();
+    this.graphData = [];
+
+    for (const period of periods) {
+      let yCurrentBegin = 0;
+      let yProposedBegin = 0;
+
+
+      // order matters
+      for (const category of categories) {
+        for (const projection of currentProposed) {
+          if (projection === 'CURRENT') {
+            const currentValue = this.proposalAggregateData.filter((d) =>
+              (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === projection)[0].value;
+
+            const currentItem: ProjectionOutput = {
+              period: period,
+              categoery: category,
+              column: 'CURRENT',
+              value: currentValue,
+              yBegin: yCurrentBegin,
+              yEnd: currentValue + yCurrentBegin
+            }
+
+            yCurrentBegin = currentValue + yCurrentBegin;
+            this.graphData.push(currentItem);
+          } else {
+            const proposedValue = this.proposalAggregateData.filter((d) =>
+              (d.key.period === period) && (d.key.category === category) && d.key.currentProposed === 'PROPOSED')[0].value;
+
+            const proposedItem: ProjectionOutput = {
+              period: period,
+              categoery: category,
+              column: 'PROPOSED',
+              value: proposedValue,
+              yBegin: yProposedBegin,
+              yEnd: proposedValue + yProposedBegin
+            }
+            yProposedBegin = proposedValue + yProposedBegin;
+            this.graphData.push(proposedItem);
+          }
+        }
+      }
+    }
+
+
+    this.maxStackValue = d3.max(this.graphData, (d) => d.yEnd);
+    console.log(this.maxStackValue);
+  }
+
+
+  getGraphData(): ProjectionOutput[] {
+    return this.graphData;
+  }
+
+  getMaxStackValue(): number {
+    return this.maxStackValue;
+  }
 
 }
 

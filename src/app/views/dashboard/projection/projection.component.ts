@@ -35,6 +35,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   createChartData() {
     this.projectionData = new ProjectionData(this.projectionJSON, ProjectionComponent.categories);
+    // this.projectionData.updateGraphData([2], [0, 1, 2, 3, 4, 5], ProjectionComponent.categories, ['CURRENT', 'PROPOSED']);
+
   }
 
 }
