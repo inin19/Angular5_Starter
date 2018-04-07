@@ -9,17 +9,20 @@ import { ProjectionData } from '../../../model/d3chartData/projection-data.model
 })
 export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
+  static categories = ['EMPLOYER_PREMIUM', 'FUNDING_GAP', 'MEMBER_PREMIUM', 'TAX', 'FEES'];
+
 
   @Input() private projectionJSON: any[];
+
+  private projectionData: ProjectionData;
 
   constructor() { }
 
   ngOnInit() {
     console.log('projection init');
 
-    this.projectionJSON.forEach(element => {
-      console.log(element);
-    });
+    this.createChartData();
+
   }
 
   ngOnChanges() {
@@ -28,6 +31,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     console.log('projection ondestroy');
+  }
+
+  createChartData() {
+    this.projectionData = new ProjectionData(this.projectionJSON, ProjectionComponent.categories);
   }
 
 }
