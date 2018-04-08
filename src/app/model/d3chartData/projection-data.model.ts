@@ -176,6 +176,10 @@ export class ProjectionData {
     return this.maxStackValue;
   }
 
+  getAllPeriod(): number[] {
+    return this.allPeriod;
+  }
+
 }
 
 

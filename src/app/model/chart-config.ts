@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-
+import { ProjectionOutput } from '../model/d3chartData/projection-data.model';
 export interface ChartConfig {
     title?: string,
     margin?: { top: number, right: number, bottom: number, left: number },
@@ -18,4 +18,11 @@ export interface WaterfallChartConfig extends ChartConfig {
     barData?: any[],
     previousYearKey?: string,
     currentYearKey?: string
+}
+
+
+export interface ProjectionChartConfig extends ChartConfig {
+    x1ScaleDomain: any[],
+    periodGroup?: number[],
+    barData?: ProjectionOutput[],
 }

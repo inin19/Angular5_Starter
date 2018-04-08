@@ -71,8 +71,8 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
   zoom: boolean;
 
   // All Checkbox
-  private selectedRegionAll: any;
-  private selectedRelationAll: any;
+  selectedRegionAll: any;
+  selectedRelationAll: any;
 
   // Element Checkbox
 
