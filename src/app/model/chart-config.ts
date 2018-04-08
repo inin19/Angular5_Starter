@@ -23,6 +23,6 @@ export interface WaterfallChartConfig extends ChartConfig {
 
 export interface ProjectionChartConfig extends ChartConfig {
     x1ScaleDomain: any[],
-    periodGroup?: number[],
     barData?: ProjectionOutput[],
+    categories?: string []
 }

@@ -57,7 +57,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       domID: '#' + this.projectionChart.nativeElement.id,
       xScaleDomain: this.projectionData.getAllPeriod(),
       yScaleDomain: [0, this.projectionData.getMaxStackValue()],
-      x1ScaleDomain: ['CURRENT', 'PROPOSED']
+      x1ScaleDomain: ['CURRENT', 'PROPOSED'],
+      categories: ProjectionComponent.categories
     };
     this.projectionD3Chart = new ProjectionD3Chart(chartConfig);
   }
@@ -72,8 +73,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       xScaleDomain: this.projectionData.getAllPeriod(),
       yScaleDomain: [0, this.projectionData.getMaxStackValue()],
       x1ScaleDomain: ['CURRENT', 'PROPOSED'],
-      periodGroup: this.projectionData.getAllPeriod(),
-      barData: this.projectionGraphData
+      // periodGroup: this.projectionData.getAllPeriod(),
+      barData: this.projectionGraphData,
+      tooltipDomID: '#projectionToolip',
+      toolTipParent: this.projectionChartContainer
     };
 
     this.projectionD3Chart.updateChart(chartConfig);

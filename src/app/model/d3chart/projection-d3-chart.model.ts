@@ -1,7 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { ProjectionChartConfig } from '../chart-config'
 import * as d3 from 'd3';
-import { style } from '@angular/animations';
 
 
 export class ProjectionD3Chart {
@@ -58,6 +57,80 @@ export class ProjectionD3Chart {
       .attr('text-anchor', 'middle')
       .style('font-size', '16px')
       .text(chartConfig.title);
+
+
+
+    // create legend
+    this.legend = this.chart.append('g').attr('id', 'legendWrapper')
+      .selectAll('.legend')
+      .data(chartConfig.categories)
+      .enter().append('g')
+      .classed('legend', true);
+
+    const textWidth = [];
+    const textX = {};
+    let legendText = null;
+    let textHeight = 0;
+
+    legendText = this.legend.selectAll('.dummyText')
+      .data(d => [d])
+      .enter()
+      .append('text')
+      .attr('y', 40)
+      .attr('dy', '0.32em')
+      .text(function (d) { return d; })
+      .each(function (d) {
+        textWidth.push(this.getComputedTextLength());
+        textHeight = this.getBoundingClientRect().height;
+        this.remove();
+      });
+
+    // textWidth.pop();
+
+    let curr = 12;
+
+    chartConfig.categories.forEach((element, i) => {
+      textX[element] = curr;
+      curr = curr + textWidth[i] + 20;
+    });
+
+
+    this.legend.selectAll('rect')
+      .data(d => [d])
+      .enter()
+      .append('rect')
+      .attr('x', d => textX[d] - 12)
+      .attr('y', 0 - (this.margin.top / 3) - 4)
+      .attr('width', 10)
+      .attr('height', 10)
+      .attr('fill', d => ProjectionD3Chart.colors[d])
+      ;
+
+
+    legendText = this.legend.selectAll('text')
+      .data(d => [d])
+      .enter()
+      .append('text')
+      .attr('x', d => textX[d])
+      .attr('y', 0 - (this.margin.top / 3))
+      .text(function (d) { return d; })
+      .style('alignment-baseline', 'central');
+
+
+
+    let legendWrapper = 0;
+    d3.select('#legendWrapper').call(getElementWidth, this);
+
+    function getElementWidth(e): void {
+      e.select(function() {
+        legendWrapper = this.getBoundingClientRect().width;
+      })
+    }
+
+    d3.select('#legendWrapper')
+      .attr('transform', 'translate(' + (this.width - legendWrapper) / 2 + ',0)');
+
+
 
     // // create scales
     this.x0Scale = d3.scaleBand().domain(chartConfig.xScaleDomain)
@@ -135,7 +208,7 @@ export class ProjectionD3Chart {
 
     // update chart
     let groups = this.chart.selectAll('.group')
-      .data(chartConfig.periodGroup);
+      .data(chartConfig.xScaleDomain);
 
 
     groups.exit().remove();
@@ -153,7 +226,7 @@ export class ProjectionD3Chart {
 
     // rejoin data VERY IMPORTANT
     groups = this.chart.selectAll('.group')
-      .data(chartConfig.periodGroup);
+      .data(chartConfig.xScaleDomain);
 
 
 
@@ -179,10 +252,46 @@ export class ProjectionD3Chart {
       .attr('y', d => this.yScale(d.yEnd))
       .attr('height', d => (d.period === 0 && d.column === 'PROPOSED') ? 0 : this.yScale(d.yBegin) - this.yScale(d.yEnd))
       .style('fill', d => ProjectionD3Chart.colors[d.categoery])
-      ;
+      .on('mouseover', this.handleMouseOver(chartConfig))
+      .on('mousemove', this.handleMouseMove(chartConfig))
+      .on('mouseout', this.handleMouseOut(chartConfig));
 
 
 
+  }
+
+
+
+  handleMouseOver(chartConfig: ProjectionChartConfig): (d, i) => void {
+    return (d, i) => {
+      d3.select(d3.event.currentTarget)
+        .attr('opacity', 0.5);
+      const f = d3.format('.2s');
+      d3.select(chartConfig.tooltipDomID)
+        .style('opacity', 1)
+        .html(
+          d.column + ': ' + d.categoery + '<br/>' + f(d.value)
+        );
+    };
+  }
+
+  handleMouseOut(chartConfig: ProjectionChartConfig): (d, i) => void {
+    return (d, i) => {
+      // console.log('in MouseOut');
+      d3.select(d3.event.currentTarget)
+        .attr('opacity', 1);
+      d3.select(chartConfig.tooltipDomID)
+        .style('opacity', 0);
+    };
+  }
+
+  handleMouseMove(chartConfig: ProjectionChartConfig): (d, i) => void {
+    return (d, i) => {
+      const bounds = chartConfig.toolTipParent.nativeElement.getBoundingClientRect();
+      d3.select(chartConfig.tooltipDomID)
+        .style('left', d3.event.clientX - bounds.left + 10 + 'px')
+        .style('top', d3.event.clientY - bounds.top + 10 + 'px');
+    };
   }
 
 }
