@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild, Input, OnChanges, OnDestroy, ElementRef, 
 import { ProjectionData, ProjectionOutput } from '../../../model/d3chartData/projection-data.model';
 import { ProjectionD3Chart } from '../../../model/d3chart/projection-d3-chart.model';
 import { ProjectionChartConfig } from '../../../model/chart-config';
+import * as elementResizeDetectorMaker from 'element-resize-detector';
+
 
 @Component({
   selector: 'app-projection',
@@ -25,11 +27,20 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   private margin: any = { top: 60, right: 20, bottom: 40, left: 40 };
 
+  // Resize
+  private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
   constructor() { }
 
   ngOnInit() {
     console.log('projection init');
+
+    // listen to div resize event
+    this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
+      this.updateChart();
+    });
+
+
     this.createChartData();
     this.createChart();
     this.updateChart();
@@ -40,6 +51,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.resizeDetector.removeAllListeners(this.projectionChartContainer.nativeElement);
+
     console.log('projection ondestroy');
   }
 

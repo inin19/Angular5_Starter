@@ -1,6 +1,7 @@
 import { ElementRef } from '@angular/core';
 import { ProjectionChartConfig } from '../chart-config'
 import * as d3 from 'd3';
+import { ClassField } from '@angular/compiler/src/output/output_ast';
 
 
 export class ProjectionD3Chart {
@@ -26,6 +27,8 @@ export class ProjectionD3Chart {
   private yAxis: any;
 
   private legend: any;
+
+  private legendWidth: number;
 
   // private grids: any;
 
@@ -61,7 +64,7 @@ export class ProjectionD3Chart {
 
 
     // create legend
-    this.legend = this.chart.append('g').attr('id', 'legendWrapper')
+    this.legend = this.chart.append('g').classed('legendWrapper', true)
       .selectAll('.legend')
       .data(chartConfig.categories)
       .enter().append('g')
@@ -117,18 +120,21 @@ export class ProjectionD3Chart {
       .style('alignment-baseline', 'central');
 
 
+    let wrapperWidth = 0;
 
-    let legendWrapper = 0;
-    d3.select('#legendWrapper').call(getElementWidth, this);
+
+    d3.select('.legendWrapper').call(getElementWidth, this);
 
     function getElementWidth(e): void {
-      e.select(function() {
-        legendWrapper = this.getBoundingClientRect().width;
+      e.select(function () {
+        wrapperWidth = this.getBoundingClientRect().width;
       })
     }
 
-    d3.select('#legendWrapper')
-      .attr('transform', 'translate(' + (this.width - legendWrapper) / 2 + ',0)');
+    this.legendWidth = wrapperWidth;
+
+    d3.select('.legendWrapper')
+      .attr('transform', 'translate(' + (this.width - this.legendWidth) / 2 + ',0)');
 
 
 
@@ -180,6 +186,11 @@ export class ProjectionD3Chart {
     this.graphTitle
       .attr('x', (this.width / 2))
       .attr('y', 0 - (this.margin.top / 1.5));
+
+    // update legend
+
+    d3.select('.legendWrapper')
+      .attr('transform', 'translate(' + (this.width - this.legendWidth) / 2 + ',0)');
 
     // update scales
     this.x0Scale.rangeRound([0, this.width]);
