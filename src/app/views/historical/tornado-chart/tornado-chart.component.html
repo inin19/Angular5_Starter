@@ -1,8 +1,8 @@
 <div class="row">
   <div class="col">
     <div class="float-right">
-      <div class="btn-group" id="regionDropdown" dropdown #dropdown="bs-dropdown" [autoClose]="false" [isOpen]="regionStatus.isopen"
-        (isOpenChange)="toggleRegionStatus($event)" (clickOutside)="onClickedOutsideRegion($event)" placement="top">
+      <div class="btn-group" id="regionDropdown" dropdown #regionDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[regionDropdown._elementRef.nativeElement.id]"
+        (isOpenChange)="toggleDropdown($event, regionDropdown._elementRef.nativeElement.id)" (clickOutside)="onClickedOutside($event,regionDropdown._elementRef.nativeElement.id)" placement="top">
         <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
           Region
           <span class="caret"></span>
@@ -11,20 +11,20 @@
 
           <li role="menuitem">
             <label class="dropdown-item">
-              <input type="checkbox" [(ngModel)]="selectedRegionAll" (change)="selectRegionAll()" /> (All Regions)
+              <input type="checkbox" [(ngModel)]="regionSelector.all" (change)="toggleMultiSelectAll(regionDropdown._elementRef.nativeElement.id)" /> (All Regions)
             </label>
           </li>
 
-          <li *ngFor="let n of regionSelector" class="menuitem">
+          <li *ngFor="let n of regionSelector.currentSelection" class="menuitem">
             <label class="dropdown-item">
-              <input type="checkbox" [(ngModel)]="n.selected" (change)="checkIfAllRegionSelected()"> {{n.region}}
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(regionDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
             </label>
           </li>
         </ul>
       </div>
 
-      <div class="btn-group" id="relationDropdown" dropdown #dropdown="bs-dropdown" [autoClose]="false" [isOpen]="relationStatus.isopen"
-        (isOpenChange)="toggleRelationStatus($event)" (clickOutside)="onClickedOutsideRelation($event)" placement="top">
+      <div class="btn-group" id="relationDropdown" dropdown #relationDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[relationDropdown._elementRef.nativeElement.id]"
+        (isOpenChange)="toggleDropdown($event, relationDropdown._elementRef.nativeElement.id)" (clickOutside)="onClickedOutside($event,relationDropdown._elementRef.nativeElement.id)" placement="top">
         <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
           Relation
           <span class="caret"></span>
@@ -33,13 +33,13 @@
 
           <li role="menuitem">
             <label class="dropdown-item">
-              <input type="checkbox" [(ngModel)]="selectedRelationAll" (change)="selectRelationAll()" /> (All Relation)
+              <input type="checkbox" [(ngModel)]="relationSelector.all" (change)="toggleMultiSelectAll(relationDropdown._elementRef.nativeElement.id)" /> (All Relation)
             </label>
           </li>
 
-          <li *ngFor="let n of relationSelector" class="menuitem">
+          <li *ngFor="let n of relationSelector.currentSelection" class="menuitem">
             <label class="dropdown-item">
-              <input type="checkbox" [(ngModel)]="n.selected" (change)="checkIfAllRelationSelected()"> {{n.relation}}
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(relationDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
             </label>
           </li>
         </ul>

@@ -1,8 +1,12 @@
-<div class="card">
-  <div class="card-header bg-primary text-white">
-    Projection
-  </div>
-  <div class="card-body">
-    <app-projection #projection *ngIf="projectionData" [projectionJSON]= "projectionData" ></app-projection>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <b>Cost Projection</b>
+      </div>
+      <div class="card-body">
+        <app-projection #projection *ngIf="projectionData" [projectionJSON]="projectionData"></app-projection>
+      </div>
+    </div>
   </div>
 </div>

@@ -30,3 +30,32 @@
     font-size: 11px;
     fill: #666;
 }
+
+.dummyText {
+    visibility: hidden;
+}
+
+
+#planDropdown li {
+    font-size: 0.8em;
+}
+  
+#periodDropdown li {
+    font-size: 0.8em;
+}
+
+#projectionDropdown li {
+    font-size: 0.8em;
+}
+
+#categoryDropdown li {
+    font-size: 0.8em;
+}
+
+
+  
+.dropdown-menu {
+    max-height: 400px;
+    overflow: hidden;
+    overflow-y: auto;
+}

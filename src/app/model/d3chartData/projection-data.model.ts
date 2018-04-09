@@ -180,6 +180,14 @@ export class ProjectionData {
     return this.allPeriod;
   }
 
+  getAllPlan(): number[] {
+    return this.allPlans;
+  }
+
+  getAllProjection(): string[] {
+    return this.allCurrentProposed;
+  }
+
 }
 
 

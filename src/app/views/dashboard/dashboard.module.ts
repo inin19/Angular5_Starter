@@ -9,7 +9,9 @@ import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ProjectionComponent } from './projection/projection.component';
-import { ProjectionService  } from '../../services/projection.service';
+import { ProjectionService } from '../../services/projection.service';
+import { ClickOutsideModule } from 'ng4-click-outside';
+
 
 
 @NgModule({
@@ -19,9 +21,10 @@ import { ProjectionService  } from '../../services/projection.service';
     HttpClientModule,
     ChartsModule,
     FormsModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ClickOutsideModule
   ],
-  declarations: [ DashboardComponent, ProjectionComponent ],
+  declarations: [DashboardComponent, ProjectionComponent],
   providers: [ProjectionService]
 
 })

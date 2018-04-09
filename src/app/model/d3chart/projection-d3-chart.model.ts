@@ -1,7 +1,6 @@
 import { ElementRef } from '@angular/core';
 import { ProjectionChartConfig } from '../chart-config'
 import * as d3 from 'd3';
-import { ClassField } from '@angular/compiler/src/output/output_ast';
 
 
 export class ProjectionD3Chart {
@@ -56,7 +55,7 @@ export class ProjectionD3Chart {
     this.graphTitle = this.chart.append('text')
       .classed('graphTitle', true)
       .attr('x', (this.width / 2))
-      .attr('y', 0 - (this.margin.top / 1.5))
+      .attr('y', 0 - (this.margin.top))
       .attr('text-anchor', 'middle')
       .style('font-size', '16px')
       .text(chartConfig.title);
@@ -74,18 +73,25 @@ export class ProjectionD3Chart {
     const textX = {};
     let legendText = null;
     let textHeight = 0;
+    const rectHeight = 10;
+
+    let textY: number;
+    let rectY: number;
 
     legendText = this.legend.selectAll('.dummyText')
       .data(d => [d])
       .enter()
       .append('text')
-      .attr('y', 40)
-      .attr('dy', '0.32em')
+      .attr('x', d => textX[d])
+      .attr('y', 0 - (this.margin.top / 4))
+      // .attr('dy', '0.5em')
+      .classed('dummyText', true)
       .text(function (d) { return d; })
       .each(function (d) {
         textWidth.push(this.getComputedTextLength());
         textHeight = this.getBoundingClientRect().height;
-        this.remove();
+        textY = this.getBoundingClientRect().top;
+        // this.remove();
       });
 
     // textWidth.pop();
@@ -94,7 +100,7 @@ export class ProjectionD3Chart {
 
     chartConfig.categories.forEach((element, i) => {
       textX[element] = curr;
-      curr = curr + textWidth[i] + 20;
+      curr = curr + textWidth[i] + 30;
     });
 
 
@@ -103,21 +109,29 @@ export class ProjectionD3Chart {
       .enter()
       .append('rect')
       .attr('x', d => textX[d] - 12)
-      .attr('y', 0 - (this.margin.top / 3) - 4)
-      .attr('width', 10)
-      .attr('height', 10)
+      .attr('y', 0 - (this.margin.top / 4))
+      .attr('width', rectHeight)
+      .attr('height', rectHeight)
       .attr('fill', d => ProjectionD3Chart.colors[d])
+      .each(function (d) {
+        rectY = this.getBoundingClientRect().top;
+        // console.log(this.getBoundingClientRect());
+      })
       ;
 
+    // console.log(textY, rectY, textHeight, rectHeight);
 
-    legendText = this.legend.selectAll('text')
+    this.legend.selectAll('rect')
+      .attr('y', 0 - (this.margin.top / 4) + (textY - rectY) + ((textHeight - rectHeight) / 2));
+
+    legendText = this.legend.selectAll('.legendText')
       .data(d => [d])
       .enter()
       .append('text')
+      .classed('legendText', true)
       .attr('x', d => textX[d])
-      .attr('y', 0 - (this.margin.top / 3))
-      .text(function (d) { return d; })
-      .style('alignment-baseline', 'central');
+      .attr('y', 0 - (this.margin.top / 4))
+      .text(function (d) { return d; });
 
 
     let wrapperWidth = 0;
@@ -192,15 +206,17 @@ export class ProjectionD3Chart {
     d3.select('.legendWrapper')
       .attr('transform', 'translate(' + (this.width - this.legendWidth) / 2 + ',0)');
 
+    // update domain
+    this.x0Scale.domain(chartConfig.xScaleDomain);
+    this.x1Scale.domain(chartConfig.x1ScaleDomain);
+    this.yScale.domain(chartConfig.yScaleDomain);
+
     // update scales
     this.x0Scale.rangeRound([0, this.width]);
     this.x1Scale.range([0, this.x0Scale.bandwidth()]);
     this.yScale.range([this.height, 0]);
 
-    // update domain
-    this.x0Scale.domain(chartConfig.xScaleDomain);
-    this.x1Scale.domain(chartConfig.x1ScaleDomain);
-    this.yScale.domain(chartConfig.yScaleDomain);
+
 
     // update axis
 
@@ -252,7 +268,9 @@ export class ProjectionD3Chart {
       .attr('width', d => (d.period === 0 && chartConfig.x1ScaleDomain.length === 2) ? this.x1Scale.bandwidth() * 2 : this.x1Scale.bandwidth())
       .attr('x', d => this.x1Scale(d.column))
       .attr('y', d => this.yScale(d.yEnd))
-      .attr('height', d => (d.period === 0 && d.column === 'PROPOSED') ? 0 : this.yScale(d.yBegin) - this.yScale(d.yEnd));
+      .attr('height', d => (d.period === 0 && d.column === 'PROPOSED') ? 0 : this.yScale(d.yBegin) - this.yScale(d.yEnd))
+      .style('fill', d => ProjectionD3Chart.colors[d.categoery])
+      ;
 
     bars
       .enter()

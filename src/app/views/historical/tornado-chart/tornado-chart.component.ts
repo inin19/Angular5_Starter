@@ -1,6 +1,8 @@
 import { Component, Input, ViewChild, ViewEncapsulation, ElementRef, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { TornadoChartData } from '../../../model/tornadoData';
 import { TornadoD3Chart, ChartConfig } from '../../../model/tornado-d3-chart.model';
+import { Selector } from '../../../model/utils/selector.model';
+
 
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
@@ -64,75 +66,19 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
   private allRegionCombined: string[];
   private allRelationCombined: string[];
 
+  dropdownStatus = {
+    regionDropdown: false,
+    relationDropdown: false
+  };
+
 
   // Resize
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
   zoom: boolean;
 
-  // All Checkbox
-  selectedRegionAll: any;
-  selectedRelationAll: any;
-
-  // Element Checkbox
-
-  public regionSelector: Array<any>;
-  public relationSelector: Array<any>;
-
-
-  // maintaining current selection
-  regionSelection: Array<string>;
-  relationSelection: Array<string>;
-
-
-  regionStatus: { isopen: boolean } = { isopen: false };
-  relationStatus: { isopen: boolean } = { isopen: false };
-
-  toggleRegionStatus(value: boolean): void {
-    this.regionStatus.isopen = value;
-  }
-
-  toggleRelationStatus(value: boolean): void {
-    this.relationStatus.isopen = value;
-  }
-
-
-  toggleMergeChart() {
-    if (this.zoom === true) {
-      console.log('toggle: true');
-
-      d3.select('#demographicCombinedChartArea')
-        .style('display', 'block');
-
-      d3.selectAll('.tornadoChart')
-        .style('display', 'none');
-
-      this.updateChart_combined();
-
-    } else {
-      console.log('toogle: false');
-
-      d3.select('#demographicCombinedChartArea')
-        .style('display', 'none');
-
-      d3.selectAll('.tornadoChart')
-        .style('display', 'block');
-
-      this.updateChart_proposal();
-      this.updateChart_benchmark();
-
-    }
-  }
-
-  // related to dropdown
-  onClickedOutsideRegion(e: Event) {
-    this.regionStatus.isopen = false;
-    // console.log(e);
-  }
-
-  onClickedOutsideRelation(e: Event) {
-    this.relationStatus.isopen = false;
-  }
+  private regionSelector: Selector;
+  private relationSelector: Selector;
 
 
 
@@ -161,20 +107,18 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
 
     this.createChartData();
+    this.createSelector();
 
     if (this.proposalDemographicJSON) {
       this.createChart_proposal();
       this.updateChart_proposal();
 
       // create combined chart
-
       this.createChart_combined();
       this.updateChart_combined();
     }
     this.createChart_benchmark();
     this.updateChart_benchmark();
-
-    this.createSelector();
 
   }
 
@@ -191,132 +135,8 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
 
   createSelector() {
-    // initialize Region Selectors
-    this.regionSelector = new Array();
-    this.selectedRegionAll = true;
-    this.regionSelection = new Array();
-
-
-    this.allRegionCombined.forEach(element => {
-      this.regionSelector.push({ region: element, selected: true });
-      this.regionSelection.push(element);
-    });
-
-
-    // initialize Relation Selectors
-    this.relationSelector = new Array();
-    this.selectedRelationAll = true;
-    this.relationSelection = new Array();
-
-    this.allRelationCombined.forEach(element => {
-      this.relationSelector.push({ relation: element, selected: true });
-      this.relationSelection.push(element);
-    });
-
-  }
-
-
-  selectRegionAll() {
-    this.regionSelection = [];
-    for (const i of this.regionSelector) {
-      i.selected = this.selectedRegionAll;
-    }
-
-    if (this.selectedRegionAll) {
-      for (const i of this.regionSelector) {
-        this.regionSelection.push(i.region);
-      }
-    }
-
-
-    // update data
-    this.updateChartData(this.regionSelection, this.relationSelection);
-
-
-    // update chart
-    this.updateChart_benchmark();
-    if (this.proposalDemographicJSON) {
-      this.updateChart_proposal();
-      this.updateChart_combined();
-    }
-
-  }
-
-
-  checkIfAllRegionSelected() {
-    this.selectedRegionAll = this.regionSelector.every(function (item: any) {
-      return item.selected === true;
-    });
-    this.regionSelection = [];
-    for (const i of this.regionSelector) {
-      if (i.selected) {
-        this.regionSelection.push(i.region);
-      }
-    }
-
-    // update data
-    this.updateChartData(this.regionSelection, this.relationSelection);
-
-    // update chart
-    this.updateChart_benchmark();
-
-    if (this.proposalDemographicJSON) {
-      this.updateChart_proposal();
-      this.updateChart_combined();
-    }
-
-  }
-
-
-  selectRelationAll() {
-    this.relationSelection = [];
-    for (const i of this.relationSelector) {
-      i.selected = this.selectedRelationAll;
-    }
-
-    if (this.selectedRelationAll) {
-      for (const i of this.relationSelector) {
-        this.relationSelection.push(i.relation);
-      }
-    }
-
-
-    // update data
-    this.updateChartData(this.regionSelection, this.relationSelection);
-
-
-    // update chart
-    this.updateChart_benchmark();
-    if (this.proposalDemographicJSON) {
-      this.updateChart_proposal();
-      this.updateChart_combined();
-
-    }
-  }
-
-  checkIfAllRelationSelected() {
-    this.selectedRelationAll = this.relationSelector.every(function (item: any) {
-      return item.selected === true;
-    });
-    this.relationSelection = [];
-    for (const i of this.relationSelector) {
-      if (i.selected) {
-        this.relationSelection.push(i.relation);
-      }
-    }
-
-
-    // update data
-    this.updateChartData(this.regionSelection, this.relationSelection);
-
-
-    // update chart
-    this.updateChart_benchmark();
-    if (this.proposalDemographicJSON) {
-      this.updateChart_proposal();
-      this.updateChart_combined();
-
-    }
+    this.regionSelector = new Selector(this.allRegionCombined);
+    this.relationSelector = new Selector(this.allRelationCombined);
   }
 
 
@@ -460,5 +280,115 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
     this.combinedD3Chart.updateChart('#combinedDemographic', chartConfig, this.graphDataCombined, this.demographicCombinedParent, '#demographicCombinedTooltip');
 
   }
+
+
+  // NEW solution
+  onClickedOutside(e: Event, dropdownID: string) {
+    this.dropdownStatus[dropdownID] = false;
+  }
+
+  toggleMultiSelectAll(dropdownID: string) {
+    switch (dropdownID) {
+      case 'regionDropdown': {
+        for (const item of this.regionSelector.currentSelection) {
+          item.checked = this.regionSelector.all;
+        }
+        break;
+      }
+      case 'relationDropdown': {
+        for (const item of this.relationSelector.currentSelection) {
+          item.checked = this.relationSelector.all;
+        }
+        break;
+      }
+      default: {
+
+        break;
+      }
+    }
+
+    // update chartData
+    this.updateChartData(this.regionSelector.getCurrentSelction(), this.relationSelector.getCurrentSelction());
+
+    // update chart
+    this.updateChart_benchmark();
+    if (this.proposalDemographicJSON) {
+      this.updateChart_proposal();
+      this.updateChart_combined();
+    }
+
+  }
+
+  checkIfAllElementSelected(dropdownID: string) {
+    switch (dropdownID) {
+      case 'regionDropdown': {
+        if (this.regionSelector.checkIfAllChecked()) {
+          this.regionSelector.all = true;
+        } else {
+          this.regionSelector.all = false;
+        }
+        break;
+      }
+      case 'relationDropdown': {
+        if (this.relationSelector.checkIfAllChecked()) {
+          this.relationSelector.all = true;
+        } else {
+          this.relationSelector.all = false;
+        }
+        break;
+      }
+      default: {
+
+        break;
+      }
+    }
+
+    // update chartData
+    this.updateChartData(this.regionSelector.getCurrentSelction(), this.relationSelector.getCurrentSelction());
+
+    // update chart
+    this.updateChart_benchmark();
+    if (this.proposalDemographicJSON) {
+      this.updateChart_proposal();
+      this.updateChart_combined();
+    }
+
+  }
+
+
+  toggleDropdown(value: boolean, dropdownID: string) {
+    this.dropdownStatus[dropdownID] = value;
+  }
+
+
+  toggleMergeChart() {
+    if (this.zoom === true) {
+      console.log('toggle: true');
+
+      d3.select('#demographicCombinedChartArea')
+        .style('display', 'block');
+
+      d3.selectAll('.tornadoChart')
+        .style('display', 'none');
+
+      this.updateChart_combined();
+
+    } else {
+      console.log('toogle: false');
+
+      d3.select('#demographicCombinedChartArea')
+        .style('display', 'none');
+
+      d3.selectAll('.tornadoChart')
+        .style('display', 'block');
+
+      this.updateChart_proposal();
+      this.updateChart_benchmark();
+
+    }
+  }
+
+
+
 
 }
