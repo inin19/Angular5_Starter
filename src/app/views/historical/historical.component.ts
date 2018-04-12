@@ -123,8 +123,12 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
 
       }
-    } else {
+    } else if (data.id === 'historicalDemographic') {
+
       // this.waterfall.ngOnDestroy();
+
+      console.log('demographic tab clicked');
+
       this.proposalClaimData = null;
       this.benchmarkClaimData = null;
       this.proposalMemberCount = null;

@@ -168,7 +168,7 @@ export class WaterfallChartComponent implements OnInit {
   onSortingFormChanges() {
     this.sortingForm.get('sorting').valueChanges.subscribe(val => {
       console.log(val);
-      this.benchmarkClaimData.sortConditionGroupData(val);
+      this.benchmarkClaimData.sortConditionGroupData(val, []);
       this.benchmarkGraphData = this.benchmarkClaimData.getGraphData();
       this.updateChart(this.zoom);
 
@@ -238,7 +238,7 @@ export class WaterfallChartComponent implements OnInit {
 
   // apply filter here
   updateChartData(region?: string[], relation?: string[], gender?: string[], claimType?: string[], ageGroup?: string[]) {
-    this.benchmarkClaimData.processGraphData(this.totalMemberCount);
+    this.benchmarkClaimData.updateGraphData(this.totalMemberCount);
     this.benchmarkGraphData = this.benchmarkClaimData.getGraphData();
   }
 

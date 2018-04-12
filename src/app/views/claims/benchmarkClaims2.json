@@ -88588,11 +88588,11 @@
   "benchmarkMemberCount": [
     {
       "year": "currentYear",
-      "memeberCount": 7000
+      "memberCount": 7000
     },
     {
       "year": "previousYear",
-      "memeberCount": 6500
+      "memberCount": 6500
     }
   ]
 }

@@ -35,8 +35,11 @@ export class WaterfallD3Chart {
 
 
     this.svg = d3.select(chartConfig.domID).append('svg')
-      .attr('width', htmlElement.offsetWidth)
-      .attr('height', htmlElement.offsetHeight);
+    // .attr('width', htmlElement.offsetWidth)
+    // .attr('height', htmlElement.offsetHeight);
+
+
+
 
     // adding legend area
 
@@ -87,7 +90,10 @@ export class WaterfallD3Chart {
       .style('text-anchor', 'end')
       .attr('dx', '-.8em')
       .attr('dy', '.15em')
-      .attr('transform', 'rotate(-45)');
+      .attr('transform', 'rotate(-45)')
+      ;
+
+
   }
 
   updateChart(chartConfig: WaterfallChartConfig) {
@@ -95,9 +101,14 @@ export class WaterfallD3Chart {
     this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
 
+
+    // this.width = 585;
+
     this.svg
-      .attr('width', htmlElement.offsetWidth)
-      .attr('height', htmlElement.offsetHeight);
+      // .attr('width', htmlElement.offsetWidth)
+      // .attr('height', htmlElement.offsetHeight)
+      .attr('viewBox', '0 0 ' + `${htmlElement.offsetWidth}` + ' ' + `${htmlElement.offsetHeight}`)
+      ;
 
     // update graphtitle
     this.graphTitle
@@ -115,13 +126,16 @@ export class WaterfallD3Chart {
 
     // update axis
     const xaxis = d3.axisBottom(this.xScale)
-      .tickSizeOuter(0);
+      .tickSizeOuter(0)
+      ;
 
     const yaxis = d3.axisLeft(this.yScale)
       .tickSizeOuter(0)
       .tickFormat(d3.format('.3s'));
 
-    this.xAxis.transition().call(xaxis);
+    this.xAxis
+      .transition()
+      .call(xaxis);
     this.yAxis.transition().call(yaxis);
 
 
@@ -151,18 +165,27 @@ export class WaterfallD3Chart {
 
     bars
       .transition()
-      .attr('x', d => this.xScale(d.data.key))
+      .attr('x', d => this.xScale(chartConfig.conditionGroupTranslation[d.data.key]))
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
 
-        if ((d.data.key === chartConfig.previousYearKey || d.data.key === chartConfig.currentYearKey) && chartConfig.zoom) {
+        if ((chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
         }
 
+      })
+      .attr('fill', d => {
+        if (!isNaN(chartConfig.conditionGroupTranslation[d.data.key])) {
+          return 'blue';
+        } else if (d.data.Fall > 0) {
+          return 'green';
+        } else {
+          return 'orange';
+        }
       });
 
     // adding new bars
@@ -170,11 +193,11 @@ export class WaterfallD3Chart {
       .enter()
       .append('rect')
       .classed('bar', true)
-      .attr('x', d => this.xScale(d.data.key))
+      .attr('x', d => this.xScale(chartConfig.conditionGroupTranslation[d.data.key]))
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
-        if ((d.data.key === chartConfig.previousYearKey || d.data.key === chartConfig.currentYearKey) && chartConfig.zoom) {
+        if (( chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
@@ -182,7 +205,7 @@ export class WaterfallD3Chart {
         }
       })
       .attr('fill', d => {
-        if (!isNaN(d.data.key)) {
+        if (!isNaN(chartConfig.conditionGroupTranslation[d.data.key])) {
           return 'blue';
         } else if (d.data.Fall > 0) {
           return 'green';

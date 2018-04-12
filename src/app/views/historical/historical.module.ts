@@ -15,6 +15,7 @@ import { DemographicService } from '../../services/demographic.service';
 import { ClaimDataService } from '../../services/claims.service';
 import { TornadoChartComponent } from './tornado-chart/tornado-chart.component';
 import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.component';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 
 @NgModule({
@@ -23,10 +24,11 @@ import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.compo
     HistoricalRoutingModule,
     HttpClientModule,
     TabsModule.forRoot(),
-    FormsModule,
     ReactiveFormsModule,
+    FormsModule,
     BsDropdownModule.forRoot(),
-    ClickOutsideModule
+    ClickOutsideModule,
+    ButtonsModule
   ],
   declarations: [
     HistoricalComponent,
@@ -35,7 +37,8 @@ import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.compo
   ],
   providers: [
     DemographicService,
-    ClaimDataService
+    ClaimDataService,
+
   ]
 })
 export class HistoricalModule { }

@@ -1,4 +1,86 @@
-<div class="row" id="waterfallChartArea" style="position: relative;" #waterfallContainer >
+<div class="row">
+  <div class="col">
+    <div class="float-left">
+      <div>
+        <form [formGroup]="sortingForm" class="form-inline">
+          <div class="form-group">
+            <div class="btn-group" btnRadioGroup formControlName="sorting">
+              <label btnRadio="Asc" class="btn btn-primary btn-sm">Asc</label>
+              <label btnRadio="Desc" class="btn btn-primary btn-sm ">Desc</label>
+              <label btnRadio="Default" class="btn btn-primary btn-sm">Default</label>
+            </div>
+
+            <div>
+              <label class="switch switch-3d switch-primary" title="Zoom">
+                <input type="checkbox" class="switch-input" [(ngModel)]="zoom" [ngModelOptions]="{standalone: true}" (change)="toggleSwitch()">
+                <span class="switch-label"></span>
+                <span class="switch-handle"></span>
+              </label>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+
+    </div>
+
+
+
+
+  </div>
+
+  <div class="col">
+    <div class="float-right">
+      <div class="btn-group" id="regionDropdown" dropdown #Dropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['regionDropdown']"
+        (isOpenChange)="toggleDropdown($event, 'regionDropdown')" (clickOutside)="onClickedOutside($event,'regionDropdown')"
+        placement="top" attachOutsideOnClick="true">
+        <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+          Region
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="regionSelector.all" (change)="toggleMultiSelectAll('regionDropdown')"
+              /> (All Regions)
+            </label>
+          </li>
+
+          <li *ngFor="let n of regionSelector.currentSelection" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('regionDropdown')"> {{n.elementName}}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+
+      <div id="regionDropdown">
+        <ul>
+          <li>
+            <label>
+              <input type="checkbox" [(ngModel)]="regionSelector.all" (change)="toggleMultiSelectAll('regionDropdown')"
+              /> (All Regions)
+            </label>
+          </li>
+
+          <li *ngFor="let n of regionSelector.currentSelection">
+            <label>
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('regionDropdown')"> {{n.elementName}}
+            </label>
+          </li>
+        </ul>
+      </div>
+
+
+
+    </div>
+  </div>
+</div>
+
+<div class="row" id="waterfallChartArea" style="position: relative;" #waterfallContainer>
   <div class="col-6">
     <div class="waterfallChart" id='proposalWaterfallID' #proposalWaterfall></div>
   </div>

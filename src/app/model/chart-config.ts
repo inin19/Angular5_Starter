@@ -17,12 +17,13 @@ export interface WaterfallChartConfig extends ChartConfig {
     stackColor?: { Base: string, Fall: string, Rise: string }
     barData?: any[],
     previousYearKey?: string,
-    currentYearKey?: string
+    currentYearKey?: string,
+    conditionGroupTranslation: any;
 }
 
 
 export interface ProjectionChartConfig extends ChartConfig {
     x1ScaleDomain: any[],
     barData?: ProjectionOutput[],
-    categories?: string []
+    categories?: string[]
 }

@@ -38,6 +38,12 @@ export class Selector {
     return num === this.currentSelection.length ? true : false;
   }
 
+  resetSelector() {
+    for (const item of this.currentSelection) {
+      item.checked = true;
+    }
+  }
+
 }
 
 export interface SelectionItem {

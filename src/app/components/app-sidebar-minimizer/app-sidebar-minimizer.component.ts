@@ -4,4 +4,6 @@ import { Component } from '@angular/core';
   selector: 'app-sidebar-minimizer',
   templateUrl: './app-sidebar-minimizer.component.html'
 })
-export class AppSidebarMinimizerComponent { }
+export class AppSidebarMinimizerComponent {
+
+}
