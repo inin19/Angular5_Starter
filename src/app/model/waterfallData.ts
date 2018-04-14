@@ -91,7 +91,9 @@ export class WaterfallData {
 
     this.allRegion = data.map(item => item.region).filter((value, index, self) => self.indexOf(value) === index);
     this.allRelation = data.map(item => item.relation).filter((value, index, self) => self.indexOf(value) === index);
-
+    this.allClaimType = data.map(item => item.claimType).filter((value, index, self) => self.indexOf(value) === index);
+    this.allAgeGroup = data.map(item => item.ageGroup).filter((value, index, self) => self.indexOf(value) === index);
+    this.allGender = data.map(item => item.gender).filter((value, index, self) => self.indexOf(value) === index);
   }
 
 
@@ -419,6 +421,29 @@ export class WaterfallData {
   getAllRegion(): string[] {
     return this.allRegion;
   }
+
+  getAllRelation(): string[] {
+    return this.allRelation;
+  }
+
+
+  getAllClaimStatus(): string[] {
+    return this.allClaimStatus;
+  }
+
+  getClaimType(): string[] {
+    return this.allClaimType;
+  }
+
+  getAllAgeGroup(): string[] {
+    return this.allAgeGroup;
+  }
+
+  getAllGender(): string[] {
+    return this.allGender;
+  }
+
+
 
 }
 

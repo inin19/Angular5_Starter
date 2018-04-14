@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ClaimsRoutingModule } from './claims-routing.module';
 import { ClaimsComponent } from './claims.component';
-import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.component';
 import { ClaimDataService } from './../../services/claims.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -24,7 +23,7 @@ import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2
     ButtonsModule.forRoot(),
     AngularMultiSelectModule
   ],
-  declarations: [ClaimsComponent, WaterfallChartComponent],
+  declarations: [ClaimsComponent],
   providers: [ClaimDataService]
 })
 export class ClaimsModule { }

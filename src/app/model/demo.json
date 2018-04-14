@@ -1,0 +1,12 @@
+{
+    "region": "REGION_SOUTH_EAST",
+    "relation": "RELATION_SPOUSE",
+    "ageGroup": "71-75",
+    "gender": "M",
+    "planClassKey": null,
+    "industryKey": null,
+    "operatorTypeKey": null,
+    "memberCount": 355,
+    "countryKey": "ISO2_GB",
+    "totalAge" : 12425
+}

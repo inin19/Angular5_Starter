@@ -51,10 +51,28 @@ export class TornadoChartData {
   private allOperatorType: string[];
 
 
+  // Output for grid
+  private gridSummary: GridSummary;
+  private gridDetail: GridDetail[];
 
-  constructor(data: DemographicJSONInput[]) {
+
+  constructor(data: DemographicJSONInput[], ageGroup: string[]) {
+    this.gridDetail = new Array<GridDetail>();
+    // revisit null or 0
+    for (const item of ageGroup.reverse()) {
+      const detailItem: GridDetail = {
+        ageGroup: item,
+        percentage: { female: null, male: null }
+      };
+      this.gridDetail.push(detailItem);
+    }
+
+    // this.gridSummary = {};
+
+
     this.createDimentionGroup(data);
     this.processGraphData();
+
 
     // this.processGraphData(data, ['South'], ['EMPLOYEE']);
 
@@ -63,7 +81,6 @@ export class TornadoChartData {
     // });
 
     // console.log(this.maxPercentage);
-
   }
 
 
@@ -105,22 +122,23 @@ export class TornadoChartData {
 
   }
 
-  processGraphData(regions?: Array<string>, relation?: Array<string>) {
+  processGraphData(update?: ChartUpdateParameters) {
 
+    // regions?: string[], relation?: string[]
 
     // reset filter
     // this.regionDimension.filter(null);
     // this.relationDimension.filter(null);
 
 
-    if (regions) {
-      this.regionDimension.filter((d) => regions.indexOf(d.toString()) !== -1);
+    if (update) {
+      this.regionDimension.filter((d) => update.region.indexOf(d.toString()) !== -1);
     } else {
       this.regionDimension.filterAll();
     }
 
-    if (relation) {
-      this.relationDimension.filter((d) => relation.indexOf(d.toString()) !== -1);
+    if (update) {
+      this.relationDimension.filter((d) => update.relation.indexOf(d.toString()) !== -1);
     } else {
       this.relationDimension.filterAll();
     }
@@ -141,30 +159,57 @@ export class TornadoChartData {
     });
 
 
+    this.gridSummary.percentage.female = this.femaleMemberCount / (this.femaleMemberCount + this.maleMemberCount);
+    this.gridSummary.percentage.male = this.femaleMemberCount / (this.femaleMemberCount + this.maleMemberCount);
+
+
     this.graphData = this.demographicAggregateData;
 
 
 
     this.graphData.forEach(element => {
+
+      const gridDetailItem = this.gridDetail.find(d => d.ageGroup === element.key.ageGroup);
+      // if (gridDetailItem && element.key.gender === TornadoChartData.FEMALE) {
+      //   gridDetailItem.percentage.female = element.percentage;
+      // } else if (gridDetailItem && element.key.gender === TornadoChartData.MALE) {
+      //   gridDetailItem.percentage.male = element.percentage;
+      // }
+
+
       if (element.key.gender === TornadoChartData.FEMALE) {
         element.genderTotal = this.femaleMemberCount;
         // check divided 0
         element.percentage = element.genderTotal === 0 ? 0 : element.value / element.genderTotal;
+
+        if (gridDetailItem) {
+          gridDetailItem.percentage.female = element.percentage;
+        }
+
         element.percentage = - element.percentage;
       } else {
         element.genderTotal = this.maleMemberCount;
         // check divided 0
         element.percentage = element.genderTotal === 0 ? 0 : element.value / element.genderTotal;
 
+        if (gridDetailItem) {
+          gridDetailItem.percentage.male = element.percentage;
+        }
       }
+
+
     });
 
 
     this.maxPercentage = d3.max(this.graphData, (d) => Math.abs(d.percentage));
 
-    // this.graphData.forEach(element => {
-    //     console.log(element);
-    // });
+    console.log('gridSummary');
+
+    console.log(this.gridSummary);
+
+    // populating grid
+
+    // grid detail
 
   }
 
@@ -200,15 +245,35 @@ export class TornadoChartData {
 
 
 export interface DemographicJSONInput {
-  region: string,
-  relation: string,
-  ageGroup: string,
-  gender: string,
-  planClassKey: string,
-  industryKey: string,
-  operatorTypeKey: string,
-  memberCount: number,
-  countryKey: string
+  region: string;
+  relation: string;
+  ageGroup: string;
+  gender: string;
+  planClassKey: string;
+  industryKey: string;
+  operatorTypeKey: string;
+  memberCount: number;
+  countryKey: string;
 }
 
 
+
+export interface GridSummary {
+  benchmark?: boolean;
+  percentage: { female: number, male: number };
+  avgAge: { female: number, male: number };
+}
+
+export interface GridDetail {
+  ageGroup: string;
+  percentage: { female: number, male: number };
+  memberCount?: { female: number, male: number };
+}
+
+
+
+// all countries
+export interface ChartUpdateParameters {
+  region: string[];
+  relation: string[];
+}

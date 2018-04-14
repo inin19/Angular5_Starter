@@ -9,8 +9,8 @@
       <div class="col">
         <div class="float-right">
           <!-- dropdown: plan -->
-          <div class="btn-group" id="planDropdown" dropdown #planDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[planDropdown._elementRef.nativeElement.id]"
-            (isOpenChange)="toggleDropdown($event, planDropdown._elementRef.nativeElement.id )" (clickOutside)="onClickedOutside($event ,planDropdown._elementRef.nativeElement.id )"
+          <div class="btn-group" id="planDropdown" dropdown #planDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['planDropdown']"
+            (isOpenChange)="toggleDropdown($event, 'planDropdown' )" (clickOutside)="onClickedOutside($event ,'planDropdown' )"
             placement="top" attachOutsideOnClick="true" >
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
               Select Plans
@@ -20,14 +20,14 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll(planDropdown._elementRef.nativeElement.id)"
+                  <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll('planDropdown')"
                   /> (All)
                 </label>
               </li>
 
-              <li *ngFor="let n of planSelector.currentSelection" class="menuitem">
+              <li *ngFor="let n of planSelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(planDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
+                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('planDropdown')"> {{n.elementName}}
                 </label>
               </li>
 
@@ -35,8 +35,8 @@
           </div>
 
           <!-- dropdown: period -->
-          <div class="btn-group" id="periodDropdown" dropdown #periodDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[periodDropdown._elementRef.nativeElement.id]"
-            (isOpenChange)="toggleDropdown($event, periodDropdown._elementRef.nativeElement.id )" (clickOutside)="onClickedOutside($event ,periodDropdown._elementRef.nativeElement.id )"
+          <div class="btn-group" id="periodDropdown" dropdown #periodDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['periodDropdown']"
+            (isOpenChange)="toggleDropdown($event, 'periodDropdown' )" (clickOutside)="onClickedOutside($event,'periodDropdown' )"
             placement="top" attachOutsideOnClick="true">
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
               Select Periods
@@ -46,15 +46,15 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll(periodDropdown._elementRef.nativeElement.id)"
+                  <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll('periodDropdown')"
                   /> (All)
                 </label>
               </li>
 
 
-              <li *ngFor="let n of periodSelector.currentSelection" class="menuitem">
+              <li *ngFor="let n of periodSelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(periodDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
+                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('periodDropdown')"> {{n.elementName}}
                 </label>
               </li>
 
@@ -62,8 +62,8 @@
           </div>
 
           <!-- dropdown: projection -->
-          <div class="btn-group" id="projectionDropdown" dropdown #projectionDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[projectionDropdown._elementRef.nativeElement.id]"
-            (isOpenChange)="toggleDropdown($event, projectionDropdown._elementRef.nativeElement.id )" (clickOutside)="onClickedOutside($event ,projectionDropdown._elementRef.nativeElement.id )"
+          <div class="btn-group" id="projectionDropdown" dropdown #projectionDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['projectionDropdown']"
+            (isOpenChange)="toggleDropdown($event, 'projectionDropdown' )" (clickOutside)="onClickedOutside($event, 'projectionDropdown' )"
             placement="top" attachOutsideOnClick="true">
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
               Select Projection
@@ -73,14 +73,14 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll(projectionDropdown._elementRef.nativeElement.id)"
+                  <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll('projectionDropdown')"
                   /> (All)
                 </label>
               </li>
 
-              <li *ngFor="let n of projectionSelector.currentSelection" class="menuitem">
+              <li *ngFor="let n of projectionSelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(projectionDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
+                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('projectionDropdown')"> {{n.elementName}}
                 </label>
               </li>
 
@@ -88,7 +88,7 @@
           </div>
 
           <!-- dropdown: category -->
-          <div class="btn-group" id="categoryDropdown" dropdown #categoryDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus[categoryDropdown._elementRef.nativeElement.id]"
+          <div class="btn-group" id="categoryDropdown" dropdown #categoryDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['categoryDropdown']"
             (isOpenChange)="toggleDropdown($event, categoryDropdown._elementRef.nativeElement.id )" (clickOutside)="onClickedOutside($event, categoryDropdown._elementRef.nativeElement.id )"
             placement="top" attachOutsideOnClick="true">
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
@@ -104,7 +104,7 @@
                 </label>
               </li>
 
-              <li *ngFor="let n of categorySelector.currentSelection" class="menuitem">
+              <li *ngFor="let n of categorySelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
                   <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(categoryDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
                 </label>

@@ -380,3 +380,4 @@ export interface ChartConfig {
     createGrid?: boolean,
     chartType?: number // 1: client, 2: benchmark, 3 both
 }
+

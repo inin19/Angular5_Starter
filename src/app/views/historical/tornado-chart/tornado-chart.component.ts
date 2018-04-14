@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, ViewEncapsulation, ElementRef, HostListener, OnInit, OnDestroy } from '@angular/core';
-import { TornadoChartData } from '../../../model/tornadoData';
+import { TornadoChartData, ChartUpdateParameters } from '../../../model/tornadoData';
 import { TornadoD3Chart, ChartConfig } from '../../../model/tornado-d3-chart.model';
 import { Selector } from '../../../model/utils/selector.model';
 
@@ -15,8 +15,9 @@ import * as d3 from 'd3';
 })
 export class TornadoChartComponent implements OnInit, OnDestroy {
 
-
   static barType = ['proposal', 'benchmark'];
+
+  disabled: boolean;
 
 
   @Input() private proposalDemographicJSON: any[];
@@ -88,6 +89,8 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
     this.zoom = false;
 
+    this.disabled = true;
+
     // listen to div resize event
     this.resizeDetector.listenTo(this.proposalDemoChartContainer.nativeElement, (elem: HTMLElement) => {
       if (this.proposalDemographicJSON) {
@@ -142,7 +145,7 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
   createChartData() {
 
-    this.benchmarkChartData = new TornadoChartData(this.benchmarkDemographicJSON);
+    this.benchmarkChartData = new TornadoChartData(this.benchmarkDemographicJSON, this.ageGroup);
     this.benchmarkgraphData = this.benchmarkChartData.getGraphData();
 
     this.benchmarkgraphData.forEach(el => {
@@ -151,7 +154,7 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
     // if proposal has demographic data
     if (this.proposalDemographicJSON) {
-      this.proposalChartData = new TornadoChartData(this.proposalDemographicJSON);
+      this.proposalChartData = new TornadoChartData(this.proposalDemographicJSON, this.ageGroup);
       this.proposalgraphData = this.proposalChartData.getGraphData();
 
       const allRegionCombinedSet = new Set([...this.proposalChartData.getAllRegion(), ...this.benchmarkChartData.getAllRegion()]);
@@ -188,13 +191,20 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
   // apply filter
   updateChartData(regions: string[], relation: string[]) {
 
-    this.benchmarkChartData.processGraphData(regions, relation);
+    const update: ChartUpdateParameters = {
+      region: regions,
+      relation: relation
+    };
+
+    // console.log(update);
+
+    this.benchmarkChartData.processGraphData(update);
     this.benchmarkgraphData = this.benchmarkChartData.getGraphData();
 
     // console.log(this.benchmarkgraphData);
 
     if (this.proposalDemographicJSON) {
-      this.proposalChartData.processGraphData(regions, relation);
+      this.proposalChartData.processGraphData(update);
       this.proposalgraphData = this.proposalChartData.getGraphData();
       this.maxPercentage = this.proposalChartData.getMaxPercentage() > this.benchmarkChartData.getMaxPercentage() ? this.proposalChartData.getMaxPercentage() : this.benchmarkChartData.getMaxPercentage();
     } else {
@@ -290,13 +300,14 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
   toggleMultiSelectAll(dropdownID: string) {
     switch (dropdownID) {
       case 'regionDropdown': {
-        for (const item of this.regionSelector.currentSelection) {
+        for (const item of this.regionSelector.selectionItems) {
           item.checked = this.regionSelector.all;
         }
+
         break;
       }
       case 'relationDropdown': {
-        for (const item of this.relationSelector.currentSelection) {
+        for (const item of this.relationSelector.selectionItems) {
           item.checked = this.relationSelector.all;
         }
         break;
@@ -307,6 +318,13 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
       }
     }
 
+    if (!this.regionSelector.checkIfAllChecked() || !this.relationSelector.checkIfAllChecked()) {
+      this.disabled = false;
+    } else {
+      this.disabled = true;
+    }
+
+
     // update chartData
     this.updateChartData(this.regionSelector.getCurrentSelction(), this.relationSelector.getCurrentSelction());
 
@@ -316,6 +334,7 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
       this.updateChart_proposal();
       this.updateChart_combined();
     }
+
 
   }
 
@@ -341,6 +360,12 @@ export class TornadoChartComponent implements OnInit, OnDestroy {
 
         break;
       }
+    }
+
+    if (!this.regionSelector.checkIfAllChecked() || !this.relationSelector.checkIfAllChecked()) {
+      this.disabled = false;
+    } else {
+      this.disabled = true;
     }
 
     // update chartData

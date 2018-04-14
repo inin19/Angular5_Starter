@@ -145,25 +145,25 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   toggleMultiSelectAll(dropdownID: string) {
     switch (dropdownID) {
       case 'categoryDropdown': {
-        for (const item of this.categorySelector.currentSelection) {
+        for (const item of this.categorySelector.selectionItems) {
           item.checked = this.categorySelector.all;
         }
         break;
       }
       case 'projectionDropdown': {
-        for (const item of this.projectionSelector.currentSelection) {
+        for (const item of this.projectionSelector.selectionItems) {
           item.checked = this.projectionSelector.all;
         }
         break;
       }
       case 'periodDropdown': {
-        for (const item of this.periodSelector.currentSelection) {
+        for (const item of this.periodSelector.selectionItems) {
           item.checked = this.periodSelector.all;
         }
         break;
       }
       case 'planDropdown': {
-        for (const item of this.planSelector.currentSelection) {
+        for (const item of this.planSelector.selectionItems) {
           item.checked = this.planSelector.all;
         }
         break;

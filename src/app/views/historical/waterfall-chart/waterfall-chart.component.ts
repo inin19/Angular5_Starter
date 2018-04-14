@@ -105,6 +105,9 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
   // UK
   private allRegionCombined: string[];
   private allRelationCombined: string[];
+  private allGenderComined: string[];
+  private allAgeGroupCombined: string[];
+  private allClaimTypeCombined: string[];
 
   constructor(private formBuilder: FormBuilder, private minimizeService: MinimizeService) { }
 
@@ -168,10 +171,28 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
 
       // UK
       const allRegionCombinedSet = new Set([...this.proposalClaim.getAllRegion(), ...this.benchmarkClaim.getAllRegion()]);
+      const allRelationCombinedSet = new Set([...this.proposalClaim.getAllRelation(), ...this.benchmarkClaim.getAllRelation()]);
+      const allAgeGroupCombinedSet = new Set([...this.proposalClaim.getAllAgeGroup(), ...this.benchmarkClaim.getAllAgeGroup()]);
+      const allGenderCombinedSet = new Set([...this.proposalClaim.getAllGender(), ...this.benchmarkClaim.getAllGender()]);
+      const allClaimTypeCombinedSet = new Set([...this.proposalClaim.getClaimType(), ...this.benchmarkClaim.getClaimType()]);
+
+
+      // const
+
       this.allRegionCombined = Array.from(allRegionCombinedSet).sort();
+      this.allRelationCombined = Array.from(allRelationCombinedSet).sort();
+      this.allAgeGroupCombined = Array.from(allAgeGroupCombinedSet).sort();
+      this.allGenderComined = Array.from(allGenderCombinedSet).sort();
+      this.allClaimTypeCombined = Array.from(allClaimTypeCombinedSet).sort();
+
 
     } else {
       this.allRegionCombined = this.benchmarkClaim.getAllRegion().sort();
+      this.allRelationCombined = this.benchmarkClaim.getAllRelation().sort();
+      this.allAgeGroupCombined = this.benchmarkClaim.getAllAgeGroup().sort();
+      this.allGenderComined = this.benchmarkClaim.getAllGender().sort();
+      this.allClaimTypeCombined = this.benchmarkClaim.getAllGender().sort();
+
     }
 
 
@@ -294,6 +315,10 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
 
   createSelector() {
     this.regionSelector = new Selector(this.allRegionCombined);
+    this.relationSelector = new Selector(this.allRelationCombined);
+    this.genderSelector = new Selector(this.allGenderComined);
+    this.ageGroupSelector = new Selector(this.allAgeGroupCombined);
+    this.claimTypeSelector = new Selector(this.allClaimTypeCombined);
 
   }
 
@@ -306,17 +331,37 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
   toggleMultiSelectAll(dropdownID: string) {
     switch (dropdownID) {
       case 'regionDropdown': {
-        for (const item of this.regionSelector.currentSelection) {
+        for (const item of this.regionSelector.selectionItems) {
           item.checked = this.regionSelector.all;
         }
         break;
       }
-      // case 'relationDropdown': {
-      //   for (const item of this.relationSelector.currentSelection) {
-      //     item.checked = this.relationSelector.all;
-      //   }
-      //   break;
-      // }
+      case 'relationDropdown': {
+        for (const item of this.relationSelector.selectionItems) {
+          item.checked = this.relationSelector.all;
+        }
+        break;
+      }
+      case 'claimTypeDropdown': {
+        for (const item of this.claimTypeSelector.selectionItems) {
+          item.checked = this.claimTypeSelector.all;
+        }
+        break;
+      }
+
+      case 'ageGroupDropdown': {
+        for (const item of this.ageGroupSelector.selectionItems) {
+          item.checked = this.ageGroupSelector.all;
+        }
+        break;
+      }
+
+      case 'genderDropdown': {
+        for (const item of this.genderSelector.selectionItems) {
+          item.checked = this.genderSelector.all;
+        }
+        break;
+      }
       default: {
 
         break;
@@ -327,6 +372,10 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
     const params: ChartUpdateParameters = {
       sortingMethod: this.sortingForm.controls['sorting'].value,
       region: this.regionSelector.getCurrentSelction(),
+      relation: this.relationSelector.getCurrentSelction(),
+      claimType: this.claimTypeSelector.getCurrentSelction(),
+      ageGroup: this.ageGroupSelector.getCurrentSelction(),
+      gender: this.genderSelector.getCurrentSelction(),
       conditionGroupKey: WaterfallChartComponent.UKConditionGroupKeys
     }
 
@@ -356,7 +405,39 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
         }
         break;
       }
+      case 'relationDropdown': {
+        if (this.relationSelector.checkIfAllChecked()) {
+          this.relationSelector.all = true;
+        } else {
+          this.relationSelector.all = false;
+        }
+        break;
+      }
+      case 'claimTypeDropdown': {
+        if (this.claimTypeSelector.checkIfAllChecked()) {
+          this.claimTypeSelector.all = true;
+        } else {
+          this.claimTypeSelector.all = false;
+        }
+        break;
+      }
+      case 'ageGroupDropdown': {
+        if (this.ageGroupSelector.checkIfAllChecked()) {
+          this.ageGroupSelector.all = true;
+        } else {
+          this.ageGroupSelector.all = false;
+        }
+        break;
+      }
 
+      case 'genderDropdown': {
+        if (this.genderSelector.checkIfAllChecked()) {
+          this.genderSelector.all = true;
+        } else {
+          this.genderSelector.all = false;
+        }
+        break;
+      }
       default: {
 
         break;
@@ -370,6 +451,10 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
     const params: ChartUpdateParameters = {
       sortingMethod: this.sortingForm.controls['sorting'].value,
       region: this.regionSelector.getCurrentSelction(),
+      relation: this.relationSelector.getCurrentSelction(),
+      claimType: this.claimTypeSelector.getCurrentSelction(),
+      ageGroup: this.ageGroupSelector.getCurrentSelction(),
+      gender: this.genderSelector.getCurrentSelction(),
       conditionGroupKey: WaterfallChartComponent.UKConditionGroupKeys
     }
 
