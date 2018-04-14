@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ProjectionChartConfig } from '../chart-config'
+import { ProjectionChartConfig } from '../chart-config';
 import * as d3 from 'd3';
 
 
@@ -142,7 +142,7 @@ export class ProjectionD3Chart {
     function getElementWidth(e): void {
       e.select(function () {
         wrapperWidth = this.getBoundingClientRect().width;
-      })
+      });
     }
 
     this.legendWidth = wrapperWidth;
