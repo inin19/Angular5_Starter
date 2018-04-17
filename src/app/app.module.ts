@@ -18,7 +18,7 @@ import {
 const APP_CONTAINERS = [
   FullLayoutComponent,
   SimpleLayoutComponent
-]
+];
 
 // Import components
 import {
@@ -45,7 +45,7 @@ const APP_COMPONENTS = [
   AppSidebarHeaderComponent,
   AppSidebarMinimizerComponent,
   APP_SIDEBAR_NAV
-]
+];
 
 // Import directives
 import {
@@ -60,7 +60,7 @@ const APP_DIRECTIVES = [
   NAV_DROPDOWN_DIRECTIVES,
   ReplaceDirective,
   SIDEBAR_TOGGLE_DIRECTIVES
-]
+];
 
 // Import routing module
 import { AppRoutingModule } from './app.routing';

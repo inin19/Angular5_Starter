@@ -134,7 +134,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
           this.updateChart_proposal();
         }
       }, 400);
-    })
+    });
 
   }
 
@@ -191,7 +191,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       this.allRelationCombined = this.benchmarkClaim.getAllRelation().sort();
       this.allAgeGroupCombined = this.benchmarkClaim.getAllAgeGroup().sort();
       this.allGenderComined = this.benchmarkClaim.getAllGender().sort();
-      this.allClaimTypeCombined = this.benchmarkClaim.getAllGender().sort();
+      this.allClaimTypeCombined = this.benchmarkClaim.getClaimType().sort();
 
     }
 
@@ -209,7 +209,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       xScaleDomain: this.xDomainDisplay,
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
       conditionGroupTranslation: WaterfallChartComponent.conditionGroupTranslation
-    }
+    };
 
     this.benchmarkD3Chart = new WaterfallD3Chart(config);
   }
@@ -224,7 +224,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       xScaleDomain: this.xDomainDisplay,
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
       conditionGroupTranslation: WaterfallChartComponent.conditionGroupTranslation
-    }
+    };
     this.proposalD3Chart = new WaterfallD3Chart(config);
   }
 
@@ -242,7 +242,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       currentYearKey: '2016',
       toolTipParent: this.waterfallContainer,
       conditionGroupTranslation: WaterfallChartComponent.conditionGroupTranslation
-    }
+    };
 
     this.benchmarkD3Chart.updateChart(config);
   }
@@ -262,7 +262,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       toolTipParent: this.waterfallContainer,
       conditionGroupTranslation: WaterfallChartComponent.conditionGroupTranslation
 
-    }
+    };
 
     // this.proposalClaim.getGraphData()[0].map(val => (val.data.key))
 
@@ -377,7 +377,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       ageGroup: this.ageGroupSelector.getCurrentSelction(),
       gender: this.genderSelector.getCurrentSelction(),
       conditionGroupKey: WaterfallChartComponent.UKConditionGroupKeys
-    }
+    };
 
 
 
@@ -456,7 +456,7 @@ export class WaterfallChartComponent implements OnInit, OnDestroy, OnChanges {
       ageGroup: this.ageGroupSelector.getCurrentSelction(),
       gender: this.genderSelector.getCurrentSelction(),
       conditionGroupKey: WaterfallChartComponent.UKConditionGroupKeys
-    }
+    };
 
 
 

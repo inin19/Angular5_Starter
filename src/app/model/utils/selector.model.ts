@@ -4,19 +4,16 @@ export class Selector {
   // private
   public selectionItems: SelectionItem[];
 
-  constructor(items: any[]) {
+  public selectorName: string;
+
+  constructor(items: any[], name?: string) {
     this.all = true;
     this.selectionItems = new Array<SelectionItem>();
     for (const item of items) {
       const curr: SelectionItem = { elementName: item, checked: true };
       this.selectionItems.push(curr);
     }
-
-    // this.toggleElementStatus('TAX');
-    // console.log(this.getElementStatus('TAX'));
-    // this.toggleElementStatus('TAX');
-    // console.log(this.getElementStatus('TAX'));
-
+    this.selectorName = name;
   }
 
   getCurrentSelction(): string[] {
@@ -42,11 +39,16 @@ export class Selector {
     for (const item of this.selectionItems) {
       item.checked = true;
     }
+    this.all = true;
+  }
+
+  getSelectorName(): string {
+    return this.selectorName;
   }
 
 }
 
 export interface SelectionItem {
-  elementName: string,
-  checked: boolean
+  elementName: string;
+  checked: boolean;
 }

@@ -2,27 +2,43 @@ import { Component, Input, ViewChild, ViewEncapsulation, ElementRef, HostListene
 import { TornadoChartData, ChartUpdateParameters } from '../../../model/tornadoData';
 import { TornadoD3Chart, ChartConfig } from '../../../model/tornado-d3-chart.model';
 import { Selector } from '../../../model/utils/selector.model';
+import { animate, state, style, transition, trigger } from '@angular/animations';
 
 
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
 
+type PaneType1 = 'left' | 'right';
+// type PaneType2 = 'left' | 'right';
+
+
+
 @Component({
   selector: 'app-tornado-chart',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './tornado-chart.component.html',
-  styleUrls: ['./tornado-chart.component.scss']
+  styleUrls: ['./tornado-chart.component.scss'],
+  animations: [
+    trigger('slide', [
+      state('left', style({ transform: 'translateX(0)' })),
+      state('right', style({ transform: 'translateX(-50%)' })),
+      transition('* => *', animate(300))
+    ])
+  ]
 })
 export class TornadoChartComponent implements OnInit, OnDestroy {
 
   static barType = ['proposal', 'benchmark'];
+
+
+  @Input() activePane: PaneType1 = 'left';
+
 
   disabled: boolean;
 
 
   @Input() private proposalDemographicJSON: any[];
   @Input() private benchmarkDemographicJSON: any[];
-
   @Input() private ageGroup: string[];
 
   @ViewChild('proposalDemographic') private proposalDemoChartContainer: ElementRef;

@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col">
+    <div class="float-right">
+      <label class="switch switch-3d switch-primary" title="Zoom">
+        <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+<div [hidden]='zoom' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+  <div class="col-6">
+    <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
+  </div>
+  <div class="col-6">
+    <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
+  </div>
+  <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
+</div>
+
+
+<div [hidden]='!zoom' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
+  <div class="col">
+    <div id="combinedDemographic" #combinedDemographic></div>
+  </div>
+  <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
+</div>
+
+
+<!-- [activePane]="isLeftVisible ? 'left' : 'right'" -->

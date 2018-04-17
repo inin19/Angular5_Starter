@@ -449,61 +449,61 @@ export class WaterfallData {
 
 
 export interface WaterfallBar {
-  Base: number,
-  Fall: number,
-  Rise: number,
-  Per_Capita: number,
-  key: string
+  Base: number;
+  Fall: number;
+  Rise: number;
+  Per_Capita: number;
+  key: string;
 }
 
 
 
 
 export interface ClaimsJSONInput {
-  region: string,
-  relation: string,
-  claimType: string,
-  conditionGrouping: string,
-  ageGroup: string,
-  gender: string,
-  currYearClaimCount: number,
-  currYeartotalClaimCostAmount: number,
-  prevYearClaimCount: number,
-  prevYeartotalClaimCostAmount: number
+  region: string;
+  relation: string;
+  claimType: string;
+  conditionGrouping: string;
+  ageGroup: string;
+  gender: string;
+  currYearClaimCount: number;
+  currYeartotalClaimCostAmount: number;
+  prevYearClaimCount: number;
+  prevYeartotalClaimCostAmount: number;
 }
 
 
 
 export interface DemographicSummaryJSONInput {
-  year: string,
-  memberCount: number,
+  year: string;
+  memberCount: number;
 }
 
 export interface ClaimsAggregateDataOutput {
-  key: string,
+  key: string;
   value: {
     currYearClaimCount_sum: number,
     currYeartotalClaimCostAmount_sum: number,
     prevYearClaimCount_sum: number,
     prevYeartotalClaimCostAmount_sum: number
-  },
-  currYearClaimFrequency: number,
-  prevYearClaimFrequency: number,
-  currYearPerCapitalClaimCost: number,
-  prevYearPerCapitalClaimCost: number,
-  currYearAvgClaimCost: number,
-  prevYearAvgClaimCost: number
+  };
+  currYearClaimFrequency: number;
+  prevYearClaimFrequency: number;
+  currYearPerCapitalClaimCost: number;
+  prevYearPerCapitalClaimCost: number;
+  currYearAvgClaimCost: number;
+  prevYearAvgClaimCost: number;
 }
 
 
 
 // all countries
 export interface ChartUpdateParameters {
-  sortingMethod: string,
-  conditionGroupKey?: string[],  // without PREV and CURR
-  region?: string[],
-  relation?: string[],
-  gender?: string[],
-  claimType?: string[],
-  ageGroup?: string[]
+  sortingMethod: string;
+  conditionGroupKey?: string[];  // without PREV and CURR
+  region?: string[];
+  relation?: string[];
+  gender?: string[];
+  claimType?: string[];
+  ageGroup?: string[];
 }

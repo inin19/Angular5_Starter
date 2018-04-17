@@ -67,7 +67,10 @@ export class TornadoChartData {
       this.gridDetail.push(detailItem);
     }
 
-    // this.gridSummary = {};
+    this.gridSummary = {
+      percentage: { female: 0, male: 0 },
+      avgAge: { female: 0, male: 0 }
+    };
 
 
     this.createDimentionGroup(data);
@@ -160,7 +163,7 @@ export class TornadoChartData {
 
 
     this.gridSummary.percentage.female = this.femaleMemberCount / (this.femaleMemberCount + this.maleMemberCount);
-    this.gridSummary.percentage.male = this.femaleMemberCount / (this.femaleMemberCount + this.maleMemberCount);
+    this.gridSummary.percentage.male = this.maleMemberCount / (this.femaleMemberCount + this.maleMemberCount);
 
 
     this.graphData = this.demographicAggregateData;
@@ -203,9 +206,8 @@ export class TornadoChartData {
 
     this.maxPercentage = d3.max(this.graphData, (d) => Math.abs(d.percentage));
 
-    console.log('gridSummary');
 
-    console.log(this.gridSummary);
+    // console.log(this.gridSummary);
 
     // populating grid
 
@@ -258,8 +260,10 @@ export interface DemographicJSONInput {
 
 
 
+// d3.format('.0%')
+
 export interface GridSummary {
-  benchmark?: boolean;
+  // benchmark?: boolean;
   percentage: { female: number, male: number };
   avgAge: { female: number, male: number };
 }

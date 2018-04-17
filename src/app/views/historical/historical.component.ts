@@ -8,8 +8,6 @@ import { TornadoChartComponent } from './tornado-chart/tornado-chart.component';
 import { WaterfallChartComponent } from './waterfall-chart/waterfall-chart.component';
 
 
-
-
 @Component({
   selector: 'app-historical',
   templateUrl: './historical.component.html',
@@ -35,6 +33,11 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
   benchmarkClaimData: any[];
   benchmarkMemberCount: any[];
+
+  // slider
+  isLeftVisible1 = true;
+  isLeftVisible2 = true;
+
 
   constructor(private demographicService: DemographicService, private claimDataService: ClaimDataService) { }
 
@@ -68,7 +71,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
         data => {
           this.benchmarkDemographicData = data;
         }
-      )
+      );
   }
 
   fetchBenchmarkClaimAndMemberCount(): void {

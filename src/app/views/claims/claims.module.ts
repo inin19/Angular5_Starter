@@ -1,29 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { HttpClientModule } from '@angular/common/http';
 import { ClaimsRoutingModule } from './claims-routing.module';
 import { ClaimsComponent } from './claims.component';
-import { ClaimDataService } from './../../services/claims.service';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-import { ButtonsModule } from 'ngx-bootstrap/buttons';
-import { AngularMultiSelectModule } from 'angular2-multiselect-dropdown/angular2-multiselect-dropdown';
-
+import { SlidingDemoComponent } from './sliding-demo/sliding-demo.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   imports: [
     CommonModule,
-    HttpClientModule,
-    ClaimsRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    BsDropdownModule.forRoot(),
-    ButtonsModule.forRoot(),
-    AngularMultiSelectModule
+    ClaimsRoutingModule
   ],
-  declarations: [ClaimsComponent],
-  providers: [ClaimDataService]
+  declarations: [ClaimsComponent, SlidingDemoComponent],
+  providers: []
 })
 export class ClaimsModule { }

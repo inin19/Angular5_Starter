@@ -8,18 +8,21 @@ export const navigation = [
       text: 'NEW'
     },
   },
-
-  // {
-  //   name: 'Claims',
-  //   url: '/claims',
-  //   icon: 'icon-pin'
-  // },
-
   {
     name: 'Historical',
     url: '/historical',
     icon: 'icon-pin'
-  }
+  },
+  {
+    name: 'Claims',
+    url: '/claims',
+    icon: 'icon-pin'
+  },
+  {
+    name: 'Historical_NEW',
+    url: '/historical2',
+    icon: 'icon-pin'
+  },
 
 
 ];

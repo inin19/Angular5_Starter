@@ -371,13 +371,13 @@ export class TornadoD3Chart {
 
 
 export interface ChartConfig {
-    title?: string,
-    chartContainer: ElementRef,
-    margin?: { top: number, right: number, bottom: number, left: number },
-    ageGroup: string[],
-    maxPercentage: number,
-    cluster?: boolean,
-    createGrid?: boolean,
-    chartType?: number // 1: client, 2: benchmark, 3 both
+    title?: string;
+    chartContainer: ElementRef;
+    margin?: { top: number, right: number, bottom: number, left: number };
+    ageGroup: string[];
+    maxPercentage: number;
+    cluster?: boolean;
+    createGrid?: boolean;
+    chartType?: number; // 1: client, 2: benchmark, 3 both
 }
 
