@@ -25,16 +25,11 @@ export const routes: Routes = [
         loadChildren: './views/dashboard/dashboard.module#DashboardModule'
       },
       {
-        path: 'historical',
-        // C:\Users\U1118608\Desktop\Angular5_CLI_Starter\src\app\views\claims\claims\claims.module.ts
-        loadChildren: './views/historical/historical.module#HistoricalModule'
-      },
-      {
         path: 'claims',
         loadChildren: './views/claims/claims.module#ClaimsModule'
       },
       {
-        path: 'historical2',
+        path: 'historical',
         loadChildren: './views/historical-new/historical-new.module#HistoricalNewModule'
       }
     ]
