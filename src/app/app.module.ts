@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MinimizeService } from './services/minimize.service';
 
 
@@ -78,7 +78,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ChartsModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     AppComponent,

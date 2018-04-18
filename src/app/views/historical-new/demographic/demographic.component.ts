@@ -65,6 +65,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
+
+    console.log('in demographic init');
     this.zoom = false;
     // this.disabled = true;
     this.createChartData();
@@ -102,6 +104,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
     console.log('listen to demographic divs');
   }
+
+
 
   unListenToDivResize() {
     if (this.proposalDemographic) {

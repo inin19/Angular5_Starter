@@ -1,8 +1,9 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { WaterfallData, WaterfallBar, ChartUpdateParameters } from '../../../model/waterfallData';
 import { WaterfallD3Chart } from '../../../model/waterfall-d3-chart.model';
-import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+// import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { WaterfallChartConfig } from './../../../model/chart-config';
+import * as elementResizeDetectorMaker from 'element-resize-detector';
 
 
 @Component({
@@ -53,6 +54,10 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChild('proposalWaterfall') private proposalWaterfall: ElementRef;
   @ViewChild('benchmarkWaterfall') private benchmarkWaterfall: ElementRef;
 
+
+  private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
+
+
   private benchmarkConditionGroupData: WaterfallBar[];
   private benchmarkGraphData: any[];
 
@@ -68,34 +73,32 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
   zoom = false;
   private xDomainDisplay = Object.keys(ClaimsComponent.conditionGroupTranslation).map(key => ClaimsComponent.conditionGroupTranslation[key]);
-  sortingForm: FormGroup;
 
+  // new form
+  sorting: string;
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor() { }
+
 
   ngOnInit() {
     console.log('claim PerCapita init');
-    this.sortingForm = this.formBuilder.group({ sorting: 'Default' });
+
+    this.sorting = 'Default';
     this.zoom = false;
-    this.onSortingFormChanges();
+
+    this.createChartData();
+    this.createChart_benchmark();
+    this.updateChart_benchmark();
+
+    if (this.proposalClaim) {
+      this.createChart_proposal();
+      this.updateChart_proposal();
+    }
   }
 
 
   ngOnChanges() {
     console.log('claim Per Capita on changes');
-
-    if (!this.benchmarkD3Chart) {
-      this.createChartData();
-      this.createChart_benchmark();
-      this.updateChart_benchmark();
-
-
-      if (this.proposalClaim) {
-        this.createChart_proposal();
-        this.updateChart_proposal();
-      }
-    }
-
   }
 
 
@@ -194,19 +197,11 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  onSortingFormChanges() {
-    this.sortingForm.get('sorting').valueChanges.subscribe(val => {
-      console.log(val);
-      if (this.proposalClaim) {
-        this.proposalClaim.sortConditionGroupData(val, Object.keys(ClaimsComponent.conditionGroupTranslation));
-        this.proposalGraphData = this.proposalClaim.getGraphData();
-        this.updateChart_proposal();
-      }
-
-      this.benchmarkClaim.sortConditionGroupData(val, Object.keys(ClaimsComponent.conditionGroupTranslation));
-      this.benchmarkGraphData = this.benchmarkClaim.getGraphData();
-      this.updateChart_benchmark();
-    });
+  updateAllCharts() {
+    this.updateChart_benchmark();
+    if (this.proposalClaim) {
+      this.updateChart_proposal();
+    }
   }
 
 
@@ -216,10 +211,53 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
 
   toggleSwitch() {
+    this.updateAllCharts();
+    // if (this.proposalClaim) {
+    //   this.updateChart_proposal();
+    // }
+    // this.updateChart_benchmark();
+  }
+
+
+  changeSorting() {
+    console.log('changeSorting');
+
     if (this.proposalClaim) {
+      this.proposalClaim.sortConditionGroupData(this.sorting, Object.keys(ClaimsComponent.conditionGroupTranslation));
+      this.proposalGraphData = this.proposalClaim.getGraphData();
       this.updateChart_proposal();
     }
+
+    this.benchmarkClaim.sortConditionGroupData(this.sorting, Object.keys(ClaimsComponent.conditionGroupTranslation));
+    this.benchmarkGraphData = this.benchmarkClaim.getGraphData();
     this.updateChart_benchmark();
+
   }
+
+
+  listenToDivResize() {
+    if (this.proposalClaim) {
+      this.resizeDetector.listenTo(this.proposalWaterfall.nativeElement, (elem: HTMLElement) => {
+        this.updateChart_proposal();
+      });
+
+    }
+    this.resizeDetector.listenTo(this.benchmarkWaterfall.nativeElement, (elem: HTMLElement) => {
+      this.updateChart_benchmark();
+    });
+
+    console.log('listen to claims per capita divs');
+  }
+
+
+  unListenToDivResize() {
+    if (this.proposalClaim) {
+      this.resizeDetector.removeAllListeners(this.proposalWaterfall.nativeElement);
+    }
+    this.resizeDetector.removeAllListeners(this.benchmarkWaterfall.nativeElement);
+
+    console.log('unlistenclaims per capita divs');
+  }
+
 
 }

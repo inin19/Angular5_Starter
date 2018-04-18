@@ -5,7 +5,7 @@
     <div class="col">
       <div class="float-right">
 
-        <div class="btn-group" *ngIf="getSelector('region')" id="region" dropdown #regionDropdown="bs-dropdown" [autoClose]="false"
+        <div class="btn-group" *ngIf="selectorDisplay['region'] === true" id="region" dropdown #regionDropdown="bs-dropdown" [autoClose]="false"
           [isOpen]="dropdownStatus['region']" (isOpenChange)="toggleDropdown($event, 'region')" (clickOutside)="onClickedOutside($event,'region')"
           placement="top">
           <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
@@ -28,7 +28,7 @@
           </ul>
         </div>
 
-        <div class="btn-group" *ngIf="getSelector('relation')" id="relation" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
+        <div class="btn-group" *ngIf="selectorDisplay['relation'] === true" id="relation" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
           [isOpen]="dropdownStatus['relation']" (isOpenChange)="toggleDropdown($event, 'relation')" (clickOutside)="onClickedOutside($event,'relation')"
           placement="top">
           <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
@@ -52,7 +52,7 @@
         </div>
 
 
-        <div class="btn-group" *ngIf="getSelector('ageGroup')" id="ageGroup" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
+        <div class="btn-group" *ngIf="selectorDisplay['ageGroup'] === true" id="ageGroup" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
           [isOpen]="dropdownStatus['ageGroup']" (isOpenChange)="toggleDropdown($event, 'ageGroup')" (clickOutside)="onClickedOutside($event,'ageGroup')"
           placement="top">
           <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
@@ -76,7 +76,7 @@
         </div>
 
 
-        <div class="btn-group" *ngIf="getSelector('gender')" id="gender" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
+        <div class="btn-group" *ngIf="selectorDisplay['gender'] === true" id="gender" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
           [isOpen]="dropdownStatus['gender']" (isOpenChange)="toggleDropdown($event, 'gender')" (clickOutside)="onClickedOutside($event,'gender')"
           placement="top">
           <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
@@ -102,7 +102,7 @@
 
 
 
-        <div class="btn-group" *ngIf="getSelector('claimType')" id="claimType" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
+        <div class="btn-group" *ngIf="selectorDisplay['claimType'] === true" id="claimType" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
           [isOpen]="dropdownStatus['claimType']" (isOpenChange)="toggleDropdown($event, 'claimType')" (clickOutside)="onClickedOutside($event,'claimType')"
           placement="top">
           <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
@@ -126,14 +126,14 @@
         </div>
 
 
-        <button type="button" class="btn btn-primary btn-sm" [disabled]="resetDisabled" (click)="resetAllSelectors()">Reset</button>
+        <button type="button" class="btn btn-success btn-sm" [disabled]="resetDisabled" (click)="resetAllSelectors()">Reset</button>
 
 
       </div>
     </div>
   </div>
 
-  <tabset type="pills">
+  <tabset type="pills" #staticTabs>
     <tab id="historicalDemographic" (select)="onSelect($event)">
       <ng-template tabHeading>Demographic</ng-template>
 

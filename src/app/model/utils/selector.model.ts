@@ -46,6 +46,31 @@ export class Selector {
     return this.selectorName;
   }
 
+
+  unSelectAll() {
+    this.all = false;
+    for (const item of this.selectionItems) {
+      item.checked = false;
+    }
+  }
+
+
+
+  setSelection(selection: string[]) {
+    for (const item of selection) {
+      if (this.selectionItems.filter(d => d.elementName === item)[0]) {
+        this.selectionItems.filter(d => d.elementName === item)[0].checked = true;
+      }
+    }
+  }
+
+
+  syncAll() {
+    if (this.selectionItems.length === this.getCurrentSelction().length) {
+      this.all = true;
+    }
+  }
+
 }
 
 export interface SelectionItem {

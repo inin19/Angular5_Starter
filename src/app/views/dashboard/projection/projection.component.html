@@ -89,7 +89,7 @@
 
           <!-- dropdown: category -->
           <div class="btn-group" id="categoryDropdown" dropdown #categoryDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['categoryDropdown']"
-            (isOpenChange)="toggleDropdown($event, categoryDropdown._elementRef.nativeElement.id )" (clickOutside)="onClickedOutside($event, categoryDropdown._elementRef.nativeElement.id )"
+            (isOpenChange)="toggleDropdown($event, 'categoryDropdown' )" (clickOutside)="onClickedOutside($event, 'categoryDropdown' )"
             placement="top" attachOutsideOnClick="true">
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
               Select Categories
@@ -99,14 +99,14 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll(categoryDropdown._elementRef.nativeElement.id)"
+                  <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll('categoryDropdown')"
                   /> (All)
                 </label>
               </li>
 
               <li *ngFor="let n of categorySelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected(categoryDropdown._elementRef.nativeElement.id)"> {{n.elementName}}
+                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('categoryDropdown')"> {{n.elementName}}
                 </label>
               </li>
 

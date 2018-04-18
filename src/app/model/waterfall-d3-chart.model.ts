@@ -35,8 +35,8 @@ export class WaterfallD3Chart {
 
 
     this.svg = d3.select(chartConfig.domID).append('svg')
-    // .attr('width', htmlElement.offsetWidth)
-    // .attr('height', htmlElement.offsetHeight);
+      .attr('width', htmlElement.offsetWidth)
+      .attr('height', htmlElement.offsetHeight);
 
 
 
@@ -105,9 +105,9 @@ export class WaterfallD3Chart {
     // this.width = 585;
 
     this.svg
-      // .attr('width', htmlElement.offsetWidth)
-      // .attr('height', htmlElement.offsetHeight)
-      .attr('viewBox', '0 0 ' + `${htmlElement.offsetWidth}` + ' ' + `${htmlElement.offsetHeight}`)
+      .attr('width', htmlElement.offsetWidth)
+      .attr('height', htmlElement.offsetHeight)
+      // .attr('viewBox', '0 0 ' + `${htmlElement.offsetWidth}` + ' ' + `${htmlElement.offsetHeight}`)
       ;
 
     // update graphtitle
@@ -135,8 +135,12 @@ export class WaterfallD3Chart {
 
     this.xAxis
       .transition()
+      .attr('transform', `translate(0, ${this.height})`)
       .call(xaxis);
     this.yAxis.transition().call(yaxis);
+
+
+
 
 
     // updating grouops and charts
@@ -197,7 +201,7 @@ export class WaterfallD3Chart {
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
-        if (( chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
+        if ((chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
@@ -217,7 +221,7 @@ export class WaterfallD3Chart {
       .on('mousemove', this.handleMouseMove(chartConfig.toolTipParent, chartConfig.tooltipDomID))
       .on('mouseout', this.handleMouseOut(chartConfig.tooltipDomID));
 
-    ;
+
 
   }
 

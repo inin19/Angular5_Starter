@@ -2,7 +2,7 @@
   <div class="col">
     <div class="float-right">
       <div>
-        <form [formGroup]="sortingForm" class="form-inline">
+        <!-- <form [formGroup]="sortingForm" class="form-inline">
           <div class="form-group">
             <div class="btn-group" btnRadioGroup formControlName="sorting">
               <label btnRadio="Asc" class="btn btn-primary btn-sm">Asc</label>
@@ -10,16 +10,36 @@
               <label btnRadio="Default" class="btn btn-primary btn-sm">Default</label>
             </div>
 
-            <div>
-              <label class="switch switch-3d switch-primary" title="Zoom">
-                <input type="checkbox" class="switch-input" [(ngModel)]="zoom" [ngModelOptions]="{standalone: true}" (change)="toggleSwitch()">
-                <span class="switch-label"></span>
-                <span class="switch-handle"></span>
-              </label>
-            </div>
+
 
           </div>
+        </form> -->
+
+
+        <form class="form-inline">
+          Sorting &nbsp;
+          <div class="btn-group">
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Asc" tabindex="0"
+              role="button" (click)="changeSorting()">Asc</label>
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Desc" tabindex="0"
+              role="button" (click)="changeSorting()">Desc</label>
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Default" tabindex="0"
+              role="button" (click)="changeSorting()">Default</label>
+          </div>
+
+          &nbsp;
+
+          Zoom  &nbsp;
+          <div>
+            <label class="switch switch-3d switch-primary" title="Zoom">
+              <input type="checkbox" class="switch-input" [(ngModel)]="zoom" [ngModelOptions]="{standalone: true}" (change)="toggleSwitch()">
+              <span class="switch-label"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </div>
+
         </form>
+
       </div>
     </div>
   </div>
