@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { HistoricalNewComponent } from './historical-new.component';
+import { HistoricalComponent } from './historical.component';
 const routes: Routes = [{
   path: '',
-  component: HistoricalNewComponent,
+  component: HistoricalComponent,
   data: {
     title: 'Historical'
   }
@@ -13,4 +13,4 @@ const routes: Routes = [{
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class HistoricalNewRoutingModule { }
+export class HistoricalRoutingModule { }

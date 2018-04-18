@@ -11,11 +11,11 @@ import { TornadoChartData } from '../../model/tornadoData';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 @Component({
-  selector: 'app-historical-new',
-  templateUrl: './historical-new.component.html',
-  styleUrls: ['./historical-new.component.scss']
+  selector: 'app-historical',
+  templateUrl: './historical.component.html',
+  styleUrls: ['./historical.component.scss']
 })
-export class HistoricalNewComponent implements OnInit, OnDestroy {
+export class HistoricalComponent implements OnInit, OnDestroy {
 
 
   // to-do get age Group for each country

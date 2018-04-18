@@ -30,7 +30,7 @@ export const routes: Routes = [
       },
       {
         path: 'historical',
-        loadChildren: './views/historical-new/historical-new.module#HistoricalNewModule'
+        loadChildren: './views/historical/historical.module#HistoricalModule'
       }
     ]
   }

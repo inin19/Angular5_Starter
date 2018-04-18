@@ -7,8 +7,8 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { HistoricalNewRoutingModule } from './historical-new-routing.module';
-import { HistoricalNewComponent } from './historical-new.component';
+import { HistoricalRoutingModule } from './historical-routing.module';
+import { HistoricalComponent } from './historical.component';
 import { DemographicService } from '../../services/demographic.service';
 import { ClaimDataService } from '../../services/claims.service';
 import { SelectorService } from './../../services/selector.service';
@@ -25,7 +25,7 @@ import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.compo
   imports: [
     CommonModule,
     HttpClientModule,
-    HistoricalNewRoutingModule,
+    HistoricalRoutingModule,
     ReactiveFormsModule,
     ClickOutsideModule,
     FormsModule,
@@ -34,7 +34,7 @@ import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.compo
     ButtonsModule.forRoot()
   ],
   declarations: [
-    HistoricalNewComponent,
+    HistoricalComponent,
     DemographicComponent,
     ClaimsComponent,
     ClaimFrequencyComponent
@@ -46,4 +46,4 @@ import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.compo
   ]
 
 })
-export class HistoricalNewModule { }
+export class HistoricalModule { }
