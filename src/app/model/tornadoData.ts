@@ -1,5 +1,5 @@
 import * as d3 from 'd3';
-import * as crossfilter from 'crossfilter2';
+import * as crossfilter from 'crossfilter';
 
 export class TornadoChartData {
 

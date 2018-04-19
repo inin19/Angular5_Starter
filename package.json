@@ -43,6 +43,7 @@
     "core-js": "2.5.1",
     "crossfilter2": "^1.4.5",
     "d3": "^5.0.0",
+    "dc-addons": "^0.13.5",
     "dragula": "3.7.2",
     "element-resize-detector": "^1.1.14",
     "font-awesome": "^4.7.0",

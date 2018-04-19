@@ -24,8 +24,10 @@ export class ClaimDataService {
   private proposalClaimUrl = 'http://localhost:50001/bmservices/claimsData/getProposalClaimsData/';
 
 
-  private benchmarkTotalMemberDataUrl = 'http://localhost:3000/benchmarkMemberCount';
-  private proposalTotalMemberDataUrl = 'http://localhost:3000/benchmarkMemberCount';
+  // getDemographicalBenchmarkMemberCountByYear  [/demographicData/getDemographicalBenchmarkMemberCountByYear/{countryCd}/{proposalId}]
+  // getDemographicalProposalMemberCountByYear  [/demographicData/getDemographicalProposalMemberCountByYear/{proposalId}]
+  private benchmarkTotalMemberDataUrl = 'http://localhost:50001/bmservices/demographicData/getDemographicalBenchmarkMemberCountByYear/';
+  private proposalTotalMemberDataUrl = 'http://localhost:50001/bmservices/demographicData/getDemographicalProposalMemberCountByYear/';
 
 
   // private benchmarkClaimsUrl = 'http://localhost:3000/benchmarkClaims'; // URL to web api
@@ -39,9 +41,24 @@ export class ClaimDataService {
     const l: number = new Date().getMilliseconds();
     return Observable.forkJoin(
       this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + '?' + l, httpOptions)
+      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions)
     );
   }
+
+
+
+  // if proposal has claim data
+  getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
+    const l: number = new Date().getMilliseconds();
+    return Observable.forkJoin(
+      this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.proposalClaimUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.proposalTotalMemberDataUrl + + proposalId + '?' + l, httpOptions)
+    );
+  }
+
+
 
 
 
@@ -59,15 +76,5 @@ export class ClaimDataService {
 
 
 
-  // if proposal has claim data
-  getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
-    const l: number = new Date().getMilliseconds();
-    return Observable.forkJoin(
-      this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + '?' + l, httpOptions),
-      this.http.get<Array<any>>(this.proposalClaimUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-      this.http.get<Array<any>>(this.proposalTotalMemberDataUrl + '?' + l, httpOptions)
-    );
-  }
 
 }

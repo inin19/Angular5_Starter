@@ -208,13 +208,6 @@ export class HistoricalComponent implements OnInit, OnDestroy {
         err => console.error(err),
         () => {
 
-
-          // console.log(this.benchmarkClaimData);
-          // console.log(this.benchmarkMemberCount);
-          // console.log(this.proposalClaimData);
-          // console.log(this.proposalMemberCount);
-
-
           this.createClaimData();
           this.createClaimsSelectors();
 
@@ -445,7 +438,10 @@ export class HistoricalComponent implements OnInit, OnDestroy {
       this.resetDisabled = false;
     }
 
-    this.updateCurrentTabCharts();
+    setTimeout(() => {
+      this.updateCurrentTabCharts();
+
+    });
 
     if (this.checkAllSelectorSeleted() === true) {
       this.resetDisabled = true;
@@ -457,7 +453,11 @@ export class HistoricalComponent implements OnInit, OnDestroy {
     for (const item of this.getSelector(dropdownName).selectionItems) {
       item.checked = this.getSelector(dropdownName).all;
     }
-    this.updateCurrentTabCharts();
+    setTimeout(() => {
+      this.updateCurrentTabCharts();
+
+    });
+
 
     if (this.checkAllSelectorSeleted() === true) {
       // console.log('i am true');
@@ -563,6 +563,30 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
 
 
+  fetchBenchmarkClaimAndMemberCount(): void {
+    this.claimDataService.getBenchmarkClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
+      .subscribe(
+        data => {
+          this.benchmarkClaimData = data[0];
+          this.benchmarkMemberCount = data[1];
+        },
+        err => console.error(err),
+        () => {
+
+          this.createClaimData();
+          this.createClaimsSelectors();
+
+          this.benchmarkClaimData = null;
+          this.benchmarkMemberCount = null;
+          // enable claims tabs
+          this.staticTabs.tabs[1].disabled = false;
+          this.staticTabs.tabs[2].disabled = false;
+
+          console.log('done loading claims data for benchmark only');
+        }
+      );
+  }
+
 
   // -------------------------to do---------------------------
 
@@ -576,15 +600,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
       );
   }
 
-  fetchBenchmarkClaimAndMemberCount(): void {
-    this.claimDataService.getBenchmarkClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
-      .subscribe(
-        data => {
-          this.benchmarkClaimData = data[0];
-          this.benchmarkMemberCount = data[1];
-        }
-      );
-  }
+
 
 
 }

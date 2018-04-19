@@ -19,6 +19,8 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DemographicComponent } from './demographic/demographic.component';
 import { ClaimsComponent } from './claims/claims.component';
 import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.component';
+import { HistoricalUkComponent } from './country/historical-uk/historical-uk.component';
+import { HistoricalItComponent } from './country/historical-it/historical-it.component';
 
 
 @NgModule({
@@ -37,7 +39,9 @@ import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.compo
     HistoricalComponent,
     DemographicComponent,
     ClaimsComponent,
-    ClaimFrequencyComponent
+    ClaimFrequencyComponent,
+    HistoricalUkComponent,
+    HistoricalItComponent
   ],
   providers: [
     DemographicService,

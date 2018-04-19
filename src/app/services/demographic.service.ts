@@ -18,12 +18,15 @@ const httpOptions = {
 export class DemographicService {
 
 
-  // private benchmarkDemographicUrl = 'http://localhost:50001/bmservices/historicalData/getHistoricalBenchmarkData/ISO2_GB/' + DemographicService.UKAgeGroup.join(',');
-  // private proposalDemographicUrl = 'http://localhost:50001/bmservices/historicalData/getHistoricalProposalData/1/' + DemographicService.UKAgeGroup.join(',');
 
 
-  private benchmarkDemographicUrl = 'http://localhost:50001/bmservices/historicalData/getHistoricalBenchmarkData/';
-  private proposalDemographicUrl = 'http://localhost:50001/bmservices/historicalData/getHistoricalProposalData/';
+
+  // http://localhost:50001/bmservices/demographicData/getDemographicalBenchmarkData/ISO2_GB/129/0-18,19-25,26-35,36-45,46-55,56-60,61-65,66-70,71-75,76+?740
+
+  // http://localhost:50001/bmservices/demographicData/getDemographicalProposalData/129/0-18,19-25,26-35,36-45,46-55,56-60,61-65,66-70,71-75,76+?676
+
+  private benchmarkDemographicUrl = 'http://localhost:50001/bmservices/demographicData/getDemographicalBenchmarkData/';
+  private proposalDemographicUrl = 'http://localhost:50001/bmservices/demographicData/getDemographicalProposalData/';
 
 
 
