@@ -25,7 +25,9 @@ export class WaterfallData {
   private conditionGroup: string[];
 
 
-  private ndx: crossfilter.Crossfilter<ClaimsJSONInput>;
+  private test: any[];
+
+  private ndx: crossfilter.Crossfilter<any>;
   // dimensions
   private relationDimension: crossfilter.Dimension<any, any>;
   private regionDimension: crossfilter.Dimension<any, any>;
@@ -65,17 +67,75 @@ export class WaterfallData {
   private currYearMemberCount: number;
   private prevYearMemberCount: number;
 
-  constructor(claimData: ClaimsJSONInput[], totalMemberCount: DemographicSummaryJSONInput[], ConditionGroup?: string) {
+  constructor(claimData: any[], totalMemberCount: DemographicSummaryJSONInput[], ConditionGroup: string[]) {
 
     this.conditionGroupData = [];
     this.conditionGroupDataCombined = [];
 
+    console.log(ConditionGroup);
+
     this.createDimensionGroup(claimData);
-    this.createGraphData(totalMemberCount);
+
+    this.createGraphData(totalMemberCount, ConditionGroup);
   }
 
 
-  createDimensionGroup(data: ClaimsJSONInput[]) {
+  createDimensionGroup(data: any[]) {
+
+
+
+    // data issue
+    data.forEach(element => {
+
+      // proposal issue
+      if (element.conditionGrouping === 'CONDITION_GROUPING_ MENTAL_DISORDERS') {
+        element.conditionGrouping = 'CONDITION_GROUPING_MENTAL_DISORDERS';
+      }
+      if (element.conditionGrouping === 'CONDITION_GROUPING_ NEOPLASMS') {
+        element.conditionGrouping = 'CONDITION_GROUPING_NEOPLASMS';
+      }
+      if (element.conditionGrouping === 'CONDITION_GROUPING_ SS_&_IDC') {
+        element.conditionGrouping = 'CONDITION_GROUPING_SS_&_IDC';
+      }
+
+      if (element.relation === 'RELATION_TYPE_EMPLOYEE') {
+        element.relation = 'RELATION_EMPLOYEE';
+      }
+
+      if (element.relation === 'RELATION_TYPE_DEPENDANT') {
+        element.relation = 'RELATION_DEPENDANT';
+      }
+
+
+      if (element.region === 'REGION_CENTTRAL_LONDON') {
+        element.region = 'REGION_CENTRAL_LONDON';
+      }
+
+
+
+
+      // benchmark issue
+      if (element.conditionGrouping === 'CONDITION_SS_&_IDC') {
+        element.conditionGrouping = 'CONDITION_GROUPING_SS_&_IDC';
+      }
+
+      // if (element.currYeartotalClaimCostAmount < 0) {
+      //   element.currYeartotalClaimCostAmount = 0;
+      // }
+
+
+      // if (element.prevYearTotalClaimCostAmount < 0) {
+      //   element.prevYearTotalClaimCostAmount = 0;
+      // }
+
+
+
+    });
+
+
+    console.log(data.length);
+
+
     this.ndx = crossfilter(data);
     this.regionDimension = this.ndx.dimension((d) => d.region);
     this.relationDimension = this.ndx.dimension((d) => d.relation);
@@ -85,6 +145,12 @@ export class WaterfallData {
     this.conditionGroupingDimension = this.ndx.dimension((d) => d.conditionGrouping);
 
     this.conditionGroupingDimensionGroup = this.conditionGroupingDimension.group();
+
+
+    // this.conditionGroupingDimension.group().all().forEach(element => {
+    //   console.log(element);
+    // });
+
 
     // get uniuqe groups values  this.conditionGroupingDimensionGroup.reduceCount().all()
     // across all countries
@@ -97,12 +163,76 @@ export class WaterfallData {
   }
 
 
-  createGraphData(totalMemberCount: DemographicSummaryJSONInput[]) {
+  createGraphData(totalMemberCount: DemographicSummaryJSONInput[], conditionGroup: string[]) {
+
+
+
+    // console.log(this.conditionGroupingDimensionGroup.all());
+
     // aggregate data by condition_group
-    this.claimsAggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
+    // this.claimsAggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
+
+
+    // this.claimsAggregateData = [];
+
+
+
+    this.claimsAggregateData = [];
+
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.currYearClaimCount).all().forEach(element => {
+      const item = {
+        key: element.key,
+        value: { currYearClaimCount_sum: element.value }
+      };
+      this.claimsAggregateData.push(item);
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearClaimCount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.prevYearClaimCount_sum = element.value;
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.currYearTotalClaimCostAmount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.currYeartotalClaimCostAmount_sum = element.value;
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearTotalClaimCostAmount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.prevYeartotalClaimCostAmount_sum = element.value;
+    });
+
+
+    // this.claimsAggregateData.forEach(element => {
+    //   console.log(element);
+    // });
+
+
+    console.log('NEWWWWWWWWWWWWWWWWWWWWWWW');
+
+    // this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearTotalClaimCostAmount).all();
+    // const group2 = this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearTotalClaimCostAmount).all();
+    // const group3 = this.conditionGroupingDimensionGroup.reduceSum(d => d.currYearClaimCount).all();
+    // const group4 = this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearClaimCount).all();
+
+
+    // console.log(group1);
+
+    // group1.forEach(element => {
+    //   console.log(element.key, element.value);
+    // });
+
+    // group2.forEach(element => {
+    //   console.log(element.key, element.value);
+    // });
+
+
+    // console.log(group2);
+    // console.log(group3);
+    // console.log(group4);
+
 
     this.currYearMemberCount = totalMemberCount.filter((d) => d.year === 'currentYear')[0].memberCount;
     this.prevYearMemberCount = totalMemberCount.filter((d) => d.year === 'previousYear')[0].memberCount;
+
+
 
     for (const element of this.claimsAggregateData) {
       element.currYearClaimFrequency = element.value.currYearClaimCount_sum / this.currYearMemberCount;
@@ -114,6 +244,7 @@ export class WaterfallData {
       element.currYearAvgClaimCost = element.value.currYeartotalClaimCostAmount_sum / element.value.currYearClaimCount_sum;
       element.prevYearAvgClaimCost = element.value.prevYeartotalClaimCostAmount_sum / element.value.prevYearClaimCount_sum;
     }
+
 
     // adding TOTAL value
     this.claimsAggregateDataTotal = this.claimsAggregateData.reduce((accumulator, currVal) => {
@@ -164,16 +295,53 @@ export class WaterfallData {
     };
 
 
+
     // need to use passed value later
-    WaterfallData.UK_ConditionGrouping.forEach(element => {
-      const item = this.claimsAggregateData.filter((val) => val.key === element);
+    conditionGroup.forEach(element => {
+
+      // console.log(element);
+      // const item = this.claimsAggregateData.filter((val) => val.key === element);
+      const item = this.claimsAggregateData.find((val) => val.key === element);
+
+
+      // console.log(item, element);
+
+
+
       this.conditionGroupData.push({
         key: element,
         Base: 0,
         Fall: 0,
         Rise: 0,
-        Per_Capita: (item) ? (item[0].currYearPerCapitalClaimCost - item[0].prevYearPerCapitalClaimCost) : 0
+        Per_Capita: (item === undefined) ? 0 : item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost
       });
+
+
+      // if (item === undefined) {
+      //   console.log('undefined');
+      //   this.conditionGroupData.push({
+      //     key: element,
+      //     Base: 0,
+      //     Fall: 0,
+      //     Rise: 0,
+      //     Per_Capita: 0
+      //   });
+
+      // } else {
+      //   this.conditionGroupData.push({
+      //     key: element,
+      //     Base: 0,
+      //     Fall: 0,
+      //     Rise: 0,
+      //     Per_Capita: item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost
+      //   });
+      // }
+
+    });
+
+
+    this.claimsAggregateData.forEach(element => {
+      console.log(element);
     });
 
     this.calculateWaterfallBaseFallRise();
@@ -216,7 +384,33 @@ export class WaterfallData {
       this.ageGroupDimension.filterAll();
     }
 
-    this.claimsAggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
+    // this.claimsAggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
+
+
+    this.claimsAggregateData = [];
+
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.currYearClaimCount).all().forEach(element => {
+      const item = {
+        key: element.key,
+        value: { currYearClaimCount_sum: element.value }
+      };
+      this.claimsAggregateData.push(item);
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearClaimCount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.prevYearClaimCount_sum = element.value;
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.currYearTotalClaimCostAmount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.currYeartotalClaimCostAmount_sum = element.value;
+    });
+    this.conditionGroupingDimensionGroup.reduceSum(d => d.prevYearTotalClaimCostAmount).all().forEach(element => {
+      const item = this.claimsAggregateData.find(d => d.key === element.key);
+      item.value.prevYeartotalClaimCostAmount_sum = element.value;
+    });
+
+
+
 
 
     for (const element of this.claimsAggregateData) {
@@ -291,15 +485,21 @@ export class WaterfallData {
 
     // update.conditionGroupKey
 
+
     update.conditionGroupKey.forEach(element => {
-      const item = this.claimsAggregateData.filter((val) => val.key === element);
+
+
+      const item = this.claimsAggregateData.find((val) => val.key === element);
+      // console.log(item, element);
+
       this.conditionGroupData.push({
         key: element,
         Base: 0,
         Fall: 0,
         Rise: 0,
-        Per_Capita: (item) ? (item[0].currYearPerCapitalClaimCost - item[0].prevYearPerCapitalClaimCost) : 0
+        Per_Capita: (item === undefined) ? 0 : item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost
       });
+
     });
 
     // sorting here
@@ -329,36 +529,45 @@ export class WaterfallData {
   }
 
   private reduceAdd = (p, v) => {
+
+
     p.currYearClaimCount_sum += v.currYearClaimCount;
-    p.currYeartotalClaimCostAmount_sum += v.currYeartotalClaimCostAmount;
     p.prevYearClaimCount_sum += v.prevYearClaimCount;
-    p.prevYeartotalClaimCostAmount_sum += v.prevYeartotalClaimCostAmount;
+
+    p.currYeartotalClaimCostAmount_sum += v.currYearTotalClaimCostAmount;
+    p.prevYeartotalClaimCostAmount_sum += v.prevYearTotalClaimCostAmount;
+
     return p;
+
   }
 
   private reduceRemove = (p, v) => {
     p.currYearClaimCount_sum -= v.currYearClaimCount;
-    p.currYeartotalClaimCostAmount_sum -= v.currYeartotalClaimCostAmount;
     p.prevYearClaimCount_sum -= v.prevYearClaimCount;
-    p.prevYeartotalClaimCostAmount_sum -= v.prevYeartotalClaimCostAmount;
+
+    p.currYeartotalClaimCostAmount_sum -= v.currYeartotalClaimCostAmount;
+    p.prevYeartotalClaimCostAmount_sum -= v.prevYearTotalClaimCostAmount;
+
     return p;
 
   }
 
   private reduceInit = () => {
     return {
-      currYearClaimCount_sum: 0, currYeartotalClaimCostAmount_sum: 0,
-      prevYearClaimCount_sum: 0, prevYeartotalClaimCostAmount_sum: 0
+      currYearClaimCount_sum: 0,
+      prevYearClaimCount_sum: 0,
+      currYeartotalClaimCostAmount_sum: 0,
+      prevYeartotalClaimCostAmount_sum: 0
     };
   }
 
   // getAggregate
-  getClaimsAggregateData(): ClaimsAggregateDataOutput[] {
+  getClaimsAggregateData(): any[] {
     return this.claimsAggregateData;
   }
 
   // getAggregate Total
-  getClaimsAggregateDataTotal(): ClaimsAggregateDataOutput {
+  getClaimsAggregateDataTotal(): any {
     return this.claimsAggregateDataTotal;
   }
 
@@ -459,19 +668,49 @@ export interface WaterfallBar {
 
 
 
-export interface ClaimsJSONInput {
-  region: string;
-  relation: string;
-  claimType: string;
-  conditionGrouping: string;
-  ageGroup: string;
-  gender: string;
-  currYearClaimCount: number;
-  currYeartotalClaimCostAmount: number;
-  prevYearClaimCount: number;
-  prevYeartotalClaimCostAmount: number;
-}
+// export interface ClaimsJSONInput1 {
+//   region: string;
+//   relation: string;
+//   claimType: string;
+//   conditionGrouping: string;
+//   ageGroup: string;
+//   gender: string;
+//   currYearClaimCount: number;
+//   currYeartotalClaimCostAmount: number;
+//   prevYearClaimCount: number;
+//   prevYeartotalClaimCostAmount: number;
+// }
 
+// export interface ClaimsJSONInput {
+//   ageGroup: string;
+//   region: string;
+//   relation: string;
+//   claimType: string;
+//   conditionGrouping: string;
+//   gender: string;
+//   planClassKey: string;
+//   industryKey: string;
+//   operatorTypeKey: string;
+//   currYearClaimCount: number;
+//   currYeartotalClaimCostAmount: number;
+//   prevYearClaimCount: number;
+//   prevYeartotalClaimCostAmount: number;
+// }
+
+
+// "ageGroup": "56-60",
+// "region": "REGION_WEST_MIDLANDS",
+// "relation": "RELATION_TYPE_DEPENDANT",
+// "claimType": "CLAIM_TYPE_OUT_PATIENT",
+// "conditionGrouping": "CONDITION_GROUPING_ SS_&_IDC",
+// "gender": "M",
+// "planClassKey": null,
+// "industryKey": null,
+// "operatorTypeKey": null,
+// "currYearClaimCount": 13,
+// "currYearTotalClaimCostAmount": 2874.95,
+// "prevYearClaimCount": 11,
+// "prevYearTotalClaimCostAmount": 490.71
 
 
 export interface DemographicSummaryJSONInput {
@@ -479,21 +718,21 @@ export interface DemographicSummaryJSONInput {
   memberCount: number;
 }
 
-export interface ClaimsAggregateDataOutput {
-  key: string;
-  value: {
-    currYearClaimCount_sum: number,
-    currYeartotalClaimCostAmount_sum: number,
-    prevYearClaimCount_sum: number,
-    prevYeartotalClaimCostAmount_sum: number
-  };
-  currYearClaimFrequency: number;
-  prevYearClaimFrequency: number;
-  currYearPerCapitalClaimCost: number;
-  prevYearPerCapitalClaimCost: number;
-  currYearAvgClaimCost: number;
-  prevYearAvgClaimCost: number;
-}
+// export interface ClaimsAggregateDataOutput {
+//   key: string;
+//   value: {
+//     currYearClaimCount_sum: number,
+//     currYeartotalClaimCostAmount_sum: number,
+//     prevYearClaimCount_sum: number,
+//     prevYeartotalClaimCostAmount_sum: number
+//   };
+//   currYearClaimFrequency: number;
+//   prevYearClaimFrequency: number;
+//   currYearPerCapitalClaimCost: number;
+//   prevYearPerCapitalClaimCost: number;
+//   currYearAvgClaimCost: number;
+//   prevYearAvgClaimCost: number;
+// }
 
 
 

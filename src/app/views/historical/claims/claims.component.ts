@@ -83,6 +83,8 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     console.log('claim PerCapita init');
 
+
+
     this.sorting = 'Default';
     this.zoom = false;
 

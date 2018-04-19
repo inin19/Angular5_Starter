@@ -10,6 +10,7 @@ import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TornadoChartData } from '../../model/tornadoData';
 import { TabsetComponent } from 'ngx-bootstrap';
 
+
 @Component({
   selector: 'app-historical',
   templateUrl: './historical.component.html',
@@ -17,17 +18,15 @@ import { TabsetComponent } from 'ngx-bootstrap';
 })
 export class HistoricalComponent implements OnInit, OnDestroy {
 
-
   // to-do get age Group for each country
+  countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
-
-
-  // to-do hard coded now
+  proposalID = '129';
   hasClaimData = true;
 
-  // be careful of the reference;
-  selectors: Selector[];
 
+  // -----------------------------SELECTORS----------------------
+  selectors: Selector[];
   demographicSelectors: Selector[];
   claimsSelectors: Selector[];
 
@@ -114,7 +113,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
   // to-do get country code dynamically, or maybe get proposal id
   fetchBenchmarkProposalDemograpic(): void {
-    this.demographicService.getBenchmarkProposalDemographicData('ISO2_GB')
+    this.demographicService.getBenchmarkProposalDemographicData(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
         data => {
           this.benchmarkDemographicData = data[0];
@@ -196,22 +195,30 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
 
   fetchBenchmarkProposalClaimAndMemberCount(): void {
-    this.claimDataService.getBenchmarkPropocalClaimsDataTotalMemberCount()
+    this.claimDataService.getBenchmarkPropocalClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
         data => {
+
           this.benchmarkClaimData = data[0];
           this.benchmarkMemberCount = data[1];
           this.proposalClaimData = data[2];
           this.proposalMemberCount = data[3];
+
         },
         err => console.error(err),
         () => {
 
 
+          // console.log(this.benchmarkClaimData);
+          // console.log(this.benchmarkMemberCount);
+          // console.log(this.proposalClaimData);
+          // console.log(this.proposalMemberCount);
+
+
           this.createClaimData();
           this.createClaimsSelectors();
 
-          // release the memory.  remove http reponse json
+          // // release the memory.  remove http reponse json
           this.benchmarkClaimData = null;
           this.benchmarkMemberCount = null;
           this.proposalClaimData = null;
@@ -231,12 +238,12 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   createClaimData() {
     if (this.hasClaimData === true) {
       // populate both benchmark and proposal data
-      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount);
-      this.proposalClaim = new WaterfallData(this.proposalClaimData, this.proposalMemberCount);
+      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
+      this.proposalClaim = new WaterfallData(this.proposalClaimData, this.proposalMemberCount, ClaimsComponent.UKConditionGroupKeys);
 
     } else {
       // populate benchmark only
-      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount);
+      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
     }
   }
 
@@ -561,7 +568,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
 
   fetchBenchmarkDemograpic(): void {
-    this.demographicService.getBenchmarkDemographicData('ISO2_GB')
+    this.demographicService.getBenchmarkDemographicData(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
         data => {
           this.benchmarkDemographicData = data;
@@ -570,7 +577,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   }
 
   fetchBenchmarkClaimAndMemberCount(): void {
-    this.claimDataService.getBenchmarkClaimsDataTotalMemberCount()
+    this.claimDataService.getBenchmarkClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
         data => {
           this.benchmarkClaimData = data[0];
