@@ -1,5 +1,5 @@
 import * as crossfilter from 'crossfilter';
-import { ClaimDataService } from './../services/claims.service';
+import { ClaimDataService } from './../../services/claims.service';
 import * as d3 from 'd3';
 
 

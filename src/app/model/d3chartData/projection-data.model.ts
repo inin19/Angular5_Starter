@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import * as crossfilter from 'crossfilter2';
 
 export class ProjectionData {
-  private ndx: crossfilter.Crossfilter<ProjectionJSONInput>
+  private ndx: crossfilter.Crossfilter<ProjectionJSONInput>;
   private planDimension: crossfilter.Dimension<any, any>;
   private otherDimension: crossfilter.Dimension<any, any>;
 
@@ -84,7 +84,7 @@ export class ProjectionData {
           value: currentValue,
           yBegin: yCurrentBegin,
           yEnd: currentValue + yCurrentBegin
-        }
+        };
 
         yCurrentBegin = currentValue + yCurrentBegin;
         this.graphData.push(currentItem);
@@ -100,7 +100,7 @@ export class ProjectionData {
           value: proposedValue,
           yBegin: yProposedBegin,
           yEnd: proposedValue + yProposedBegin
-        }
+        };
 
         yProposedBegin = proposedValue + yProposedBegin;
         this.graphData.push(proposedItem);
@@ -139,7 +139,7 @@ export class ProjectionData {
               value: currentValue,
               yBegin: yCurrentBegin,
               yEnd: currentValue + yCurrentBegin
-            }
+            };
 
             yCurrentBegin = currentValue + yCurrentBegin;
             this.graphData.push(currentItem);
@@ -154,7 +154,7 @@ export class ProjectionData {
               value: proposedValue,
               yBegin: yProposedBegin,
               yEnd: proposedValue + yProposedBegin
-            }
+            };
             yProposedBegin = proposedValue + yProposedBegin;
             this.graphData.push(proposedItem);
           }
@@ -192,18 +192,18 @@ export class ProjectionData {
 
 
 export interface ProjectionJSONInput {
-  period: number,
-  planId: number,
-  currentProposed: string,
-  category: string,
-  value: number
+  period: number;
+  planId: number;
+  currentProposed: string;
+  category: string;
+  value: number;
 }
 
 export interface ProjectionOutput {
-  period: number,
-  categoery: string,
-  column: string,
-  value: number,
-  yBegin: number,
-  yEnd: number
+  period: number;
+  categoery: string;
+  column: string;
+  value: number;
+  yBegin: number;
+  yEnd: number;
 }

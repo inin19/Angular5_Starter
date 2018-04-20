@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { WaterfallData, WaterfallBar, ChartUpdateParameters } from '../../../model/waterfallData';
-import { WaterfallD3Chart } from '../../../model/waterfall-d3-chart.model';
-// import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
+import { WaterfallData, WaterfallBar, ChartUpdateParameters } from './../../../model/d3chartData/waterfallData';
+import { WaterfallD3Chart } from '../../../model/d3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 
