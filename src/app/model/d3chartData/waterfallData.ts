@@ -1,5 +1,4 @@
 import * as crossfilter from 'crossfilter';
-import { ClaimDataService } from './../../services/claims.service';
 import * as d3 from 'd3';
 
 
@@ -47,10 +46,13 @@ export class WaterfallData {
   private currYearMemberCount: number;
   private prevYearMemberCount: number;
 
+
+
   constructor(claimData: any[], totalMemberCount: any, ConditionGroup: string[]) {
 
     this.conditionGroupData = [];
     this.conditionGroupDataCombined = [];
+
     this.createDimensionGroup(claimData);
     this.createGraphData(totalMemberCount, ConditionGroup);
   }
@@ -462,7 +464,6 @@ export class WaterfallData {
 
   private reduceAdd = (p, v) => {
 
-
     p.currYearClaimCount_sum += v.currYearClaimCount;
     p.prevYearClaimCount_sum += v.prevYearClaimCount;
 
@@ -470,7 +471,6 @@ export class WaterfallData {
     p.prevYeartotalClaimCostAmount_sum += v.prevYearTotalClaimCostAmount;
 
     return p;
-
   }
 
   private reduceRemove = (p, v) => {
@@ -479,9 +479,7 @@ export class WaterfallData {
 
     p.currYeartotalClaimCostAmount_sum -= v.currYeartotalClaimCostAmount;
     p.prevYeartotalClaimCostAmount_sum -= v.prevYearTotalClaimCostAmount;
-
     return p;
-
   }
 
   private reduceInit = () => {
