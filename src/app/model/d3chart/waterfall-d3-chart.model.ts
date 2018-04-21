@@ -137,11 +137,8 @@ export class WaterfallD3Chart {
       .transition()
       .attr('transform', `translate(0, ${this.height})`)
       .call(xaxis);
-    // this.yAxis.transition().call(yaxis);
+    this.yAxis.transition().call(yaxis);
 
-
-    // to do
-    this.yAxis.call(yaxis);
 
 
 
@@ -246,7 +243,7 @@ export class WaterfallD3Chart {
         .style('opacity', 1)
         .html(
           // f(d.data.Per_Capita)
-          d.data.Per_Capita
+          d.data.value
         );
 
       // console.log(d.data.Per_Capita);

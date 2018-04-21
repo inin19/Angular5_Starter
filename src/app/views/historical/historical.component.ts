@@ -13,7 +13,7 @@ export class HistoricalComponent implements OnInit, OnDestroy {
   // countryCode = 'ISO2_GB';
 
 
-  countryCode = 'ISO2_IT';
+  countryCode = 'ISO2_GB';
 
   ngOnInit() {
     console.log('historical on init');

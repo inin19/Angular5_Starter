@@ -111,8 +111,15 @@ export class WaterfallDataNEW {
     // apply filters
     if (selectors) {
       for (const selector of selectors) {
-        this.getDimensionByName(selector.getSelectorName()).filter((d) => selector.getCurrentSelction().indexOf(d.toString()) !== -1);
+        // this.getDimensionByName(selector.getSelectorName()).filter((d) => selector.getCurrentSelction().indexOf(d.toString()) !== -1);
+        this.getDimensionByName(selector.getSelectorName()).filter(d => selector.getCurrentSelction().indexOf(d) !== -1);
+
       }
+
+
+      // for (const item of this.dimensions) {
+      // }
+
     } else {
       for (const item of this.dimensions) {
         item.dimension.filterAll();
@@ -323,7 +330,7 @@ export class WaterfallDataNEW {
 
 
   private getDimensionByName(selectorName: string): crossfilter.Dimension<any, any> {
-    return this.dimensions.find(item => item.dimensionName === selectorName);
+    return this.dimensions.find(item => item.dimensionName === selectorName).dimension;
   }
 
 

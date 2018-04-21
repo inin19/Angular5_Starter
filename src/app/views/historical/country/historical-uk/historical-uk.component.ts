@@ -67,7 +67,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
   proposalID = '129';
-  hasClaimData = true;
+  // hasClaimData = true;
+  hasClaimData = false;
 
 
   // -----------------------------SELECTORS----------------------
@@ -92,7 +93,9 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   // -----------------------------CROSSFILTER DATA----------------------
   // keep chart data between claim tabs
   proposalClaim: WaterfallData;
-  benchmarkClaim: WaterfallData;
+  // benchmarkClaim: WaterfallData;
+  benchmarkClaim: WaterfallDataNEW;
+
 
   proposalDemographic: TornadoChartData;
   benchmarkDemographic: TornadoChartData;
@@ -196,24 +199,22 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   createClaimsSelectors() {
     if (this.hasClaimData === true) {
-      const allRegionCombinedSet = new Set([...this.proposalClaim.getAllRegion(), ...this.benchmarkClaim.getAllRegion()]);
-      const allRelationCombinedSet = new Set([...this.proposalClaim.getAllRelation(), ...this.benchmarkClaim.getAllRelation()]);
-      const allAgeGroupCombinedSet = new Set([...this.proposalClaim.getAllAgeGroup(), ...this.benchmarkClaim.getAllAgeGroup()]);
-      const allGenderCombinedSet = new Set([...this.proposalClaim.getAllGender(), ...this.benchmarkClaim.getAllGender()]);
-      const allClaimTypeCombinedSet = new Set([...this.proposalClaim.getClaimType(), ...this.benchmarkClaim.getClaimType()]);
+      // const allRegionCombinedSet = new Set([...this.proposalClaim.getAllRegion(), ...this.benchmarkClaim.getAllRegion()]);
+      // const allRelationCombinedSet = new Set([...this.proposalClaim.getAllRelation(), ...this.benchmarkClaim.getAllRelation()]);
+      // const allAgeGroupCombinedSet = new Set([...this.proposalClaim.getAllAgeGroup(), ...this.benchmarkClaim.getAllAgeGroup()]);
+      // const allGenderCombinedSet = new Set([...this.proposalClaim.getAllGender(), ...this.benchmarkClaim.getAllGender()]);
+      // const allClaimTypeCombinedSet = new Set([...this.proposalClaim.getClaimType(), ...this.benchmarkClaim.getClaimType()]);
 
-      this.claimsSelectors.push(new Selector(Array.from(allRegionCombinedSet).sort(), 'region'));
-      this.claimsSelectors.push(new Selector(Array.from(allRelationCombinedSet).sort(), 'relation'));
-      this.claimsSelectors.push(new Selector(Array.from(allAgeGroupCombinedSet).sort(), 'ageGroup'));
-      this.claimsSelectors.push(new Selector(Array.from(allGenderCombinedSet).sort(), 'gender'));
-      this.claimsSelectors.push(new Selector(Array.from(allClaimTypeCombinedSet).sort(), 'claimType'));
+      // this.claimsSelectors.push(new Selector(Array.from(allRegionCombinedSet).sort(), 'region'));
+      // this.claimsSelectors.push(new Selector(Array.from(allRelationCombinedSet).sort(), 'relation'));
+      // this.claimsSelectors.push(new Selector(Array.from(allAgeGroupCombinedSet).sort(), 'ageGroup'));
+      // this.claimsSelectors.push(new Selector(Array.from(allGenderCombinedSet).sort(), 'gender'));
+      // this.claimsSelectors.push(new Selector(Array.from(allClaimTypeCombinedSet).sort(), 'claimType'));
 
     } else {
-      this.claimsSelectors.push(new Selector(this.benchmarkClaim.getAllRegion().sort(), 'region'));
-      this.claimsSelectors.push(new Selector(this.benchmarkClaim.getAllRelation().sort(), 'relation'));
-      this.claimsSelectors.push(new Selector(this.benchmarkClaim.getAllAgeGroup().sort(), 'ageGroup'));
-      this.claimsSelectors.push(new Selector(this.benchmarkClaim.getAllGender().sort(), 'gender'));
-      this.claimsSelectors.push(new Selector(this.benchmarkClaim.getClaimType().sort(), 'claimType'));
+      for (const item of HistoricalUkComponent.claimDimensions) {
+        this.claimsSelectors.push(new Selector(this.benchmarkClaim.getSelectorValuesByName(item).sort(), item));
+      }
     }
   }
 
@@ -272,16 +273,24 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       );
   }
 
-
+  // to do
   createClaimData() {
     if (this.hasClaimData === true) {
       // populate both benchmark and proposal data
-      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
-      this.proposalClaim = new WaterfallData(this.proposalClaimData, this.proposalMemberCount, ClaimsComponent.UKConditionGroupKeys);
+
+      // this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
+      // this.proposalClaim = new WaterfallData(this.proposalClaimData, this.proposalMemberCount, ClaimsComponent.UKConditionGroupKeys);
 
     } else {
       // populate benchmark only
-      this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
+      // this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
+
+      this.benchmarkClaim = new WaterfallDataNEW(this.benchmarkClaimData,
+        this.benchmarkMemberCount,
+        HistoricalUkComponent.conditionGroups,
+        HistoricalUkComponent.claimDimensions,
+        'percapita'
+      );
     }
   }
 
@@ -291,7 +300,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.benchmarkDemographic = new TornadoChartData(this.benchmarkDemographicData, this.ageGroup);
       this.proposalDemographic = new TornadoChartData(this.proposalDemographicData, this.ageGroup);
     } else {
-      this.benchmarkDemographic = new TornadoChartData(this.benchmarkDemographicData, this.ageGroup);
+      this.benchmarkDemographic = new TornadoChartData(this.benchmarkDemographicData, this.ageGroup.reverse());
     }
   }
 
@@ -526,17 +535,17 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsPerCapita': {
-        const params: ChartUpdateParameters = {
-          sortingMethod: this.claimPerCapitaComponent.sorting,
-          region: this.getClaimsSelector('region').getCurrentSelction(),
-          relation: this.getClaimsSelector('relation').getCurrentSelction(),
-          claimType: this.getClaimsSelector('claimType').getCurrentSelction(),
-          ageGroup: this.getClaimsSelector('ageGroup').getCurrentSelction(),
-          gender: this.getClaimsSelector('gender').getCurrentSelction(),
-          conditionGroupKey: ClaimsComponent.UKConditionGroupKeys
-        };
+        // const params: ChartUpdateParameters = {
+        //   sortingMethod: this.claimPerCapitaComponent.sorting,
+        //   region: this.getClaimsSelector('region').getCurrentSelction(),
+        //   relation: this.getClaimsSelector('relation').getCurrentSelction(),
+        //   claimType: this.getClaimsSelector('claimType').getCurrentSelction(),
+        //   ageGroup: this.getClaimsSelector('ageGroup').getCurrentSelction(),
+        //   gender: this.getClaimsSelector('gender').getCurrentSelction(),
+        //   conditionGroupKey: HistoricalUkComponent.conditionGroups
+        // };
 
-        this.claimPerCapitaComponent.updateChartData(params);
+        this.claimPerCapitaComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
         // update chart
         this.claimPerCapitaComponent.updateChart_benchmark();
         if (this.hasClaimData === true) {
@@ -633,7 +642,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   }
 
 
-  // -------------------------to do---------------------------
 
 
   fetchBenchmarkDemograpic(): void {
@@ -641,6 +649,18 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           this.benchmarkDemographicData = data;
+        },
+        err => console.error(err),
+        () => {
+          this.createDemographicData();
+          this.createDemographicSelectors();
+
+          this.selectors = this.demographicSelectors;
+
+          // release memory here
+          this.benchmarkDemographicData = null;
+          this.proposalDemographicData = null;
+          console.log('done loading demographic data');
         }
       );
   }

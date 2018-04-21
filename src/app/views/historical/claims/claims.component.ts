@@ -1,8 +1,10 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { WaterfallData, WaterfallBar, ChartUpdateParameters } from './../../../model/d3chartData/waterfallData';
+// import { WaterfallData, WaterfallBar, ChartUpdateParameters } from './../../../model/d3chartData/waterfallData';
 import { WaterfallD3Chart } from '../../../model/d3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
+import { WaterfallDataNEW, WaterfallBar } from './../../../model/d3chartData/waterfall-data.model';
+import { Selector } from '../../../model/utils/selector.model';
 
 
 @Component({
@@ -36,11 +38,26 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
     'CURRYEAR': '2016'
   };
 
-  static UKConditionGroupKeys = Object.keys(ClaimsComponent.conditionGroupTranslation).filter(d => ['CURRYEAR', 'PREVYEAR'].indexOf(d) === -1);
+
+  private conditionGroupTranslation2 = {
+    'PREVYEAR': '',
+    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
+    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
+    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
+    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
+    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
+    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
+    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
+    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
+    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
+    'CONDITION_GROUPING_OTHER': 'Other',
+    'CURRYEAR': ''
+  };
 
 
-  @Input() private benchmarkClaim: WaterfallData;
-  @Input() private proposalClaim: WaterfallData;
+
+  @Input() private benchmarkClaim: WaterfallDataNEW;
+  @Input() private proposalClaim: WaterfallDataNEW;
   @Input() private ageGroup: string;
   @Input() private hasClaimData: boolean;
 
@@ -114,13 +131,19 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  updateChartData(params: ChartUpdateParameters) {
-    this.benchmarkClaim.updateGraphData(params);
+  updateChartData(conditionGroup: string[], selectors?: Selector[]) {
+    // this.benchmarkClaim.updateGraphData(params);
+    this.benchmarkClaim.updateData(conditionGroup, selectors);
+    this.benchmarkClaim.createWaterfallData(this.sorting, 'percapita');
+
     this.benchmarkConditionGroupData = this.benchmarkClaim.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaim.getGraphData();
 
     if (this.proposalClaim) {
-      this.proposalClaim.updateGraphData(params);
+      // this.proposalClaim.updateGraphData(params);
+      this.proposalClaim.updateData(conditionGroup, selectors);
+      this.proposalClaim.createWaterfallData(this.sorting, 'percapita');
+
       this.proposalConditionGroupData = this.proposalClaim.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaim.getGraphData();
     }
