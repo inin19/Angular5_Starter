@@ -21,6 +21,7 @@ import { ClaimsComponent } from './claims/claims.component';
 import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.component';
 import { HistoricalUkComponent } from './country/historical-uk/historical-uk.component';
 import { HistoricalItComponent } from './country/historical-it/historical-it.component';
+import { TestingComponent } from './country/historical-it/testing/testing.component';
 
 
 @NgModule({
@@ -41,7 +42,8 @@ import { HistoricalItComponent } from './country/historical-it/historical-it.com
     ClaimsComponent,
     ClaimFrequencyComponent,
     HistoricalUkComponent,
-    HistoricalItComponent
+    HistoricalItComponent,
+    TestingComponent
   ],
   providers: [
     DemographicService,

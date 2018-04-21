@@ -2,7 +2,7 @@ import * as crossfilter from 'crossfilter';
 import * as d3 from 'd3';
 import { Selector } from '../utils/selector.model';
 
-export class WaterfallData {
+export class WaterfallDataNEW {
 
   private conditionGroup: string[];
 
@@ -410,4 +410,3 @@ export interface ClaimsAggregateData {
   prevYearAvgClaimCost: number;
 
 }
-

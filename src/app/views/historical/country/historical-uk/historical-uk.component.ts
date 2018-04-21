@@ -1,5 +1,5 @@
+import { WaterfallDataNEW } from './../../../../model/d3chartData/waterfall-data.model';
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-
 import { Selector } from '../../../../model/utils/selector.model';
 import { WaterfallData, ChartUpdateParameters } from '../../../../model/d3chartData/waterfallData';
 import { TornadoChartData } from '../../../../model/d3chartData/tornadoData';
@@ -11,14 +11,57 @@ import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
 
 
-
-
 @Component({
   selector: 'app-historical-uk',
   templateUrl: './historical-uk.component.html',
   styleUrls: ['./historical-uk.component.scss']
 })
 export class HistoricalUkComponent implements OnInit, OnDestroy {
+
+  private static conditionGroupTranslation = {
+    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
+    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
+    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
+    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
+    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
+    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
+    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
+    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
+    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
+    'CONDITION_GROUPING_OTHER': 'Other'
+  };
+
+  private static conditionGroups = [
+    'CONDITION_GROUPING_CIRCULATORY',
+    'CONDITION_GROUPING_DIGESTIVE',
+    'CONDITION_GROUPING_INJURY_&_ACCIDENT',
+    'CONDITION_GROUPING_MENTAL_DISORDERS',
+    'CONDITION_GROUPING_MUSCULOSKELETAL',
+    'CONDITION_GROUPING_NEOPLASMS',
+    'CONDITION_GROUPING_PREGNANCY',
+    'CONDITION_GROUPING_RESPIRATORY',
+    'CONDITION_GROUPING_SS_&_IDC',
+    'CONDITION_GROUPING_OTHER'
+  ];
+
+  private static claimDimensions = [
+    'region',
+    'planClassKey',
+    'relation',
+    'claimType',
+    'ageGroup',
+    'gender'
+  ];
+
+  private static demographicDimensions = [
+    'ageGroup',
+    'gender',
+    'planClassKey',
+    'relation'
+  ];
+
+  private static ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
+
 
   // to-do get age Group for each country
   countryCode = 'ISO2_GB';
