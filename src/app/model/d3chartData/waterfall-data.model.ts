@@ -1,8 +1,10 @@
 import * as crossfilter from 'crossfilter';
 import * as d3 from 'd3';
 import { Selector } from '../utils/selector.model';
+import { SelectorValue, Dimension } from '../utils/data-utils.model';
 
-export class WaterfallDataNEW {
+
+export class WaterfallData {
 
   private conditionGroup: string[];
 
@@ -111,20 +113,18 @@ export class WaterfallDataNEW {
     // apply filters
     if (selectors) {
       for (const selector of selectors) {
-        // this.getDimensionByName(selector.getSelectorName()).filter((d) => selector.getCurrentSelction().indexOf(d.toString()) !== -1);
         this.getDimensionByName(selector.getSelectorName()).filter(d => selector.getCurrentSelction().indexOf(d) !== -1);
-
       }
-
-
-      // for (const item of this.dimensions) {
-      // }
 
     } else {
       for (const item of this.dimensions) {
         item.dimension.filterAll();
       }
     }
+
+
+
+
 
     this.claimsAggregateData = [];
     const aggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
@@ -149,9 +149,6 @@ export class WaterfallDataNEW {
       this.claimsAggregateData.push(temp);
     }
 
-    // this.claimsAggregateData.forEach(element => {
-    //   console.log(element);
-    // });
 
 
     const total = this.claimsAggregateData.reduce((accumulator, currVal) => {
@@ -365,15 +362,17 @@ export class WaterfallDataNEW {
 
 }
 
-export interface SelectorValue {
-  selectorName: string;
-  selectorValues: string[];
-}
+// export interface SelectorValue {
+//   selectorName: string;
+//   selectorValues: string[];
+// }
 
-export interface Dimension {
-  dimensionName: string;
-  dimension: crossfilter.Dimension<any, any>;
-}
+// export interface Dimension {
+//   dimensionName: string;
+//   dimension: crossfilter.Dimension<any, any>;
+// }
+
+
 
 export interface WaterfallBar {
   Base: number;
@@ -384,7 +383,7 @@ export interface WaterfallBar {
 }
 
 
-export interface JSONInput {
+export interface ClaimJSONInput {
   ageGroup: string;
   region: string;
   relation: string;

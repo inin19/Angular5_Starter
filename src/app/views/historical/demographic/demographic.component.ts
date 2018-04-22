@@ -1,10 +1,10 @@
+import { TornadoData } from './../../../model/d3chartData/tornado-data.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
-import { TornadoChartData, ChartUpdateParameters } from '../../../model/d3chartData/tornadoData';
+// import { TornadoChartData, ChartUpdateParameters } from '../../../model/d3chartData/tornadoData';
 import { TornadoD3Chart, ChartConfig } from '../../../model/d3chart/tornado-d3-chart.model';
 import { Selector } from '../../../model/utils/selector.model';
 import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
-
 
 
 
@@ -18,8 +18,8 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
 export class DemographicComponent implements OnInit, OnDestroy {
 
 
-  @Input() private proposalDemographic: TornadoChartData;
-  @Input() private benchmarkDemographic: TornadoChartData;
+  @Input() private proposalDemographic: TornadoData;
+  @Input() private benchmarkDemographic: TornadoData;
   @Input() private ageGroup: string[];
 
 
@@ -141,32 +141,29 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
   }
 
-  // apply filter
-  updateChartData(regions: string[], relation: string[]) {
 
-    const update: ChartUpdateParameters = {
-      region: regions,
-      relation: relation
-    };
-
-    // console.log(update);
-
-    this.benchmarkDemographic.processGraphData(update);
+  updateChartData(selectors: Selector[]) {
+    this.benchmarkDemographic.updateData(selectors);
     this.benchmarkgraphData = this.benchmarkDemographic.getGraphData();
 
-    // console.log(this.benchmarkgraphData);
-
     if (this.proposalDemographic) {
-      this.proposalDemographic.processGraphData(update);
+      this.proposalDemographic.updateData(selectors);
       this.proposalgraphData = this.proposalDemographic.getGraphData();
       this.maxPercentage = this.proposalDemographic.getMaxPercentage() > this.benchmarkDemographic.getMaxPercentage() ? this.proposalDemographic.getMaxPercentage() : this.benchmarkDemographic.getMaxPercentage();
     } else {
       this.maxPercentage = this.benchmarkDemographic.getMaxPercentage();
     }
 
-
   }
 
+
+  updateChart() {
+    this.updateChart_benchmark();
+    if (this.proposalDemographic) {
+      this.updateChart_proposal();
+      this.updateChart_combined();
+    }
+  }
 
   createChart_proposal() {
     const chartConfig = {

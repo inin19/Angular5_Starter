@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WaterfallDataNEW, ClaimsAggregateData } from './../../../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData, ClaimsAggregateData } from './../../../../../model/d3chartData/waterfall-data.model';
 
 @Component({
   selector: 'app-testing',
@@ -8,7 +8,7 @@ import { WaterfallDataNEW, ClaimsAggregateData } from './../../../../../model/d3
 })
 export class TestingComponent implements OnInit {
 
-  @Input() benchmarkClaim: WaterfallDataNEW;
+  @Input() benchmarkClaim: WaterfallData;
   aggregate: ClaimsAggregateData[];
   aggregateTotal: ClaimsAggregateData;
 

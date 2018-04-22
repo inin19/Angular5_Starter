@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WaterfallDataNEW } from '../../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData } from '../../../../model/d3chartData/waterfall-data.model';
 import { DemographicService } from '../../../../services/demographic.service';
 import { ClaimDataService } from '../../../../services/claims.service';
 import { Selector } from '../../../../model/utils/selector.model';
@@ -85,7 +85,7 @@ export class HistoricalItComponent implements OnInit {
 
   // -----------------------------CROSSFILTER DATA----------------------
   // keep chart data between claim tabs
-  benchmarkClaim: WaterfallDataNEW;
+  benchmarkClaim: WaterfallData;
 
 
   constructor(private demographicService: DemographicService, private claimDataService: ClaimDataService) { }
@@ -98,7 +98,7 @@ export class HistoricalItComponent implements OnInit {
   }
 
   createClaimData() {
-    this.benchmarkClaim = new WaterfallDataNEW(
+    this.benchmarkClaim = new WaterfallData(
       this.benchmarkClaimData,
       this.benchmarkMemberCount,
       HistoricalItComponent.conditionGroups,

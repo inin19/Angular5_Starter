@@ -1,15 +1,13 @@
-import { WaterfallDataNEW } from './../../../../model/d3chartData/waterfall-data.model';
+import { TornadoData } from '../../../../model/d3chartData/tornado-data.model';
+import { WaterfallData } from './../../../../model/d3chartData/waterfall-data.model';
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Selector } from '../../../../model/utils/selector.model';
-import { WaterfallData, ChartUpdateParameters } from '../../../../model/d3chartData/waterfallData';
-import { TornadoChartData } from '../../../../model/d3chartData/tornadoData';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsComponent } from '../../claims/claims.component';
 import { DemographicService } from '../../../../services/demographic.service';
 import { ClaimDataService } from '../../../../services/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
-
 
 @Component({
   selector: 'app-historical-uk',
@@ -54,21 +52,17 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   ];
 
   private static demographicDimensions = [
-    'ageGroup',
-    'gender',
-    'planClassKey',
+    'region',
     'relation'
   ];
-
-  private static ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
 
 
   // to-do get age Group for each country
   countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
   proposalID = '129';
-  // hasClaimData = true;
-  hasClaimData = false;
+  hasClaimData = true;
+  // hasClaimData = false;
 
 
   // -----------------------------SELECTORS----------------------
@@ -93,12 +87,11 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   // -----------------------------CROSSFILTER DATA----------------------
   // keep chart data between claim tabs
   proposalClaim: WaterfallData;
-  // benchmarkClaim: WaterfallData;
-  benchmarkClaim: WaterfallDataNEW;
+  benchmarkClaim: WaterfallData;
 
 
-  proposalDemographic: TornadoChartData;
-  benchmarkDemographic: TornadoChartData;
+  proposalDemographic: TornadoData;
+  benchmarkDemographic: TornadoData;
   // -----------------------------CROSSFILTER DATA----------------------
 
 
@@ -134,6 +127,9 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
+    // console.log(HistoricalUkComponent.ageGroup.reverse());
+
     this.demographicSelectors = new Array<Selector>();
     this.claimsSelectors = new Array<Selector>();
 
@@ -159,67 +155,29 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
 
-  // to-do get country code dynamically, or maybe get proposal id
-  fetchBenchmarkProposalDemograpic(): void {
-    this.demographicService.getBenchmarkProposalDemographicData(this.countryCode, this.proposalID, this.ageGroup)
-      .subscribe(
-        data => {
-          this.benchmarkDemographicData = data[0];
-          this.proposalDemographicData = data[1];
-        },
-        err => console.error(err),
-        () => {
-          this.createDemographicData();
-          this.createDemographicSelectors();
 
-          this.selectors = this.demographicSelectors;
 
-          // release memory here
-          this.benchmarkDemographicData = null;
-          this.proposalDemographicData = null;
-          console.log('done loading demographic data');
-        }
-      );
-  }
-
-  // one time
   createDemographicSelectors() {
-    if (this.hasClaimData === true) {
-      const allRegionCombinedSet = new Set([...this.proposalDemographic.getAllRegion(), ...this.benchmarkDemographic.getAllRegion()]);
-      const allRelationCombinedSet = new Set([...this.proposalDemographic.getAllRelation(), ...this.benchmarkDemographic.getAllRelation()]);
-
-      this.demographicSelectors.push(new Selector(Array.from(allRegionCombinedSet).sort(), 'region'));
-      this.demographicSelectors.push(new Selector(Array.from(allRelationCombinedSet).sort(), 'relation'));
-
-    } else {
-      this.demographicSelectors.push(new Selector(this.benchmarkDemographic.getAllRegion().sort(), 'region'));
-      this.demographicSelectors.push(new Selector(this.benchmarkDemographic.getAllRelation().sort(), 'relation'));
-    }
-  }
-
-  createClaimsSelectors() {
-    if (this.hasClaimData === true) {
-      // const allRegionCombinedSet = new Set([...this.proposalClaim.getAllRegion(), ...this.benchmarkClaim.getAllRegion()]);
-      // const allRelationCombinedSet = new Set([...this.proposalClaim.getAllRelation(), ...this.benchmarkClaim.getAllRelation()]);
-      // const allAgeGroupCombinedSet = new Set([...this.proposalClaim.getAllAgeGroup(), ...this.benchmarkClaim.getAllAgeGroup()]);
-      // const allGenderCombinedSet = new Set([...this.proposalClaim.getAllGender(), ...this.benchmarkClaim.getAllGender()]);
-      // const allClaimTypeCombinedSet = new Set([...this.proposalClaim.getClaimType(), ...this.benchmarkClaim.getClaimType()]);
-
-      // this.claimsSelectors.push(new Selector(Array.from(allRegionCombinedSet).sort(), 'region'));
-      // this.claimsSelectors.push(new Selector(Array.from(allRelationCombinedSet).sort(), 'relation'));
-      // this.claimsSelectors.push(new Selector(Array.from(allAgeGroupCombinedSet).sort(), 'ageGroup'));
-      // this.claimsSelectors.push(new Selector(Array.from(allGenderCombinedSet).sort(), 'gender'));
-      // this.claimsSelectors.push(new Selector(Array.from(allClaimTypeCombinedSet).sort(), 'claimType'));
-
-    } else {
-      for (const item of HistoricalUkComponent.claimDimensions) {
-        this.claimsSelectors.push(new Selector(this.benchmarkClaim.getSelectorValuesByName(item).sort(), item));
+    for (const item of HistoricalUkComponent.demographicDimensions) {
+      if (this.hasClaimData === true) {
+        const commonElements = new Set([...this.proposalDemographic.getSelectorValuesByName(item).sort(), ...this.benchmarkDemographic.getSelectorValuesByName(item).sort()]);
+        this.demographicSelectors.push(new Selector(Array.from(commonElements).sort(), item));
+      } else {
+        this.demographicSelectors.push(new Selector(this.benchmarkDemographic.getSelectorValuesByName(item).sort(), item));
       }
     }
   }
 
-
-
+  createClaimsSelectors() {
+    for (const item of HistoricalUkComponent.claimDimensions) {
+      if (this.hasClaimData === true) {
+        const commonElements = new Set([...this.proposalClaim.getSelectorValuesByName(item).sort(), ...this.benchmarkClaim.getSelectorValuesByName(item).sort()]);
+        this.claimsSelectors.push(new Selector(Array.from(commonElements).sort(), item));
+      } else {
+        this.claimsSelectors.push(new Selector(this.benchmarkClaim.getSelectorValuesByName(item).sort(), item));
+      }
+    }
+  }
 
   getSelector(selectorName: string): Selector {
     for (const item of this.selectors) {
@@ -230,7 +188,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     return null;
   }
 
-
   getDemographicSelector(selectorName: string): Selector {
     return this.demographicSelectors.find(item => item.getSelectorName() === selectorName);
   }
@@ -240,53 +197,23 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   }
 
 
-  fetchBenchmarkProposalClaimAndMemberCount(): void {
-    this.claimDataService.getBenchmarkPropocalClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
-      .subscribe(
-        data => {
-
-          this.benchmarkClaimData = data[0];
-          this.benchmarkMemberCount = data[1];
-          this.proposalClaimData = data[2];
-          this.proposalMemberCount = data[3];
-
-        },
-        err => console.error(err),
-        () => {
-
-          this.createClaimData();
-          this.createClaimsSelectors();
-
-          // // release the memory.  remove http reponse json
-          this.benchmarkClaimData = null;
-          this.benchmarkMemberCount = null;
-          this.proposalClaimData = null;
-          this.proposalMemberCount = null;
 
 
-          // enable tabs
-          this.staticTabs.tabs[1].disabled = false;
-          this.staticTabs.tabs[2].disabled = false;
-
-          console.log('done loading claims data');
-        }
-      );
-  }
-
-  // to do
+  // create data instance
   createClaimData() {
+
+    this.benchmarkClaim = new WaterfallData(
+      this.benchmarkClaimData,
+      this.benchmarkMemberCount,
+      HistoricalUkComponent.conditionGroups,
+      HistoricalUkComponent.claimDimensions,
+      'percapita'
+    );
+
     if (this.hasClaimData === true) {
-      // populate both benchmark and proposal data
-
-      // this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
-      // this.proposalClaim = new WaterfallData(this.proposalClaimData, this.proposalMemberCount, ClaimsComponent.UKConditionGroupKeys);
-
-    } else {
-      // populate benchmark only
-      // this.benchmarkClaim = new WaterfallData(this.benchmarkClaimData, this.benchmarkMemberCount, ClaimsComponent.UKConditionGroupKeys);
-
-      this.benchmarkClaim = new WaterfallDataNEW(this.benchmarkClaimData,
-        this.benchmarkMemberCount,
+      this.proposalClaim = new WaterfallData(
+        this.proposalClaimData,
+        this.proposalMemberCount,
         HistoricalUkComponent.conditionGroups,
         HistoricalUkComponent.claimDimensions,
         'percapita'
@@ -297,10 +224,10 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   createDemographicData() {
     if (this.hasClaimData === true) {
-      this.benchmarkDemographic = new TornadoChartData(this.benchmarkDemographicData, this.ageGroup);
-      this.proposalDemographic = new TornadoChartData(this.proposalDemographicData, this.ageGroup);
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
+      this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
     } else {
-      this.benchmarkDemographic = new TornadoChartData(this.benchmarkDemographicData, this.ageGroup.reverse());
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
     }
   }
 
@@ -514,7 +441,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
     if (this.checkAllSelectorSeleted() === true) {
-      // console.log('i am true');
       this.resetDisabled = true;
     } else {
       this.resetDisabled = false;
@@ -526,39 +452,20 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     switch (this.currentTab) {
       case 'historicalDemographic': {
 
-        this.demographicComponent.updateChartData(this.getDemographicSelector('region').getCurrentSelction(), this.getDemographicSelector('relation').getCurrentSelction());
-        this.demographicComponent.updateChart_benchmark();
-        if (this.hasClaimData === true) {
-          this.demographicComponent.updateChart_proposal();
-          this.demographicComponent.updateChart_combined();
-        }
+        this.demographicComponent.updateChartData(this.demographicSelectors);
+        this.demographicComponent.updateChart();
         break;
       }
       case 'claimsPerCapita': {
-        // const params: ChartUpdateParameters = {
-        //   sortingMethod: this.claimPerCapitaComponent.sorting,
-        //   region: this.getClaimsSelector('region').getCurrentSelction(),
-        //   relation: this.getClaimsSelector('relation').getCurrentSelction(),
-        //   claimType: this.getClaimsSelector('claimType').getCurrentSelction(),
-        //   ageGroup: this.getClaimsSelector('ageGroup').getCurrentSelction(),
-        //   gender: this.getClaimsSelector('gender').getCurrentSelction(),
-        //   conditionGroupKey: HistoricalUkComponent.conditionGroups
-        // };
-
         this.claimPerCapitaComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
-        // update chart
-        this.claimPerCapitaComponent.updateChart_benchmark();
-        if (this.hasClaimData === true) {
-          this.claimPerCapitaComponent.updateChart_proposal();
-        }
+        this.claimPerCapitaComponent.updateChart();
         break;
       }
-
       default: {
         break;
       }
     }
-    console.log('updateCurrentTabCharts');
+    // console.log('updateCurrentTabCharts');
   }
 
 
@@ -617,6 +524,88 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
 
+
+
+  // HTTP Request
+
+  fetchBenchmarkProposalDemograpic(): void {
+    this.demographicService.getBenchmarkProposalDemographicData(this.countryCode, this.proposalID, this.ageGroup)
+      .subscribe(
+        data => {
+          this.benchmarkDemographicData = data[0];
+          this.proposalDemographicData = data[1];
+        },
+        err => console.error(err),
+        () => {
+          this.createDemographicData();
+          this.createDemographicSelectors();
+
+          this.selectors = this.demographicSelectors;
+
+          // release memory here
+          this.benchmarkDemographicData = null;
+          this.proposalDemographicData = null;
+          console.log('done loading demographic data');
+        }
+      );
+  }
+
+
+  fetchBenchmarkDemograpic(): void {
+    this.demographicService.getBenchmarkDemographicData(this.countryCode, this.proposalID, this.ageGroup)
+      .subscribe(
+        data => {
+          this.benchmarkDemographicData = data;
+        },
+        err => console.error(err),
+        () => {
+          this.createDemographicData();
+          this.createDemographicSelectors();
+
+          this.selectors = this.demographicSelectors;
+
+          // release memory here
+          this.benchmarkDemographicData = null;
+          this.proposalDemographicData = null;
+          console.log('done loading demographic data');
+        }
+      );
+  }
+
+
+  fetchBenchmarkProposalClaimAndMemberCount(): void {
+    this.claimDataService.getBenchmarkPropocalClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
+      .subscribe(
+        data => {
+
+          this.benchmarkClaimData = data[0];
+          this.benchmarkMemberCount = data[1];
+          this.proposalClaimData = data[2];
+          this.proposalMemberCount = data[3];
+        },
+        err => console.error(err),
+        () => {
+
+          this.createClaimData();
+          this.createClaimsSelectors();
+
+          // // release the memory.  remove http reponse json
+          this.benchmarkClaimData = null;
+          this.benchmarkMemberCount = null;
+          this.proposalClaimData = null;
+          this.proposalMemberCount = null;
+
+
+          // enable tabs
+          this.staticTabs.tabs[1].disabled = false;
+          this.staticTabs.tabs[2].disabled = false;
+
+          console.log('done loading claims data');
+        }
+      );
+  }
+
+
   fetchBenchmarkClaimAndMemberCount(): void {
     this.claimDataService.getBenchmarkClaimsDataTotalMemberCount(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
@@ -637,30 +626,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
           this.staticTabs.tabs[2].disabled = false;
 
           console.log('done loading claims data for benchmark only');
-        }
-      );
-  }
-
-
-
-
-  fetchBenchmarkDemograpic(): void {
-    this.demographicService.getBenchmarkDemographicData(this.countryCode, this.proposalID, this.ageGroup)
-      .subscribe(
-        data => {
-          this.benchmarkDemographicData = data;
-        },
-        err => console.error(err),
-        () => {
-          this.createDemographicData();
-          this.createDemographicSelectors();
-
-          this.selectors = this.demographicSelectors;
-
-          // release memory here
-          this.benchmarkDemographicData = null;
-          this.proposalDemographicData = null;
-          console.log('done loading demographic data');
         }
       );
   }

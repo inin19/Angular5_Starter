@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, View
 import { WaterfallD3Chart } from '../../../model/d3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
-import { WaterfallDataNEW, WaterfallBar } from './../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData, WaterfallBar } from './../../../model/d3chartData/waterfall-data.model';
 import { Selector } from '../../../model/utils/selector.model';
 
 
@@ -56,8 +56,8 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
 
 
-  @Input() private benchmarkClaim: WaterfallDataNEW;
-  @Input() private proposalClaim: WaterfallDataNEW;
+  @Input() private benchmarkClaim: WaterfallData;
+  @Input() private proposalClaim: WaterfallData;
   @Input() private ageGroup: string;
   @Input() private hasClaimData: boolean;
 
@@ -176,6 +176,14 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       conditionGroupTranslation: ClaimsComponent.conditionGroupTranslation
     };
     this.proposalD3Chart = new WaterfallD3Chart(config);
+  }
+
+
+  updateChart() {
+    this.updateChart_benchmark();
+    if (this.proposalClaim) {
+      this.updateChart_proposal();
+    }
   }
 
   updateChart_benchmark() {
