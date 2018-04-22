@@ -43,6 +43,11 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     'relation'
   ];
 
+  private static claimMargin: any = { top: 60, right: 20, bottom: 80, left: 50 };
+
+  private static demographicMargin: any = { top: 50, right: 20, bottom: 30, left: 50 };
+
+
   private conditionGroupTranslation = {
     'PREVYEAR': '',
     'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',

@@ -21,6 +21,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
   @Input() private ageGroup: string[];
 
 
+  @Input() private demographicMargin: any;
+
 
   @ViewChild('proposalDemographic') private proposalDemoChartContainer: ElementRef;
   @ViewChild('benchmarkDemographic') private benchmarkDemoChartContainer: ElementRef;

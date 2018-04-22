@@ -24,8 +24,8 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input() private benchmarkClaim: WaterfallData;
   @Input() private proposalClaim: WaterfallData;
-
   @Input() private conditionGroupTranslation: any;
+  @Input() private claimMargin: any;
 
 
 
@@ -69,6 +69,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
 
+    console.log(this.claimMargin);
 
     this.sorting = 'Default';
     this.zoom = false;
