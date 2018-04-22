@@ -170,7 +170,13 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
 
+  getClaimMargin() {
+    return HistoricalUkComponent.claimMargin;
+  }
 
+  getDemographicMargin() {
+    return HistoricalUkComponent.demographicMargin;
+  }
 
   createDemographicSelectors() {
     for (const item of HistoricalUkComponent.demographicDimensions) {

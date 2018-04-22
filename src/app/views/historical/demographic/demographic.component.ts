@@ -51,10 +51,6 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
 
 
-  // chart element
-  private margin: any = { top: 50, right: 20, bottom: 30, left: 50 };
-
-
 
   zoom: boolean;
   disabled: boolean;
@@ -66,6 +62,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('in demographic init');
+
     this.zoom = false;
     this.createChartData();
     this.createChart();
@@ -171,7 +168,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
     const chartConfig = {
       title: 'proposal',
       chartContainer: this.proposalDemoChartContainer,
-      margin: this.margin,
+      margin: this.demographicMargin,
       ageGroup: this.ageGroup,
       maxPercentage: this.maxPercentage,
       chartType: 1
@@ -184,7 +181,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
     const chartConfig = {
       title: 'benchmark',
       chartContainer: this.proposalDemoChartContainer,
-      margin: this.margin,
+      margin: this.demographicMargin,
       ageGroup: this.ageGroup,
       maxPercentage: this.maxPercentage,
       chartType: 2
@@ -198,7 +195,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
     const chartConfig = {
       title: 'client & benchmark',
       chartContainer: this.combinedDemoChartContainer,
-      margin: this.margin,
+      margin: this.demographicMargin,
       ageGroup: this.ageGroup,
       maxPercentage: this.maxPercentage,
       cluster: true,

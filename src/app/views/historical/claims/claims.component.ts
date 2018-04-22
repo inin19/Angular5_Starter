@@ -46,12 +46,9 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   private proposalConditionGroupData: WaterfallBar[];
   private proposalGraphData: any[];
 
-
-
   private benchmarkD3Chart: WaterfallD3Chart;
   private proposalD3Chart: WaterfallD3Chart;
 
-  private margin: any = { top: 60, right: 20, bottom: 80, left: 50 };
 
   zoom = false;
 
@@ -69,7 +66,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
 
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
 
-    console.log(this.claimMargin);
+    // console.log(this.claimMargin);
 
     this.sorting = 'Default';
     this.zoom = false;
@@ -123,7 +120,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   createChart_benchmark() {
     const config: WaterfallChartConfig = {
       title: 'benchmark Cost Per Capita',
-      margin: this.margin,
+      margin: this.claimMargin,
       chartContainer: this.benchmarkWaterfall,
       domID: '#' + this.benchmarkWaterfall.nativeElement.id,
       xScaleDomain: this.claimPerCapitaXDomain,
@@ -138,7 +135,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   createChart_proposal() {
     const config: WaterfallChartConfig = {
       title: 'proposal Cost Per Capita',
-      margin: this.margin,
+      margin: this.claimMargin,
       chartContainer: this.proposalWaterfall,
       domID: '#' + this.proposalWaterfall.nativeElement.id,
       xScaleDomain: this.claimPerCapitaXDomain,

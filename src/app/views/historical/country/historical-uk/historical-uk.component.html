@@ -135,14 +135,14 @@
     <ng-template tabHeading>Demographic</ng-template>
 
     <app-demographic *ngIf="benchmarkDemographic" [proposalDemographic]="proposalDemographic" [benchmarkDemographic]="benchmarkDemographic"
-      [ageGroup]="ageGroup" [demographicMargin]="demographicMargin"  #demographic>
+      [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()"  #demographic>
     </app-demographic>
 
   </tab>
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>claimsPerCapita</ng-template>
     <app-claims *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [conditionGroupTranslation]="conditionGroupTranslation"
-     [claimMargin]="claimMargin" #claimsPerCapita></app-claims>
+     [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims>
   </tab>
 
 
