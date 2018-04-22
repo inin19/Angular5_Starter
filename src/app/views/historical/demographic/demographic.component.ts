@@ -1,11 +1,9 @@
-import { TornadoData } from './../../../model/d3chartData/tornado-data.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
-// import { TornadoChartData, ChartUpdateParameters } from '../../../model/d3chartData/tornadoData';
 import { TornadoD3Chart, ChartConfig } from '../../../model/d3chart/tornado-d3-chart.model';
+import { TornadoData } from './../../../model/d3chartData/tornado-data.model';
 import { Selector } from '../../../model/utils/selector.model';
 import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
-
 
 
 
@@ -65,21 +63,10 @@ export class DemographicComponent implements OnInit, OnDestroy {
   constructor() { }
 
   ngOnInit() {
-
     console.log('in demographic init');
     this.zoom = false;
-    // this.disabled = true;
     this.createChartData();
-    if (this.proposalDemographic) {
-      this.createChart_proposal();
-      this.updateChart_proposal();
-      // create combined chart
-      this.createChart_combined();
-      this.updateChart_combined();
-    }
-    this.createChart_benchmark();
-    this.updateChart_benchmark();
-    // listen to div resize event
+    this.createChart();
     this.listenToDivResize();
   }
 
@@ -139,6 +126,19 @@ export class DemographicComponent implements OnInit, OnDestroy {
     }
 
 
+  }
+
+
+  createChart() {
+    if (this.proposalDemographic) {
+      this.createChart_proposal();
+      this.updateChart_proposal();
+      // create combined chart
+      this.createChart_combined();
+      this.updateChart_combined();
+    }
+    this.createChart_benchmark();
+    this.updateChart_benchmark();
   }
 
 
