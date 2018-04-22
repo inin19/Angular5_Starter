@@ -16,19 +16,6 @@ import { TabsetComponent } from 'ngx-bootstrap';
 })
 export class HistoricalUkComponent implements OnInit, OnDestroy {
 
-  private static conditionGroupTranslation = {
-    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
-    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
-    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
-    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
-    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
-    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
-    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
-    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
-    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
-    'CONDITION_GROUPING_OTHER': 'Other'
-  };
-
   private static conditionGroups = [
     'CONDITION_GROUPING_CIRCULATORY',
     'CONDITION_GROUPING_DIGESTIVE',
@@ -55,6 +42,22 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     'region',
     'relation'
   ];
+
+  private conditionGroupTranslation = {
+    'PREVYEAR': '',
+    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
+    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
+    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
+    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
+    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
+    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
+    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
+    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
+    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
+    'CONDITION_GROUPING_OTHER': 'Other',
+    'CURRYEAR': ''
+  };
+
 
 
   // to-do get age Group for each country
@@ -129,6 +132,13 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
     // console.log(HistoricalUkComponent.ageGroup.reverse());
+
+    this.conditionGroupTranslation.PREVYEAR = '2015';
+    this.conditionGroupTranslation.CURRYEAR = '2016';
+
+
+    // console.log(this.claimPerCapitaXDomain);
+
 
     this.demographicSelectors = new Array<Selector>();
     this.claimsSelectors = new Array<Selector>();

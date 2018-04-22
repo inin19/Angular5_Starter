@@ -25,8 +25,8 @@
         </ul>
       </div>
 
-      <div class="btn-group" *ngIf="selectorDisplay['relation'] === true" id="relation" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
-        [isOpen]="dropdownStatus['relation']" (isOpenChange)="toggleDropdown($event, 'relation')" (clickOutside)="onClickedOutside($event,'relation')"
+      <div class="btn-group" *ngIf="selectorDisplay['relation'] === true" id="relation" dropdown #relationDropdown="bs-dropdown"
+        [autoClose]="false" [isOpen]="dropdownStatus['relation']" (isOpenChange)="toggleDropdown($event, 'relation')" (clickOutside)="onClickedOutside($event,'relation')"
         placement="top">
         <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
           Relation
@@ -49,8 +49,8 @@
       </div>
 
 
-      <div class="btn-group" *ngIf="selectorDisplay['ageGroup'] === true" id="ageGroup" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
-        [isOpen]="dropdownStatus['ageGroup']" (isOpenChange)="toggleDropdown($event, 'ageGroup')" (clickOutside)="onClickedOutside($event,'ageGroup')"
+      <div class="btn-group" *ngIf="selectorDisplay['ageGroup'] === true" id="ageGroup" dropdown #relationDropdown="bs-dropdown"
+        [autoClose]="false" [isOpen]="dropdownStatus['ageGroup']" (isOpenChange)="toggleDropdown($event, 'ageGroup')" (clickOutside)="onClickedOutside($event,'ageGroup')"
         placement="top">
         <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
           Age Group
@@ -99,8 +99,8 @@
 
 
 
-      <div class="btn-group" *ngIf="selectorDisplay['claimType'] === true" id="claimType" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
-        [isOpen]="dropdownStatus['claimType']" (isOpenChange)="toggleDropdown($event, 'claimType')" (clickOutside)="onClickedOutside($event,'claimType')"
+      <div class="btn-group" *ngIf="selectorDisplay['claimType'] === true" id="claimType" dropdown #relationDropdown="bs-dropdown"
+        [autoClose]="false" [isOpen]="dropdownStatus['claimType']" (isOpenChange)="toggleDropdown($event, 'claimType')" (clickOutside)="onClickedOutside($event,'claimType')"
         placement="top">
         <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
           Claim Type
@@ -141,7 +141,7 @@
   </tab>
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>claimsPerCapita</ng-template>
-    <app-claims *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [ageGroup]="ageGroup"
+    <app-claims *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [conditionGroupTranslation]="conditionGroupTranslation"
       #claimsPerCapita></app-claims>
   </tab>
 
@@ -150,7 +150,5 @@
     <ng-template tabHeading>Claims Frequency</ng-template>
     <app-claim-frequency *ngIf="benchmarkClaim"></app-claim-frequency>
   </tab>
-
-
 
 </tabset>

@@ -22,44 +22,10 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
     Rise: '#0000FF'
   };
 
-
-  private static conditionGroupTranslation = {
-    'PREVYEAR': '2015',
-    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
-    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
-    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
-    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
-    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
-    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
-    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
-    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
-    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
-    'CONDITION_GROUPING_OTHER': 'Other',
-    'CURRYEAR': '2016'
-  };
-
-
-  private conditionGroupTranslation2 = {
-    'PREVYEAR': '',
-    'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
-    'CONDITION_GROUPING_DIGESTIVE': 'Digestive',
-    'CONDITION_GROUPING_INJURY_&_ACCIDENT': 'Injury & Accident',
-    'CONDITION_GROUPING_MENTAL_DISORDERS': 'Mental Disorders',
-    'CONDITION_GROUPING_MUSCULOSKELETAL': 'Musculoskeletal',
-    'CONDITION_GROUPING_NEOPLASMS': 'Neoplasms',
-    'CONDITION_GROUPING_PREGNANCY': 'Pregnancy',
-    'CONDITION_GROUPING_RESPIRATORY': 'Respiratory',
-    'CONDITION_GROUPING_SS_&_IDC': 'SS & IDC',
-    'CONDITION_GROUPING_OTHER': 'Other',
-    'CURRYEAR': ''
-  };
-
-
-
   @Input() private benchmarkClaim: WaterfallData;
   @Input() private proposalClaim: WaterfallData;
-  @Input() private ageGroup: string;
-  @Input() private hasClaimData: boolean;
+
+  @Input() private conditionGroupTranslation: any;
 
 
 
@@ -88,7 +54,9 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   private margin: any = { top: 60, right: 20, bottom: 80, left: 50 };
 
   zoom = false;
-  private xDomainDisplay = Object.keys(ClaimsComponent.conditionGroupTranslation).map(key => ClaimsComponent.conditionGroupTranslation[key]);
+
+  private claimPerCapitaXDomain: string[];
+
 
   // new form
   sorting: string;
@@ -99,6 +67,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     console.log('claim PerCapita init');
 
+    this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
 
 
     this.sorting = 'Default';
@@ -156,9 +125,9 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       margin: this.margin,
       chartContainer: this.benchmarkWaterfall,
       domID: '#' + this.benchmarkWaterfall.nativeElement.id,
-      xScaleDomain: this.xDomainDisplay,
+      xScaleDomain: this.claimPerCapitaXDomain,
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
-      conditionGroupTranslation: ClaimsComponent.conditionGroupTranslation
+      conditionGroupTranslation: this.conditionGroupTranslation
     };
 
     this.benchmarkD3Chart = new WaterfallD3Chart(config);
@@ -171,9 +140,9 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       margin: this.margin,
       chartContainer: this.proposalWaterfall,
       domID: '#' + this.proposalWaterfall.nativeElement.id,
-      xScaleDomain: this.xDomainDisplay,
+      xScaleDomain: this.claimPerCapitaXDomain,
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
-      conditionGroupTranslation: ClaimsComponent.conditionGroupTranslation
+      conditionGroupTranslation: this.conditionGroupTranslation
     };
     this.proposalD3Chart = new WaterfallD3Chart(config);
   }
@@ -191,15 +160,15 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       chartContainer: this.benchmarkWaterfall,
       domID: '#' + this.benchmarkWaterfall.nativeElement.id,
       tooltipDomID: '#' + 'waterfallTooltip',
-      xScaleDomain: this.benchmarkClaim.getGraphData()[0].map(val => (val.data.key)).map(key => ClaimsComponent.conditionGroupTranslation[key]),
+      xScaleDomain: this.benchmarkClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
       stackColor: ClaimsComponent.stackColor,
       zoom: this.zoom,
       barData: this.benchmarkGraphData,
-      previousYearKey: '2015',
-      currentYearKey: '2016',
+      previousYearKey: this.conditionGroupTranslation.PREVYEAR,
+      currentYearKey: this.conditionGroupTranslation.CURRYEAR,
       toolTipParent: this.waterfallContainer,
-      conditionGroupTranslation: ClaimsComponent.conditionGroupTranslation
+      conditionGroupTranslation: this.conditionGroupTranslation
     };
 
     this.benchmarkD3Chart.updateChart(config);
@@ -210,30 +179,20 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       chartContainer: this.proposalWaterfall,
       domID: '#' + this.proposalWaterfall.nativeElement.id,
       tooltipDomID: '#' + 'waterfallTooltip',
-      xScaleDomain: this.proposalClaim.getGraphData()[0].map(val => (val.data.key)).map(key => ClaimsComponent.conditionGroupTranslation[key]),
+      xScaleDomain: this.proposalClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
       stackColor: ClaimsComponent.stackColor,
       zoom: this.zoom,
       barData: this.proposalGraphData,
-      previousYearKey: '2015',
-      currentYearKey: '2016',
+      previousYearKey: this.conditionGroupTranslation.PREVYEAR,
+      currentYearKey: this.conditionGroupTranslation.CURRYEAR,
       toolTipParent: this.waterfallContainer,
-      conditionGroupTranslation: ClaimsComponent.conditionGroupTranslation
+      conditionGroupTranslation: this.conditionGroupTranslation
 
     };
 
-    // this.proposalClaim.getGraphData()[0].map(val => (val.data.key))
-
     this.proposalD3Chart.updateChart(config);
 
-  }
-
-
-  updateAllCharts() {
-    this.updateChart_benchmark();
-    if (this.proposalClaim) {
-      this.updateChart_proposal();
-    }
   }
 
 
@@ -242,25 +201,21 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  toggleSwitch() {
-    this.updateAllCharts();
-    // if (this.proposalClaim) {
-    //   this.updateChart_proposal();
-    // }
-    // this.updateChart_benchmark();
-  }
+  // toggleSwitch() {
+  //   this.updateChart();
+  // }
 
 
   changeSorting() {
     console.log('changeSorting');
 
     if (this.proposalClaim) {
-      this.proposalClaim.sortConditionGroupData(this.sorting, Object.keys(ClaimsComponent.conditionGroupTranslation));
+      this.proposalClaim.sortConditionGroupData(this.sorting, Object.keys(this.conditionGroupTranslation));
       this.proposalGraphData = this.proposalClaim.getGraphData();
       this.updateChart_proposal();
     }
 
-    this.benchmarkClaim.sortConditionGroupData(this.sorting, Object.keys(ClaimsComponent.conditionGroupTranslation));
+    this.benchmarkClaim.sortConditionGroupData(this.sorting, Object.keys(this.conditionGroupTranslation));
     this.benchmarkGraphData = this.benchmarkClaim.getGraphData();
     this.updateChart_benchmark();
 
