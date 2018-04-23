@@ -1,12 +1,14 @@
 import { ElementRef } from '@angular/core';
 import { WaterfallChartConfig } from './../utils/chart-config';
 
-// import * as elementResizeDetectorMaker from 'element-resize-detector';
-
 import * as d3 from 'd3';
 
 
 export class WaterfallD3Chart {
+  static chartType = {
+    PERCAPITA: 'percapita',
+    FREQUENCY: 'frequency'
+  };
 
   private width: number;
   private height: number;
@@ -27,9 +29,22 @@ export class WaterfallD3Chart {
   private stackColor: { firstLastBar: string, fall: string, rise: string };
 
 
+  private chartType: string;
   // get dom id by nativeElement.id
 
+  private yScaleFormat: any;
+  private tooltipFormat: any;
+
   constructor(chartConfig: WaterfallChartConfig) {
+    if (chartConfig.chartType === WaterfallD3Chart.chartType.PERCAPITA) {
+      this.yScaleFormat = d3.format('.3s');
+      this.tooltipFormat = d3.format('.1f');
+    } else {
+      this.yScaleFormat = d3.format('.2f');
+      this.tooltipFormat = d3.format('.4f');
+    }
+
+
 
     this.stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
 
@@ -80,7 +95,7 @@ export class WaterfallD3Chart {
 
     const yaxis = d3.axisLeft(this.yScale)
       .tickSizeOuter(0)
-      .tickFormat(d3.format('.3s'));
+      .tickFormat(this.yScaleFormat);
 
     this.xAxis = this.chart.append('g')
       .attr('class', 'x axis')
@@ -136,7 +151,7 @@ export class WaterfallD3Chart {
 
     const yaxis = d3.axisLeft(this.yScale)
       .tickSizeOuter(0)
-      .tickFormat(d3.format('.3s'));
+      .tickFormat(this.yScaleFormat);
 
     this.xAxis
       .transition()
@@ -237,19 +252,15 @@ export class WaterfallD3Chart {
     return (d, i) => {
       // console.log('in mouseOver');
 
-
       d3.select(d3.event.currentTarget)
         .attr('opacity', 0.5);
-
-
-      const formatNumber = d3.format('.1f');
 
       d3.select(chartConfig.tooltipDomID)
         .style('opacity', 1)
         .html(
           // f(d.data.Per_Capita)
           chartConfig.conditionGroupTranslation[d.data.key] + ': ' +
-          formatNumber(d.data.value)
+          this.tooltipFormat(d.data.value)
         );
     };
   }

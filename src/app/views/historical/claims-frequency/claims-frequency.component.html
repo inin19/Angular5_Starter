@@ -1,3 +1,44 @@
-<p>
-  claim-frequency coming soon!
-</p>
+<div class="row">
+  <div class="col">
+    <div class="float-right">
+      <div>
+
+
+
+        <form class="form-inline">
+          Sorting &nbsp;
+          <div class="btn-group">
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Asc" tabindex="0"
+              role="button" (click)="changeSorting()">Asc</label>
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Desc" tabindex="0"
+              role="button" (click)="changeSorting()">Desc</label>
+            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Default" tabindex="0"
+              role="button" (click)="changeSorting()">Default</label>
+          </div>
+
+          &nbsp; Zoom &nbsp;
+          <div>
+            <label class="switch switch-3d switch-primary" title="Zoom">
+              <input type="checkbox" class="switch-input" [(ngModel)]="zoom" [ngModelOptions]="{standalone: true}" (change)="updateChart()">
+              <span class="switch-label"></span>
+              <span class="switch-handle"></span>
+            </label>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row" style="position: relative;" id="claimsFrequencyContainer" #claimsFrequencyContainer>
+  <div class="col-6">
+    <div class="waterfallChart" id="proposalClaimsFrequency" #proposalClaimsFrequency></div>
+  </div>
+  <div class="col-6">
+    <div class="waterfallChart" id="benchmarkClaimsFrequency" #benchmarkClaimsFrequency></div>
+  </div>
+  <div id="claimsFrequencyTooltip">Tooltip</div>
+</div>
+

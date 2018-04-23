@@ -4,6 +4,7 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@ang
 import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
+import { ClaimsFrequencyComponent } from '../../claims-frequency/claims-frequency.component';
 import { DemographicService } from '../../../../providers/charts/demographic.service';
 import { ClaimDataService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
@@ -94,9 +95,11 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   // -----------------------------CROSSFILTER DATA----------------------
   // keep chart data between claim tabs
-  proposalClaim: WaterfallData;
-  benchmarkClaim: WaterfallData;
+  proposalClaimPerCapita: WaterfallData;
+  benchmarkClaimPerCapita: WaterfallData;
 
+  proposalClaimFrequency: WaterfallData;
+  benchmarkClaimFrequency: WaterfallData;
 
   proposalDemographic: TornadoData;
   benchmarkDemographic: TornadoData;
@@ -127,6 +130,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   @ViewChild('demographic') demographicComponent: DemographicComponent;
   @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsPerCapitaComponent;
+  @ViewChild('claimsFrequency') claimPerFrequencyComponent: ClaimsPerCapitaComponent;
+
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 
@@ -190,10 +195,10 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   createClaimsSelectors() {
     for (const item of HistoricalUkComponent.claimDimensions) {
       if (this.hasClaimData === true) {
-        const commonElements = new Set([...this.proposalClaim.getSelectorValuesByName(item).sort(), ...this.benchmarkClaim.getSelectorValuesByName(item).sort()]);
+        const commonElements = new Set([...this.proposalClaimPerCapita.getSelectorValuesByName(item).sort(), ...this.benchmarkClaimPerCapita.getSelectorValuesByName(item).sort()]);
         this.claimsSelectors.push(new Selector(Array.from(commonElements).sort(), item));
       } else {
-        this.claimsSelectors.push(new Selector(this.benchmarkClaim.getSelectorValuesByName(item).sort(), item));
+        this.claimsSelectors.push(new Selector(this.benchmarkClaimPerCapita.getSelectorValuesByName(item).sort(), item));
       }
     }
   }
@@ -221,7 +226,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   // create data instance
   createClaimData() {
 
-    this.benchmarkClaim = new WaterfallData(
+    this.benchmarkClaimPerCapita = new WaterfallData(
       this.benchmarkClaimData,
       this.benchmarkMemberCount,
       HistoricalUkComponent.conditionGroups,
@@ -229,14 +234,35 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       'percapita'
     );
 
+
+    this.benchmarkClaimFrequency = new WaterfallData(
+      this.benchmarkClaimData,
+      this.benchmarkMemberCount,
+      HistoricalUkComponent.conditionGroups,
+      HistoricalUkComponent.claimDimensions,
+      'frequency'
+    );
+
+
+
     if (this.hasClaimData === true) {
-      this.proposalClaim = new WaterfallData(
+      this.proposalClaimPerCapita = new WaterfallData(
         this.proposalClaimData,
         this.proposalMemberCount,
         HistoricalUkComponent.conditionGroups,
         HistoricalUkComponent.claimDimensions,
         'percapita'
       );
+
+
+      this.proposalClaimFrequency = new WaterfallData(
+        this.proposalClaimData,
+        this.proposalMemberCount,
+        HistoricalUkComponent.conditionGroups,
+        HistoricalUkComponent.claimDimensions,
+        'frequency'
+      );
+
     }
   }
 
@@ -420,7 +446,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   updateCurrentTabCharts() {
     switch (this.currentTab) {
       case 'historicalDemographic': {
-
         this.demographicComponent.updateChartData(this.demographicSelectors);
         this.demographicComponent.updateChart();
         break;
@@ -430,11 +455,16 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.claimPerCapitaComponent.updateChart();
         break;
       }
+      case 'claimsFrequency': {
+        this.claimPerFrequencyComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimPerFrequencyComponent.updateChart();
+        break;
+      }
       default: {
         break;
       }
     }
-    // console.log('updateCurrentTabCharts');
+    console.log('updateCurrentTabCharts');
   }
 
 
@@ -469,6 +499,10 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.claimPerCapitaComponent.unListenToDivResize();
         break;
       }
+      case 'claimsFrequency': {
+        this.claimPerFrequencyComponent.unListenToDivResize();
+        break;
+      }
       default: {
         break;
       }
@@ -485,6 +519,11 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.claimPerCapitaComponent.listenToDivResize();
         break;
       }
+      case 'claimsFrequency': {
+        this.claimPerFrequencyComponent.listenToDivResize();
+        break;
+      }
+
       default: {
         break;
       }

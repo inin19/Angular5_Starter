@@ -19,6 +19,7 @@ export interface WaterfallChartConfig extends ChartConfig {
     previousYearKey?: string;
     currentYearKey?: string;
     conditionGroupTranslation: any;
+    chartType: string; // 'percapita' 'frequency'
 }
 
 
