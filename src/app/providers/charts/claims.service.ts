@@ -48,30 +48,30 @@ export class ClaimDataService {
 
 
   // if proposal has claim data
-  // getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
-  //   const l: number = new Date().getMilliseconds();
-  //   return Observable.forkJoin(
-  //     this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-  //     this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions),
-  //     this.http.get<Array<any>>(this.proposalClaimUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-  //     this.http.get<Array<any>>(this.proposalTotalMemberDataUrl + + proposalId + '?' + l, httpOptions)
-  //   );
-  // }
+  getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
+    const l: number = new Date().getMilliseconds();
+    return Observable.forkJoin(
+      this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.proposalClaimUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.proposalTotalMemberDataUrl + + proposalId + '?' + l, httpOptions)
+    );
+  }
 
 
 
 
 
   // local if MongoDb is down
-  getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
-    const l: number = new Date().getMilliseconds();
-    return Observable.forkJoin(
-      this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
-      this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions),
-      this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
-      this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions)
-    );
-  }
+  // getBenchmarkPropocalClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
+  //   const l: number = new Date().getMilliseconds();
+  //   return Observable.forkJoin(
+  //     this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
+  //     this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions),
+  //     this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
+  //     this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions)
+  //   );
+  // }
 
 
 

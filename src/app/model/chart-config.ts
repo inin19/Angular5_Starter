@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ProjectionOutput } from '../model/d3chartData/projection-data.model';
+import { ProjectionOutput } from '../model/D3chartData/projection-data.model';
 export interface ChartConfig {
     title?: string;
     margin?: { top: number; right: number; bottom: number; left: number; };

@@ -133,22 +133,24 @@
 <tabset type="pills" #staticTabs>
   <tab id="historicalDemographic" (select)="onSelect($event)">
     <ng-template tabHeading>Demographic</ng-template>
-
     <app-demographic *ngIf="benchmarkDemographic" [proposalDemographic]="proposalDemographic" [benchmarkDemographic]="benchmarkDemographic"
-      [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()"  #demographic>
+      [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()" #demographic>
     </app-demographic>
-
   </tab>
   <tab id="claimsPerCapita" (select)="onSelect($event)">
-    <ng-template tabHeading>claimsPerCapita</ng-template>
+    <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [conditionGroupTranslation]="conditionGroupTranslation"
-     [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims-percapita>
+      [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims-percapita>
   </tab>
-
 
   <tab id="claimsFrequency" (select)="onSelect($event)">
     <ng-template tabHeading>Claims Frequency</ng-template>
-    <app-claims-frequency *ngIf="benchmarkClaim"></app-claims-frequency>
+    <app-claims-frequency *ngIf="benchmarkClaim" #claimsFrequency></app-claims-frequency>
+  </tab>
+
+  <tab id="claimsAvgCost" (select)="onSelect($event)">
+    <ng-template tabHeading>Claims AvgCost</ng-template>
+    <app-claims-avg-cost *ngIf="benchmarkClaim" #claimsAvgCost></app-claims-avg-cost>
   </tab>
 
 </tabset>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { WaterfallData, ClaimsAggregateData } from './../../../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData, ClaimsAggregateData } from './../../../../../model/D3chartData/waterfall-data.model';
 
 @Component({
   selector: 'app-testing',

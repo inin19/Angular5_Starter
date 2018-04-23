@@ -1,5 +1,5 @@
-import { TornadoData } from '../../../../model/d3chartData/tornado-data.model';
-import { WaterfallData } from './../../../../model/d3chartData/waterfall-data.model';
+import { TornadoData } from '../../../../model/D3chartData/tornado-data.model';
+import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
@@ -146,6 +146,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
     this.staticTabs.tabs[1].disabled = true;
     this.staticTabs.tabs[2].disabled = true;
+    this.staticTabs.tabs[3].disabled = true;
+
 
     this.resetDisabled = true;
     this.currentTab = 'historicalDemographic';
@@ -252,158 +254,33 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   // check tab status
   onSelect(data: TabDirective): void {
     this.unSubscribeToDivResize(this.currentTab);
-
     switch (data.id) {
       case 'claimsPerCapita': {
-        this.currentTab = data.id;
-
         this.selectorDisplay.ageGroup = true;
         this.selectorDisplay.claimType = true;
         this.selectorDisplay.gender = true;
-
-        if (this.selectors === this.claimsSelectors) {
-          console.log('current selector are claims selectors, no need to switch');
-        } else {
-          console.log('start passing region and relation selectors here');
-
-          const currentRegionSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'region');
-          const currentRelationSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-          const claimsRegionSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'region');
-          const claimsRelationelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-          if (currentRegionSelector.all === true) {
-            claimsRegionSelector.resetSelector();
-          } else {
-            claimsRegionSelector.unSelectAll();
-            claimsRegionSelector.setSelection(currentRegionSelector.getCurrentSelction());
-            claimsRegionSelector.syncAll();
-          }
-
-          if (currentRelationSelector.all === true) {
-            claimsRelationelector.resetSelector();
-          } else {
-            claimsRelationelector.unSelectAll();
-            claimsRelationelector.setSelection(currentRelationSelector.getCurrentSelction());
-            claimsRelationelector.syncAll();
-          }
-
-
-          this.selectors = this.claimsSelectors;
-        }
-
-
-        // reset button
-        if (this.checkAllSelectorSeleted() === true) {
-          this.resetDisabled = true;
-        }
-
-        setTimeout(() => {
-          this.updateCurrentTabCharts();
-        });
-
+        this.switchToClaimsSelector();
         break;
       }
       case 'claimsFrequency': {
-        this.currentTab = data.id;
-
         this.selectorDisplay.ageGroup = true;
         this.selectorDisplay.claimType = true;
         this.selectorDisplay.gender = true;
-
-        if (this.selectors === this.claimsSelectors) {
-          console.log('current selector are claims selectors, no need to switch');
-        } else {
-          console.log('start passing region and relation selectors here');
-
-          const currentRegionSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'region');
-          const currentRelationSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-          const claimsRegionSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'region');
-          const claimsRelationelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-          if (currentRegionSelector.all === true) {
-            claimsRegionSelector.resetSelector();
-          } else {
-            claimsRegionSelector.unSelectAll();
-            claimsRegionSelector.setSelection(currentRegionSelector.getCurrentSelction());
-            claimsRegionSelector.syncAll();
-          }
-
-          if (currentRelationSelector.all === true) {
-            claimsRelationelector.resetSelector();
-          } else {
-            claimsRelationelector.unSelectAll();
-            claimsRelationelector.setSelection(currentRelationSelector.getCurrentSelction());
-            claimsRelationelector.syncAll();
-          }
-
-
-          this.selectors = this.claimsSelectors;
-        }
-
-
-        // reset button
-        if (this.checkAllSelectorSeleted() === true) {
-          this.resetDisabled = true;
-        }
-
-        setTimeout(() => {
-          this.updateCurrentTabCharts();
-        });
-
+        this.switchToClaimsSelector();
+        break;
+      }
+      case 'claimsAvgCost': {
+        this.selectorDisplay.ageGroup = true;
+        this.selectorDisplay.claimType = true;
+        this.selectorDisplay.gender = true;
+        this.switchToClaimsSelector();
         break;
       }
       case 'historicalDemographic': {
-        this.currentTab = data.id;
-
         this.selectorDisplay.ageGroup = false;
         this.selectorDisplay.claimType = false;
         this.selectorDisplay.gender = false;
-
-        // pass selectors from claims to demographic
-
-        const currentRegionSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'region');
-        const currentRelationSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-        const demographicRegionSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'region');
-        const demographicRelationelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'relation');
-
-
-        if (currentRegionSelector.all === true) {
-          demographicRegionSelector.resetSelector();
-        } else {
-          demographicRegionSelector.unSelectAll();
-          demographicRegionSelector.setSelection(currentRegionSelector.getCurrentSelction());
-          demographicRegionSelector.syncAll();
-        }
-
-        if (currentRelationSelector.all === true) {
-          demographicRelationelector.resetSelector();
-        } else {
-          demographicRelationelector.unSelectAll();
-          demographicRelationelector.setSelection(currentRelationSelector.getCurrentSelction());
-          demographicRelationelector.syncAll();
-        }
-
-        // repoint UI selector
-        this.selectors = this.demographicSelectors;
-
-
-        if (this.checkAllSelectorSeleted() === true) {
-          this.resetDisabled = true;
-        }
-
-        setTimeout(() => {
-          this.updateCurrentTabCharts();
-        });
-
-
+        this.switchToDemographicSelector();
         break;
       }
       default: {
@@ -411,12 +288,87 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       }
     }
 
+    this.currentTab = data.id;
+
+    if (this.checkAllSelectorSeleted() === true) {
+      this.resetDisabled = true;
+    }
+
+    setTimeout(() => {
+      this.updateCurrentTabCharts();
+    });
+
     setTimeout(() => {
       this.subscribeToDivResize(this.currentTab);
     });
 
   }
 
+
+  switchToClaimsSelector() {
+    if (this.selectors === this.claimsSelectors) {
+      console.log('current selector are claims selectors, no need to switch');
+    } else {
+      console.log('start passing region and relation selectors here');
+
+      const currentRegionSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'region');
+      const currentRelationSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'relation');
+
+      const claimsRegionSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'region');
+      const claimsRelationelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'relation');
+
+
+      if (currentRegionSelector.all === true) {
+        claimsRegionSelector.resetSelector();
+      } else {
+        claimsRegionSelector.unSelectAll();
+        claimsRegionSelector.setSelection(currentRegionSelector.getCurrentSelction());
+        claimsRegionSelector.syncAll();
+      }
+
+      if (currentRelationSelector.all === true) {
+        claimsRelationelector.resetSelector();
+      } else {
+        claimsRelationelector.unSelectAll();
+        claimsRelationelector.setSelection(currentRelationSelector.getCurrentSelction());
+        claimsRelationelector.syncAll();
+      }
+
+
+      this.selectors = this.claimsSelectors;
+    }
+
+  }
+
+  switchToDemographicSelector() {
+    const currentRegionSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'region');
+    const currentRelationSelector: Selector = this.claimsSelectors.find(item => item.getSelectorName() === 'relation');
+
+
+    const demographicRegionSelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'region');
+    const demographicRelationelector: Selector = this.demographicSelectors.find(item => item.getSelectorName() === 'relation');
+
+
+    if (currentRegionSelector.all === true) {
+      demographicRegionSelector.resetSelector();
+    } else {
+      demographicRegionSelector.unSelectAll();
+      demographicRegionSelector.setSelection(currentRegionSelector.getCurrentSelction());
+      demographicRegionSelector.syncAll();
+    }
+
+    if (currentRelationSelector.all === true) {
+      demographicRelationelector.resetSelector();
+    } else {
+      demographicRelationelector.unSelectAll();
+      demographicRelationelector.setSelection(currentRelationSelector.getCurrentSelction());
+      demographicRelationelector.syncAll();
+    }
+
+    // repoint UI selector
+    this.selectors = this.demographicSelectors;
+
+  }
 
   toggleDropdown(value: boolean, dropdownName: string) {
     this.dropdownStatus[dropdownName] = value;
@@ -616,6 +568,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
           // enable tabs
           this.staticTabs.tabs[1].disabled = false;
           this.staticTabs.tabs[2].disabled = false;
+          this.staticTabs.tabs[3].disabled = false;
 
           console.log('done loading claims data');
         }
@@ -641,6 +594,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
           // enable claims tabs
           this.staticTabs.tabs[1].disabled = false;
           this.staticTabs.tabs[2].disabled = false;
+          this.staticTabs.tabs[3].disabled = false;
 
           console.log('done loading claims data for benchmark only');
         }

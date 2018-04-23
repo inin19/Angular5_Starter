@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { WaterfallD3Chart } from '../../../model/d3chart/waterfall-d3-chart.model';
+import { WaterfallD3Chart } from '../../../model/D3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
-import { WaterfallData, WaterfallBar } from './../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
 import { Selector } from '../../../model/utils/selector.model';
 
 
@@ -29,11 +29,11 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
 
   // for tooltip
-  @ViewChild('waterfallContainer') private waterfallContainer: ElementRef;
+  @ViewChild('claimsPerCapitalContainer') private claimsPerCapitaContainer: ElementRef;
 
   // for svg container
-  @ViewChild('proposalWaterfall') private proposalWaterfall: ElementRef;
-  @ViewChild('benchmarkWaterfall') private benchmarkWaterfall: ElementRef;
+  @ViewChild('proposalClaimsPerCapita') private proposalClaimsPerCapita: ElementRef;
+  @ViewChild('benchmarkClaimsPerCapita') private benchmarkClaimsPerCapita: ElementRef;
 
 
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
@@ -120,8 +120,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     const config: WaterfallChartConfig = {
       title: 'benchmark Cost Per Capita',
       margin: this.claimMargin,
-      chartContainer: this.benchmarkWaterfall,
-      domID: '#' + this.benchmarkWaterfall.nativeElement.id,
+      chartContainer: this.benchmarkClaimsPerCapita,
+      domID: '#' + this.benchmarkClaimsPerCapita.nativeElement.id,
       xScaleDomain: this.claimPerCapitaXDomain,
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
       conditionGroupTranslation: this.conditionGroupTranslation
@@ -135,8 +135,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     const config: WaterfallChartConfig = {
       title: 'proposal Cost Per Capita',
       margin: this.claimMargin,
-      chartContainer: this.proposalWaterfall,
-      domID: '#' + this.proposalWaterfall.nativeElement.id,
+      chartContainer: this.proposalClaimsPerCapita,
+      domID: '#' + this.proposalClaimsPerCapita.nativeElement.id,
       xScaleDomain: this.claimPerCapitaXDomain,
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
       conditionGroupTranslation: this.conditionGroupTranslation
@@ -154,8 +154,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   updateChart_benchmark() {
     const config: WaterfallChartConfig = {
-      chartContainer: this.benchmarkWaterfall,
-      domID: '#' + this.benchmarkWaterfall.nativeElement.id,
+      chartContainer: this.benchmarkClaimsPerCapita,
+      domID: '#' + this.benchmarkClaimsPerCapita.nativeElement.id,
       tooltipDomID: '#' + 'waterfallTooltip',
       xScaleDomain: this.benchmarkClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
@@ -163,7 +163,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
       barData: this.benchmarkGraphData,
       previousYearKey: this.conditionGroupTranslation.PREVYEAR,
       currentYearKey: this.conditionGroupTranslation.CURRYEAR,
-      toolTipParent: this.waterfallContainer,
+      toolTipParent: this.claimsPerCapitaContainer,
       conditionGroupTranslation: this.conditionGroupTranslation
     };
 
@@ -172,8 +172,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   updateChart_proposal() {
     const config: WaterfallChartConfig = {
-      chartContainer: this.proposalWaterfall,
-      domID: '#' + this.proposalWaterfall.nativeElement.id,
+      chartContainer: this.proposalClaimsPerCapita,
+      domID: '#' + this.proposalClaimsPerCapita.nativeElement.id,
       tooltipDomID: '#' + 'waterfallTooltip',
       xScaleDomain: this.proposalClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
@@ -181,7 +181,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
       barData: this.proposalGraphData,
       previousYearKey: this.conditionGroupTranslation.PREVYEAR,
       currentYearKey: this.conditionGroupTranslation.CURRYEAR,
-      toolTipParent: this.waterfallContainer,
+      toolTipParent: this.claimsPerCapitaContainer,
       conditionGroupTranslation: this.conditionGroupTranslation
 
     };
@@ -219,12 +219,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   listenToDivResize() {
     if (this.proposalClaim) {
-      this.resizeDetector.listenTo(this.proposalWaterfall.nativeElement, (elem: HTMLElement) => {
+      this.resizeDetector.listenTo(this.proposalClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
         this.updateChart_proposal();
       });
 
     }
-    this.resizeDetector.listenTo(this.benchmarkWaterfall.nativeElement, (elem: HTMLElement) => {
+    this.resizeDetector.listenTo(this.benchmarkClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
       this.updateChart_benchmark();
     });
 
@@ -234,9 +234,9 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   unListenToDivResize() {
     if (this.proposalClaim) {
-      this.resizeDetector.removeAllListeners(this.proposalWaterfall.nativeElement);
+      this.resizeDetector.removeAllListeners(this.proposalClaimsPerCapita.nativeElement);
     }
-    this.resizeDetector.removeAllListeners(this.benchmarkWaterfall.nativeElement);
+    this.resizeDetector.removeAllListeners(this.benchmarkClaimsPerCapita.nativeElement);
 
     console.log('unlistenclaims per capita divs');
   }

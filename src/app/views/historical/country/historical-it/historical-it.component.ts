@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { WaterfallData } from '../../../../model/d3chartData/waterfall-data.model';
+import { WaterfallData } from '../../../../model/D3chartData/waterfall-data.model';
 import { DemographicService } from '../../../../providers/charts/demographic.service';
 import { ClaimDataService } from '../../../../providers/charts/claims.service';
 import { Selector } from '../../../../model/utils/selector.model';
