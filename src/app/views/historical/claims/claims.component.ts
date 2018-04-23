@@ -50,7 +50,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   private proposalD3Chart: WaterfallD3Chart;
 
 
-  zoom = false;
+  private zoom: boolean;
 
   private claimPerCapitaXDomain: string[];
 
@@ -98,7 +98,7 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  updateChartData(conditionGroup: string[], selectors?: Selector[]) {
+  updateChartData(conditionGroup: string[], selectors: Selector[]) {
     // this.benchmarkClaim.updateGraphData(params);
     this.benchmarkClaim.updateData(conditionGroup, selectors);
     this.benchmarkClaim.createWaterfallData(this.sorting, 'percapita');
@@ -160,7 +160,6 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       tooltipDomID: '#' + 'waterfallTooltip',
       xScaleDomain: this.benchmarkClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaim.getGraphMaxValue()] : [this.benchmarkClaim.getWaterfallMinBaseValue(), this.benchmarkClaim.getGraphMaxValue()],
-      stackColor: ClaimsComponent.stackColor,
       zoom: this.zoom,
       barData: this.benchmarkGraphData,
       previousYearKey: this.conditionGroupTranslation.PREVYEAR,
@@ -179,7 +178,6 @@ export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
       tooltipDomID: '#' + 'waterfallTooltip',
       xScaleDomain: this.proposalClaim.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
       yScaleDomain: (this.zoom === false) ? [0, this.proposalClaim.getGraphMaxValue()] : [this.proposalClaim.getWaterfallMinBaseValue(), this.proposalClaim.getGraphMaxValue()],
-      stackColor: ClaimsComponent.stackColor,
       zoom: this.zoom,
       barData: this.proposalGraphData,
       previousYearKey: this.conditionGroupTranslation.PREVYEAR,

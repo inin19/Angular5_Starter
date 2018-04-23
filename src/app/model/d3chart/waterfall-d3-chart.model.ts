@@ -25,9 +25,16 @@ export class WaterfallD3Chart {
   private margin: { top: number, right: number, bottom: number, left: number };
 
 
+  // private stackColor: { firstLastBar: '#6b9be2', fall: 'green', rise: 'orange' };
+  private stackColor: { firstLastBar: string, fall: string, rise: string };
+
+
   // get dom id by nativeElement.id
 
   constructor(chartConfig: WaterfallChartConfig) {
+
+    this.stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#ffa630' };
+
     const htmlElement = chartConfig.chartContainer.nativeElement;
     this.margin = chartConfig.margin;
     this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
@@ -149,15 +156,12 @@ export class WaterfallD3Chart {
 
     groups.exit().remove();
 
-    // update eixisitng group
-    // groups
-    //   .attr('fill', d => (chartConfig.stackColor[d]));
+
 
     // adding new groups
     groups
       .enter().append('g')
       .classed('group', true);
-    // .attr('fill', d => (chartConfig.stackColor[d]));
 
     groups = this.chart.selectAll('.group')
       .data(['Fall', 'Rise']);
@@ -183,12 +187,12 @@ export class WaterfallD3Chart {
 
       })
       .attr('fill', d => {
-        if (!isNaN(chartConfig.conditionGroupTranslation[d.data.key])) {
-          return 'blue';
+        if (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') {
+          return this.stackColor.firstLastBar;
         } else if (d.data.Fall > 0) {
-          return 'green';
+          return this.stackColor.fall;
         } else {
-          return 'orange';
+          return this.stackColor.rise;
         }
       });
 
@@ -201,6 +205,9 @@ export class WaterfallD3Chart {
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
+
+        // console.log(d);
+
         if ((chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
@@ -209,12 +216,12 @@ export class WaterfallD3Chart {
         }
       })
       .attr('fill', d => {
-        if (!isNaN(chartConfig.conditionGroupTranslation[d.data.key])) {
-          return 'blue';
+        if (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') {
+          return this.stackColor.firstLastBar;
         } else if (d.data.Fall > 0) {
-          return 'green';
+          return this.stackColor.fall;
         } else {
-          return 'orange';
+          return this.stackColor.rise;
         }
       })
       .on('mouseover', this.handleMouseOver(chartConfig))
@@ -237,14 +244,16 @@ export class WaterfallD3Chart {
         .attr('opacity', 0.5);
 
 
-      const f = d3.format('.1f');
+      const formatNumber = d3.format('.1f');
 
       d3.select(chartConfig.tooltipDomID)
         .style('opacity', 1)
         .html(
           // f(d.data.Per_Capita)
-          d.data.value
+          formatNumber(d.data.value)
         );
+
+
 
       // console.log(d.data.Per_Capita);
     };

@@ -14,7 +14,7 @@ export interface ChartConfig {
 
 export interface WaterfallChartConfig extends ChartConfig {
     zoom?: boolean;
-    stackColor?: { Base: string; Fall: string; Rise: string; };
+    // stackColor?: { Base: string; Fall: string; Rise: string; };
     barData?: any[];
     previousYearKey?: string;
     currentYearKey?: string;
