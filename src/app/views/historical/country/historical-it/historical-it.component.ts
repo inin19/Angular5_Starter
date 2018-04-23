@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { WaterfallData } from '../../../../model/d3chartData/waterfall-data.model';
-import { DemographicService } from '../../../../services/demographic.service';
-import { ClaimDataService } from '../../../../services/claims.service';
+import { DemographicService } from '../../../../providers/charts/demographic.service';
+import { ClaimDataService } from '../../../../providers/charts/claims.service';
 import { Selector } from '../../../../model/utils/selector.model';
 
 @Component({

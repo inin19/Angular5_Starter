@@ -9,9 +9,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { HistoricalRoutingModule } from './historical-routing.module';
 import { HistoricalComponent } from './historical.component';
-import { DemographicService } from '../../services/demographic.service';
-import { ClaimDataService } from '../../services/claims.service';
-import { SelectorService } from './../../services/selector.service';
+import { DemographicService } from '../../providers/charts/demographic.service';
+import { ClaimDataService } from '../../providers/charts/claims.service';
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -21,6 +20,7 @@ import { ClaimsFrequencyComponent } from './claims-frequency/claims-frequency.co
 import { HistoricalUkComponent } from './country/historical-uk/historical-uk.component';
 import { HistoricalItComponent } from './country/historical-it/historical-it.component';
 import { TestingComponent } from './country/historical-it/testing/testing.component';
+import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.component';
 
 
 @NgModule({
@@ -42,12 +42,12 @@ import { TestingComponent } from './country/historical-it/testing/testing.compon
     ClaimsFrequencyComponent,
     HistoricalUkComponent,
     HistoricalItComponent,
-    TestingComponent
+    TestingComponent,
+    ClaimsAvgCostComponent
   ],
   providers: [
     DemographicService,
-    ClaimDataService,
-    SelectorService
+    ClaimDataService
   ]
 
 })

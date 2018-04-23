@@ -4,8 +4,8 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@ang
 import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
-import { DemographicService } from '../../../../services/demographic.service';
-import { ClaimDataService } from '../../../../services/claims.service';
+import { DemographicService } from '../../../../providers/charts/demographic.service';
+import { ClaimDataService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
 
@@ -136,13 +136,9 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
 
-    // console.log(HistoricalUkComponent.ageGroup.reverse());
 
     this.conditionGroupTranslation.PREVYEAR = '2015';
     this.conditionGroupTranslation.CURRYEAR = '2016';
-
-
-    // console.log(this.claimPerCapitaXDomain);
 
 
     this.demographicSelectors = new Array<Selector>();
