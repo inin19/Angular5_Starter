@@ -1,9 +1,11 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { WaterfallD3Chart } from '../../../model/D3chart/waterfall-d3-chart.model';
+import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
-import { Selector } from '../../../model/utils/selector.model';
+import { Selector } from './../../../model/utils/selector.model';
+
+
 
 
 @Component({

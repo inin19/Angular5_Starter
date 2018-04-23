@@ -1,7 +1,4 @@
-import { TornadoData } from '../../../../model/D3chartData/tornado-data.model';
-import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
 import { ClaimsFrequencyComponent } from '../../claims-frequency/claims-frequency.component';
@@ -9,6 +6,10 @@ import { DemographicService } from '../../../../providers/charts/demographic.ser
 import { ClaimDataService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
+import { Selector } from './../../../../model/utils/selector.model';
+import { TornadoData } from './../../../../model/D3chartData/tornado-data.model';
+import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
+
 
 @Component({
   selector: 'app-historical-uk',

@@ -1,9 +1,12 @@
+import { TornadoD3Chart, ChartConfig } from './../../../model/D3chart/tornado-d3-chart.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
-import { TornadoD3Chart, ChartConfig } from '../../../model/D3chart/tornado-d3-chart.model';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
-import { Selector } from '../../../model/utils/selector.model';
+import { Selector } from './../../../model/utils/selector.model';
+
 import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
+
+
 
 
 
