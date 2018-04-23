@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { ProjectionChartConfig } from '../chart-config';
+import { ProjectionChartConfig } from '../utils/chart-config';
 import * as d3 from 'd3';
 
 

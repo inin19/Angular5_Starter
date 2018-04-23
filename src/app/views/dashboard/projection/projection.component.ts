@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, Input, OnChanges, OnDestroy, ElementRef, ViewEncapsulation } from '@angular/core';
 import { ProjectionData, ProjectionOutput } from '../../../model/D3chartData/projection-data.model';
 import { ProjectionD3Chart } from '../../../model/D3chart/projection-d3-chart.model';
-import { ProjectionChartConfig } from '../../../model/chart-config';
+import { ProjectionChartConfig } from '../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { Selector } from '../../../model/utils/selector.model';
 

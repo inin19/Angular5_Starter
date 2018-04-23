@@ -1,5 +1,5 @@
 import { ElementRef } from '@angular/core';
-import { WaterfallChartConfig } from './../chart-config';
+import { WaterfallChartConfig } from './../utils/chart-config';
 
 // import * as elementResizeDetectorMaker from 'element-resize-detector';
 
