@@ -3,7 +3,7 @@ import { WaterfallData } from './../../../../model/d3chartData/waterfall-data.mo
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
-import { ClaimsComponent } from '../../claims/claims.component';
+import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
 import { DemographicService } from '../../../../services/demographic.service';
 import { ClaimDataService } from '../../../../services/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
@@ -126,7 +126,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   resetDisabled: boolean;
 
   @ViewChild('demographic') demographicComponent: DemographicComponent;
-  @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsComponent;
+  @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsPerCapitaComponent;
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 

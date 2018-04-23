@@ -141,14 +141,14 @@
   </tab>
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>claimsPerCapita</ng-template>
-    <app-claims *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [conditionGroupTranslation]="conditionGroupTranslation"
-     [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims>
+    <app-claims-percapita *ngIf="benchmarkClaim" [benchmarkClaim]="benchmarkClaim" [proposalClaim]="proposalClaim" [conditionGroupTranslation]="conditionGroupTranslation"
+     [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims-percapita>
   </tab>
 
 
   <tab id="claimsFrequency" (select)="onSelect($event)">
     <ng-template tabHeading>Claims Frequency</ng-template>
-    <app-claim-frequency *ngIf="benchmarkClaim"></app-claim-frequency>
+    <app-claims-frequency *ngIf="benchmarkClaim"></app-claims-frequency>
   </tab>
 
 </tabset>

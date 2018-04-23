@@ -24,8 +24,6 @@ export class WaterfallD3Chart {
 
   private margin: { top: number, right: number, bottom: number, left: number };
 
-
-  // private stackColor: { firstLastBar: '#6b9be2', fall: 'green', rise: 'orange' };
   private stackColor: { firstLastBar: string, fall: string, rise: string };
 
 
@@ -33,7 +31,7 @@ export class WaterfallD3Chart {
 
   constructor(chartConfig: WaterfallChartConfig) {
 
-    this.stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#ffa630' };
+    this.stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
 
     const htmlElement = chartConfig.chartContainer.nativeElement;
     this.margin = chartConfig.margin;
@@ -178,7 +176,7 @@ export class WaterfallD3Chart {
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
 
-        if ((chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
+        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
@@ -208,7 +206,7 @@ export class WaterfallD3Chart {
 
         // console.log(d);
 
-        if ((chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.previousYearKey || chartConfig.conditionGroupTranslation[d.data.key] === chartConfig.currentYearKey) && chartConfig.zoom) {
+        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && chartConfig.zoom) {
           // min
           return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
         } else {
@@ -250,12 +248,9 @@ export class WaterfallD3Chart {
         .style('opacity', 1)
         .html(
           // f(d.data.Per_Capita)
+          chartConfig.conditionGroupTranslation[d.data.key] + ': ' +
           formatNumber(d.data.value)
         );
-
-
-
-      // console.log(d.data.Per_Capita);
     };
   }
 
@@ -274,9 +269,7 @@ export class WaterfallD3Chart {
 
   handleMouseMove(chartParent: ElementRef, tooltipDom: string): (d, i) => void {
     return (d, i) => {
-      // const bounds = document.getElementById('demographicChartsArea').getBoundingClientRect();
       const bounds = chartParent.nativeElement.getBoundingClientRect();
-
       d3.select(tooltipDom)
         .style('left', d3.event.clientX - bounds.left + 10 + 'px')
         .style('top', d3.event.clientY - bounds.top + 10 + 'px');

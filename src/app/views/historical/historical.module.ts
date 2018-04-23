@@ -13,12 +13,11 @@ import { DemographicService } from '../../services/demographic.service';
 import { ClaimDataService } from '../../services/claims.service';
 import { SelectorService } from './../../services/selector.service';
 
-
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { DemographicComponent } from './demographic/demographic.component';
-import { ClaimsComponent } from './claims/claims.component';
-import { ClaimFrequencyComponent } from './claim-frequency/claim-frequency.component';
+import { ClaimsPerCapitaComponent } from './claims-percapita/claims-percapita.component';
+import { ClaimsFrequencyComponent } from './claims-frequency/claims-frequency.component';
 import { HistoricalUkComponent } from './country/historical-uk/historical-uk.component';
 import { HistoricalItComponent } from './country/historical-it/historical-it.component';
 import { TestingComponent } from './country/historical-it/testing/testing.component';
@@ -39,8 +38,8 @@ import { TestingComponent } from './country/historical-it/testing/testing.compon
   declarations: [
     HistoricalComponent,
     DemographicComponent,
-    ClaimsComponent,
-    ClaimFrequencyComponent,
+    ClaimsPerCapitaComponent,
+    ClaimsFrequencyComponent,
     HistoricalUkComponent,
     HistoricalItComponent,
     TestingComponent

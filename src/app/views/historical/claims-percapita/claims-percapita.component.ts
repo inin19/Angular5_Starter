@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-// import { WaterfallData, WaterfallBar, ChartUpdateParameters } from './../../../model/d3chartData/waterfallData';
 import { WaterfallD3Chart } from '../../../model/d3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
@@ -8,12 +7,12 @@ import { Selector } from '../../../model/utils/selector.model';
 
 
 @Component({
-  selector: 'app-claims',
+  selector: 'app-claims-percapita',
   encapsulation: ViewEncapsulation.None,
-  templateUrl: './claims.component.html',
-  styleUrls: ['./claims.component.scss']
+  templateUrl: './claims-percapita.component.html',
+  styleUrls: ['./claims-percapita.component.scss']
 })
-export class ClaimsComponent implements OnInit, OnDestroy, OnChanges {
+export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   // temp
   private static stackColor = {
