@@ -6,6 +6,12 @@ import { SelectorValue, Dimension } from '../utils/data-utils.model';
 
 export class WaterfallData {
 
+  static type = {
+    PERCAPITA: 'percapita',
+    FREQUENCY: 'frequency',
+    AVGCOST: 'avg cost'
+  };
+
   private conditionGroup: string[];
 
   private ndx: crossfilter.Crossfilter<any>;
@@ -50,7 +56,12 @@ export class WaterfallData {
 
     this.createDimensionGroup(claimJsonData, selectorNames);
     this.updateData(conditoinGroups);
-    this.createWaterfallData('default', type);
+
+    if (type === WaterfallData.type.PERCAPITA || type === WaterfallData.type.FREQUENCY) {
+      this.createWaterfallData('default', type);
+    } else {
+      // console.log('this is avg cost');
+    }
   }
 
 
@@ -200,16 +211,16 @@ export class WaterfallData {
       key: 'PREVYEAR',
       Base: 0,
       Fall: 0,
-      Rise: type === 'percapita' ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency,
-      value: type === 'percapita' ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency
+      Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency,
+      value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency
     };
 
     this.conditionGroupCurrYearData = {
       key: 'CURRYEAR',
       Base: 0,
       Fall: 0,
-      Rise: type === 'percapita' ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
-      value: type === 'percapita' ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
+      Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
+      value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
     };
 
     this.conditionGroupData = [];
@@ -233,7 +244,7 @@ export class WaterfallData {
           Base: 0,
           Fall: 0,
           Rise: 0,
-          value: type === 'percapita' ? (item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost) : (item.currYearClaimFrequency - item.prevYearClaimFrequency)
+          value: type === WaterfallData.type.PERCAPITA ? (item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost) : (item.currYearClaimFrequency - item.prevYearClaimFrequency)
         });
       }
 

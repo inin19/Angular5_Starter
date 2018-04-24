@@ -5,7 +5,7 @@ import { Selector } from '../../../../model/utils/selector.model';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
 import { DemographicService } from '../../../../providers/charts/demographic.service';
-import { ClaimDataService } from '../../../../providers/charts/claims.service';
+import { ClaimsService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
 
@@ -80,7 +80,7 @@ export class HistoricalItComponent implements OnInit {
 
 
 
-  constructor(private demographicService: DemographicService, private claimDataService: ClaimDataService) { }
+  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService) { }
 
   ngOnInit() {
 

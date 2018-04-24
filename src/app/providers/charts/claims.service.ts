@@ -15,7 +15,7 @@ const httpOptions = {
 
 
 @Injectable()
-export class ClaimDataService {
+export class ClaimsService {
 
 
 

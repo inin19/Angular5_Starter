@@ -10,7 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HistoricalRoutingModule } from './historical-routing.module';
 import { HistoricalComponent } from './historical.component';
 import { DemographicService } from '../../providers/charts/demographic.service';
-import { ClaimDataService } from '../../providers/charts/claims.service';
+import { ClaimsService } from '../../providers/charts/claims.service';
 
 import { ButtonsModule } from 'ngx-bootstrap/buttons';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -47,7 +47,7 @@ import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.compon
   ],
   providers: [
     DemographicService,
-    ClaimDataService
+    ClaimsService
   ]
 
 })

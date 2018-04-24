@@ -89,6 +89,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
 
   createChartData() {
+
     this.benchmarkConditionGroupData = this.benchmarkClaimPerCapita.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
 
@@ -102,7 +103,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   updateChartData(conditionGroup: string[], selectors: Selector[]) {
     // this.benchmarkClaim.updateGraphData(params);
     this.benchmarkClaimPerCapita.updateData(conditionGroup, selectors);
-    this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, 'percapita');
+    this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA);
 
     this.benchmarkConditionGroupData = this.benchmarkClaimPerCapita.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
@@ -110,7 +111,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     if (this.proposalClaimPerCapita) {
       // this.proposalClaim.updateGraphData(params);
       this.proposalClaimPerCapita.updateData(conditionGroup, selectors);
-      this.proposalClaimPerCapita.createWaterfallData(this.sorting, 'percapita');
+      this.proposalClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA);
 
       this.proposalConditionGroupData = this.proposalClaimPerCapita.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaimPerCapita.getGraphData();

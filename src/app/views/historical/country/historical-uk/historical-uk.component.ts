@@ -2,8 +2,9 @@ import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@ang
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
 import { ClaimsFrequencyComponent } from '../../claims-frequency/claims-frequency.component';
+import { ClaimsAvgCostComponent } from './../../claims-avg-cost/claims-avg-cost.component';
 import { DemographicService } from '../../../../providers/charts/demographic.service';
-import { ClaimDataService } from '../../../../providers/charts/claims.service';
+import { ClaimsService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
 import { Selector } from './../../../../model/utils/selector.model';
@@ -102,6 +103,12 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   proposalClaimFrequency: WaterfallData;
   benchmarkClaimFrequency: WaterfallData;
 
+
+  proposalClaimAvgCost: WaterfallData;
+  benchmarkClaimAvgCost: WaterfallData;
+
+
+
   proposalDemographic: TornadoData;
   benchmarkDemographic: TornadoData;
   // -----------------------------CROSSFILTER DATA----------------------
@@ -131,13 +138,17 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   @ViewChild('demographic') demographicComponent: DemographicComponent;
   @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsPerCapitaComponent;
-  @ViewChild('claimsFrequency') claimPerFrequencyComponent: ClaimsPerCapitaComponent;
+  @ViewChild('claimsFrequency') claimFrequencyComponent: ClaimsPerCapitaComponent;
+  @ViewChild('claimsAvgCost') claimAvgCostComponent: ClaimsAvgCostComponent;
+
+
+  // claimsAvgCost
 
 
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 
 
-  constructor(private demographicService: DemographicService, private claimDataService: ClaimDataService) {
+  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService) {
   }
 
   ngOnInit() {
@@ -232,7 +243,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.benchmarkMemberCount,
       HistoricalUkComponent.conditionGroups,
       HistoricalUkComponent.claimDimensions,
-      'percapita'
+      WaterfallData.type.PERCAPITA
     );
 
 
@@ -241,10 +252,18 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.benchmarkMemberCount,
       HistoricalUkComponent.conditionGroups,
       HistoricalUkComponent.claimDimensions,
-      'frequency'
+      WaterfallData.type.FREQUENCY
     );
 
 
+
+    this.benchmarkClaimAvgCost = new WaterfallData(
+      this.benchmarkClaimData,
+      this.benchmarkMemberCount,
+      HistoricalUkComponent.conditionGroups,
+      HistoricalUkComponent.claimDimensions,
+      WaterfallData.type.AVGCOST
+    );
 
     if (this.hasClaimData === true) {
       this.proposalClaimPerCapita = new WaterfallData(
@@ -252,7 +271,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.proposalMemberCount,
         HistoricalUkComponent.conditionGroups,
         HistoricalUkComponent.claimDimensions,
-        'percapita'
+        WaterfallData.type.PERCAPITA
       );
 
 
@@ -261,8 +280,17 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.proposalMemberCount,
         HistoricalUkComponent.conditionGroups,
         HistoricalUkComponent.claimDimensions,
-        'frequency'
+        WaterfallData.type.FREQUENCY
       );
+
+      this.proposalClaimAvgCost = new WaterfallData(
+        this.proposalClaimData,
+        this.proposalMemberCount,
+        HistoricalUkComponent.conditionGroups,
+        HistoricalUkComponent.claimDimensions,
+        WaterfallData.type.AVGCOST
+      );
+
 
     }
   }
@@ -457,8 +485,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsFrequency': {
-        this.claimPerFrequencyComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
-        this.claimPerFrequencyComponent.updateChart();
+        this.claimFrequencyComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimFrequencyComponent.updateChart();
         break;
       }
       default: {
@@ -501,7 +529,11 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsFrequency': {
-        this.claimPerFrequencyComponent.unListenToDivResize();
+        this.claimFrequencyComponent.unListenToDivResize();
+        break;
+      }
+      case 'claimsAvgCost': {
+        this.claimAvgCostComponent.unListenToDivResize();
         break;
       }
       default: {
@@ -521,10 +553,13 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsFrequency': {
-        this.claimPerFrequencyComponent.listenToDivResize();
+        this.claimFrequencyComponent.listenToDivResize();
         break;
       }
-
+      case 'claimsAvgCost': {
+        this.claimAvgCostComponent.listenToDivResize();
+        break;
+      }
       default: {
         break;
       }

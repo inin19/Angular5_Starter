@@ -23,6 +23,15 @@ export interface WaterfallChartConfig extends ChartConfig {
 }
 
 
+// AvgClaimCostChartConfig
+
+export interface AvgClaimCostChartConfig extends ChartConfig {
+    conditionGroupTranslation: any;
+    x1ScaleDomain: any[];
+    barData?: any[];
+}
+
+
 export interface ProjectionChartConfig extends ChartConfig {
     x1ScaleDomain: any[];
     barData?: ProjectionOutput[];
