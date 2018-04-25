@@ -11,7 +11,7 @@
           <!-- dropdown: plan -->
           <div class="btn-group" id="planDropdown" dropdown #planDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['planDropdown']"
             (isOpenChange)="toggleDropdown($event, 'planDropdown' )" (clickOutside)="onClickedOutside($event ,'planDropdown' )"
-            placement="top" attachOutsideOnClick="true" >
+            placement="top" attachOutsideOnClick="true">
             <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
               Select Plans
               <span class="caret"></span>
@@ -20,8 +20,7 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll('planDropdown')"
-                  /> (All)
+                  <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll('planDropdown')" /> (All)
                 </label>
               </li>
 
@@ -46,8 +45,7 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll('periodDropdown')"
-                  /> (All)
+                  <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll('periodDropdown')" /> (All)
                 </label>
               </li>
 
@@ -73,8 +71,7 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll('projectionDropdown')"
-                  /> (All)
+                  <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll('projectionDropdown')" /> (All)
                 </label>
               </li>
 
@@ -99,21 +96,20 @@
 
               <li role="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll('categoryDropdown')"
-                  /> (All)
+                  <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll('categoryDropdown')" /> (All)
                 </label>
               </li>
 
               <li *ngFor="let n of categorySelector.selectionItems" class="menuitem">
                 <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('categoryDropdown')"> {{n.elementName}}
+                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('categoryDropdown')"> {{n.elementName | UKProjectionCategory }}
                 </label>
               </li>
 
             </ul>
           </div>
         </div>
-        
+
       </div>
     </div>
   </div>

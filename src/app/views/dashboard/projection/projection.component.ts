@@ -50,6 +50,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   ngOnInit() {
     console.log('projection init');
 
+    // ProjectionComponent.categories.forEach(element => {
+    //   console.log(Translations.categoryTranslate[element]);
+    // });
+
     // listen to div resize event
     this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
       this.updateChart();
@@ -107,7 +111,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       xScaleDomain: this.projectionData.getAllPeriod(),
       yScaleDomain: [0, this.projectionData.getMaxStackValue()],
       x1ScaleDomain: ['CURRENT', 'PROPOSED'],
-      categories: ProjectionComponent.categories
+      categories: ProjectionComponent.categories,
+      translation: Translations.categoryTranslate
     };
     this.projectionD3Chart = new ProjectionD3Chart(chartConfig);
   }
@@ -126,10 +131,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       // periodGroup: this.projectionData.getAllPeriod(),
       barData: this.projectionGraphData,
       tooltipDomID: '#projectionToolip',
-      toolTipParent: this.projectionChartContainer
+      toolTipParent: this.projectionChartContainer,
+      translation: Translations.categoryTranslate
     };
 
-    console.log(this.projectionSelector.getCurrentSelction());
 
     this.projectionD3Chart.updateChart(chartConfig);
   }
@@ -240,5 +245,29 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
 
 
+  // private getCategoryTranslation(categoryKey: string) {
+  //   Translations.translate.forEach(element => {
+  //     if (element.key === categoryKey) {
+  //       return element.value;
+  //     }
+  //   });
 
+  //   return '';
+  // }
+
+
+}
+
+
+class Translations {
+  public static categoryTranslate = {
+    TOTAL_LIVES: 'Enrollment',
+    TOTAL_COST: 'Total Cost',
+    MEMBER_PREMIUM: 'Member Premium Co-Share',
+    EMPLOYER_PREMIUM: 'Employer Premium',
+    FUNDING_GAP: 'Funding Gap',
+    ESTIMATED_MEMBER_OOP_COST: 'Estimated Member Out-of-pocket Cost %',
+    TAX: 'Tax',
+    FEES: 'Fees'
+  };
 }

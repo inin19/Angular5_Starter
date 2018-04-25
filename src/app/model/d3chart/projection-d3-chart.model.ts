@@ -1,3 +1,4 @@
+import { transition } from '@angular/animations';
 import { ElementRef } from '@angular/core';
 import { ProjectionChartConfig } from '../utils/chart-config';
 import * as d3 from 'd3';
@@ -61,11 +62,20 @@ export class ProjectionD3Chart {
       .text(chartConfig.title);
 
 
+    const translated = [];
+
+    chartConfig.categories.forEach(element => {
+      translated.push(chartConfig.translation[element]);
+    });
+
+    // console.log(translated);
+
 
     // create legend
     this.legend = this.chart.append('g').classed('legendWrapper', true)
       .selectAll('.legend')
-      .data(chartConfig.categories)
+      // .data(chartConfig.categories)
+      .data(translated)
       .enter().append('g')
       .classed('legend', true);
 
@@ -98,11 +108,22 @@ export class ProjectionD3Chart {
 
     let curr = 12;
 
-    chartConfig.categories.forEach((element, i) => {
+    // chartConfig.categories.forEach((element, i) => {
+    //   textX[element] = curr;
+    //   curr = curr + textWidth[i] + 30;
+    // });
+
+    translated.forEach((element, i) => {
       textX[element] = curr;
       curr = curr + textWidth[i] + 30;
     });
 
+    // reserve
+
+
+    // console.log(this.findKeybyValue('Employer Premium', chartConfig.translation));
+
+    // console.log(Object.keys(chartConfig.translation));
 
     this.legend.selectAll('rect')
       .data(d => [d])
@@ -112,7 +133,17 @@ export class ProjectionD3Chart {
       .attr('y', 0 - (this.margin.top / 4))
       .attr('width', rectHeight)
       .attr('height', rectHeight)
-      .attr('fill', d => ProjectionD3Chart.colors[d])
+      .attr('fill', d => {
+        let temp = '';
+        Object.keys(chartConfig.translation).forEach(element => {
+          if (chartConfig.translation[element] === d) {
+            temp = element;
+          }
+        });
+        return ProjectionD3Chart.colors[temp];
+      })
+
+      // .attr('fill', d => ProjectionD3Chart.colors[d])
       .each(function (d) {
         rectY = this.getBoundingClientRect().top;
         // console.log(this.getBoundingClientRect());
@@ -299,7 +330,7 @@ export class ProjectionD3Chart {
       d3.select(chartConfig.tooltipDomID)
         .style('opacity', 1)
         .html(
-          d.column + ': ' + d.categoery + '<br/>' + f(d.value)
+          d.column + ': ' + chartConfig.translation[d.categoery] + '<br/>' + f(d.value)
         );
     };
   }
@@ -322,6 +353,9 @@ export class ProjectionD3Chart {
         .style('top', d3.event.clientY - bounds.top + 10 + 'px');
     };
   }
+
+
+
 
 }
 

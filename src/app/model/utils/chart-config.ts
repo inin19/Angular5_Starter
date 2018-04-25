@@ -36,4 +36,5 @@ export interface ProjectionChartConfig extends ChartConfig {
     x1ScaleDomain: any[];
     barData?: ProjectionOutput[];
     categories?: string[];
+    translation?: any;
 }

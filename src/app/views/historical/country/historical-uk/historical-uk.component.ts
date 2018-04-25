@@ -10,7 +10,7 @@ import { TabsetComponent } from 'ngx-bootstrap';
 import { Selector } from './../../../../model/utils/selector.model';
 import { TornadoData } from './../../../../model/D3chartData/tornado-data.model';
 import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
-
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-historical-uk',
@@ -148,7 +148,12 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 
 
-  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService) {
+  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService, private toastr: ToastrService) {
+
+  }
+
+  showSuccess() {
+    this.toastr.success('Claims Data Loaded');
   }
 
   ngOnInit() {
@@ -489,6 +494,12 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         this.claimFrequencyComponent.updateChart();
         break;
       }
+      case 'claimsAvgCost': {
+        this.claimAvgCostComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimAvgCostComponent.updateChart();
+        break;
+      }
+
       default: {
         break;
       }
@@ -645,6 +656,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
           this.staticTabs.tabs[2].disabled = false;
           this.staticTabs.tabs[3].disabled = false;
 
+
+          this.showSuccess();
           console.log('done loading claims data');
         }
       );
@@ -671,6 +684,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
           this.staticTabs.tabs[2].disabled = false;
           this.staticTabs.tabs[3].disabled = false;
 
+          this.showSuccess();
           console.log('done loading claims data for benchmark only');
         }
       );

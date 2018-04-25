@@ -1,10 +1,11 @@
+import { Selector } from './../../../model/utils/selector.model';
 import { AvgClaimCostChartConfig } from './../../../model/utils/chart-config';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
 import { WaterfallData, ClaimsAggregateData } from './../../../model/D3chartData/waterfall-data.model';
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
-
+import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-claims-avg-cost',
@@ -46,7 +47,11 @@ export class ClaimsAvgCostComponent implements OnInit {
   private x1Domain: any[];
 
 
+
   constructor() { }
+
+
+
 
   ngOnInit() {
 
@@ -60,8 +65,9 @@ export class ClaimsAvgCostComponent implements OnInit {
   }
 
 
+
   getMaxAvgCost(): number {
-    return d3.max(this.avgCostGraphData, (d) => d.value);
+    return (d3.max(this.avgCostGraphData, (d) => d.value)) ? d3.max(this.avgCostGraphData, (d) => d.value) : 0;
   }
 
 
@@ -69,11 +75,7 @@ export class ClaimsAvgCostComponent implements OnInit {
     // x axis text
     this.xDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
     this.xDomain[0] = 'Total';
-
     this.xDomain.pop();
-
-    // console.log('xDomiain: ');
-    // console.log(this.xDomain);
 
     if (this.proposalClaimAvgCost) {
       this.x1Domain = [ClaimsAvgCostComponent.series.prevYear, ClaimsAvgCostComponent.series.currYear, ClaimsAvgCostComponent.series.benchmarkCurrYear];
@@ -83,7 +85,6 @@ export class ClaimsAvgCostComponent implements OnInit {
 
     this.conditionGroupTranslation['TOTAL'] = 'Total';
 
-    // console.log(this.conditionGroupTranslation);
   }
 
   createChartData() {
@@ -162,6 +163,16 @@ export class ClaimsAvgCostComponent implements OnInit {
     }
   }
 
+
+  updateChartData(conditionGroup: string[], selectors: Selector[]) {
+    this.benchmarkClaimAvgCost.updateData(conditionGroup, selectors);
+    if (this.proposalClaimAvgCost) {
+      this.proposalClaimAvgCost.updateData(conditionGroup, selectors);
+    }
+
+    this.createChartData();
+  }
+
   createChart() {
     const config: AvgClaimCostChartConfig = {
       title: 'Avg cost',
@@ -180,6 +191,10 @@ export class ClaimsAvgCostComponent implements OnInit {
 
 
   updateChart() {
+
+    console.log('max value');
+    console.log(this.getMaxAvgCost());
+
     const config: AvgClaimCostChartConfig = {
       title: 'Avg cost',
       margin: this.claimMargin,
