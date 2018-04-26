@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 export class DashboardComponent implements OnInit {
 
 
-  private proposalId = 177;
+  private proposalId = 187;
   private country = 'ISO2_GB';
   private trendType = 'BENCHMARK';
 

@@ -373,17 +373,6 @@ export class WaterfallData {
 
 }
 
-// export interface SelectorValue {
-//   selectorName: string;
-//   selectorValues: string[];
-// }
-
-// export interface Dimension {
-//   dimensionName: string;
-//   dimension: crossfilter.Dimension<any, any>;
-// }
-
-
 
 export interface WaterfallBar {
   Base: number;
@@ -408,6 +397,8 @@ export interface ClaimJSONInput {
   currYearTotalClaimCostAmount: number;
   prevYearClaimCount: number;
   prevYearTotalClaimCostAmount: number;
+  currYearTotalSettledClaimAmount?: number;
+  prevYearTotalSettleClaimAmount?: number;
 }
 
 

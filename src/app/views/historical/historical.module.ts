@@ -24,6 +24,9 @@ import { HistoricalItComponent } from './country/historical-it/historical-it.com
 import { TestingComponent } from './country/historical-it/testing/testing.component';
 import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.component';
 
+// import { ToasterModule } from 'angular2-toaster';
+// import { ToasterService } from 'angular2-toaster/angular2-toaster';
+
 @NgModule({
   imports: [
     CommonModule,

@@ -148,13 +148,16 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 
 
+  showSuccess() {
+    this.toastr.success('Claims Data loaded!');
+  }
+
+
   constructor(private demographicService: DemographicService, private claimDataService: ClaimsService, private toastr: ToastrService) {
 
   }
 
-  showSuccess() {
-    this.toastr.success('Claims Data Loaded');
-  }
+
 
   ngOnInit() {
 
@@ -518,7 +521,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     return true;
   }
 
-  resetAllSelectors() {
+  resetAllSelectors(): void {
     for (const item of this.demographicSelectors) {
       item.resetSelector();
     }
@@ -658,6 +661,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
           this.showSuccess();
+
           console.log('done loading claims data');
         }
       );

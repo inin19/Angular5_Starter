@@ -14,7 +14,8 @@ import { Selector } from '../../../model/utils/selector.model';
 })
 export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
-  static categories = ['EMPLOYER_PREMIUM', 'FUNDING_GAP', 'MEMBER_PREMIUM', 'TAX', 'FEES'];
+  static graphCategories = ['EMPLOYER_PREMIUM', 'FUNDING_GAP', 'MEMBER_PREMIUM', 'TAX', 'FEES'];
+
 
 
   @Input() private projectionJSON: any[];
@@ -47,6 +48,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor() { }
 
+  private getGraphCategories(): string[] {
+    return ProjectionComponent.graphCategories;
+  }
+
   ngOnInit() {
     console.log('projection init');
 
@@ -68,7 +73,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createSelector() {
-    this.categorySelector = new Selector(ProjectionComponent.categories);
+    this.categorySelector = new Selector(this.getGraphCategories());
     this.planSelector = new Selector(this.projectionData.getAllPlan());
     this.periodSelector = new Selector(this.projectionData.getAllPeriod());
     this.projectionSelector = new Selector(this.projectionData.getAllProjection());
@@ -91,7 +96,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   createChartData() {
-    this.projectionData = new ProjectionData(this.projectionJSON, ProjectionComponent.categories);
+    this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories());
     this.projectionGraphData = this.projectionData.getGraphData();
     // this.projectionData.updateGraphData([2], [0, 1, 2, 3, 4, 5], ProjectionComponent.categories, ['CURRENT', 'PROPOSED']);
   }
@@ -111,7 +116,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       xScaleDomain: this.projectionData.getAllPeriod(),
       yScaleDomain: [0, this.projectionData.getMaxStackValue()],
       x1ScaleDomain: ['CURRENT', 'PROPOSED'],
-      categories: ProjectionComponent.categories,
+      categories: this.getGraphCategories(),
       translation: Translations.categoryTranslate
     };
     this.projectionD3Chart = new ProjectionD3Chart(chartConfig);
