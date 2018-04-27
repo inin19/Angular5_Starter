@@ -71,7 +71,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   // to-do get age Group for each country
   countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
-  proposalID = '129';
+  proposalID = '3';
   hasClaimData = true;
   // hasClaimData = false;
 
@@ -151,6 +151,9 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   showSuccess() {
     this.toastr.success('Claims Data loaded!');
   }
+
+
+
 
 
   constructor(private demographicService: DemographicService, private claimDataService: ClaimsService, private toastr: ToastrService) {

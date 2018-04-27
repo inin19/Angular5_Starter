@@ -140,7 +140,7 @@
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" #claimsPerCapita></app-claims-percapita>
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()"  #claimsPerCapita></app-claims-percapita>
   </tab>
 
   <tab id="claimsFrequency" (select)="onSelect($event)">
@@ -156,5 +156,3 @@
   </tab>
 
 </tabset>
-
-<!-- <toaster-container [toasterconfig]="toasterconfig"></toaster-container> -->

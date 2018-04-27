@@ -6,7 +6,16 @@
 
 
         <form class="form-inline">
-          Sorting &nbsp;
+          Claim/Settled Amount &nbsp;
+          <div class="btn-group">
+            <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="claim" tabindex="0"
+              role="button" (click)="changeAmountType()">Claim</label>
+            <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="settled" tabindex="0"
+              role="button" (click)="changeAmountType()">Settled</label>
+          </div>
+
+
+          &nbsp; Sorting &nbsp;
           <div class="btn-group">
             <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Asc" tabindex="0"
               role="button" (click)="changeSorting()">Asc</label>
@@ -41,4 +50,3 @@
   </div>
   <div id="waterfallTooltip">Tooltip</div>
 </div>
-

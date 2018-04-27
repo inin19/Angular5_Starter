@@ -30,6 +30,11 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
 
 
+  @Input() private conditionGroups: string[];
+  @Input() private claimSelectors: Selector[];
+
+  // HistoricalUkComponent.conditionGroups
+
   // for tooltip
   @ViewChild('claimsPerCapitaContainer') private claimsPerCapitaContainer: ElementRef;
 
@@ -59,6 +64,10 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   // new form
   sorting: string;
 
+  // [claim, settled]
+  amountType: string;
+
+
   constructor() { }
 
 
@@ -66,6 +75,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     console.log('claim PerCapita init');
 
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
+
+
+    // settled
+    // this.amountType = 'settled';
+    this.amountType = 'claim';
+
 
     // console.log(this.claimMargin);
 
@@ -100,18 +115,33 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
+  // ???
   updateChartData(conditionGroup: string[], selectors: Selector[]) {
     // this.benchmarkClaim.updateGraphData(params);
     this.benchmarkClaimPerCapita.updateData(conditionGroup, selectors);
-    this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA);
+
+
+    // console.log(this.benchmarkClaimPerCapita.getClaimsAggregateDataTotal());
+
+    // this.benchmarkClaimPerCapita.getClaimsAggregateData().forEach(element => {
+    //   console.log(element);
+    // });
+
+    this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
 
     this.benchmarkConditionGroupData = this.benchmarkClaimPerCapita.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
 
+
+    this.benchmarkConditionGroupData.forEach(element => {
+      console.log(element);
+    });
+
+
     if (this.proposalClaimPerCapita) {
       // this.proposalClaim.updateGraphData(params);
       this.proposalClaimPerCapita.updateData(conditionGroup, selectors);
-      this.proposalClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA);
+      this.proposalClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
 
       this.proposalConditionGroupData = this.proposalClaimPerCapita.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaimPerCapita.getGraphData();
@@ -245,6 +275,24 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     this.resizeDetector.removeAllListeners(this.benchmarkClaimsPerCapita.nativeElement);
 
     console.log('unlistenclaims per capita divs');
+  }
+
+  changeAmountType() {
+    console.log('Amount Type : ', this.amountType);
+
+    this.updateChartData(this.conditionGroups, this.claimSelectors);
+    this.updateChart();
+
+
+
+    // this.claimPerCapitaComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+    // this.claimPerCapitaComponent.updateChart();
+
+    // if (this.proposalClaimPerCapita) {
+
+    // } else {
+
+    // }
   }
 
 

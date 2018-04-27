@@ -42,25 +42,25 @@ export class DemographicService {
 
 
 
-  getBenchmarkProposalDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<Array<any>> {
-
-    const l: number = new Date().getMilliseconds();
-    return Observable.forkJoin(
-      this.http.get(this.benchmarkDemographicUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-      this.http.get(this.proposalDemographicUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions)
-    );
-  }
-
-
-
-  // localdata
   // getBenchmarkProposalDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<Array<any>> {
 
   //   const l: number = new Date().getMilliseconds();
   //   return Observable.forkJoin(
-  //     this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions),
-  //     this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions)
+  //     this.http.get(this.benchmarkDemographicUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+  //     this.http.get(this.proposalDemographicUrl + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions)
   //   );
   // }
+
+
+
+  // localdata
+  getBenchmarkProposalDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<Array<any>> {
+
+    const l: number = new Date().getMilliseconds();
+    return Observable.forkJoin(
+      this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions),
+      this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions)
+    );
+  }
 
 }

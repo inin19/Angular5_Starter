@@ -57,11 +57,10 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   // new form
   sorting: string;
 
-  constructor() { }
-  // ngOnInit() {
-  //   console.log('claim frequency init');
 
-  // }
+
+  constructor() { }
+
 
 
   ngOnInit() {
@@ -88,6 +87,7 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     console.log('claim frequncey on changes');
   }
+
 
 
   createChartData() {
@@ -223,6 +223,8 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
     this.updateChart_benchmark();
 
   }
+
+
 
 
   listenToDivResize() {

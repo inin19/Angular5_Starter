@@ -58,7 +58,7 @@ export class WaterfallData {
     this.updateData(conditoinGroups);
 
     if (type === WaterfallData.type.PERCAPITA || type === WaterfallData.type.FREQUENCY) {
-      this.createWaterfallData('default', type);
+      this.createWaterfallData('default', type, 'claim');
     } else {
       // console.log('this is avg cost');
     }
@@ -91,6 +91,9 @@ export class WaterfallData {
       if (element.conditionGrouping === 'CONDITION_SS_&_IDC') {
         element.conditionGrouping = 'CONDITION_GROUPING_SS_&_IDC';
       }
+
+      // console.log(element.prevYearTotalSettleClaimAmount);
+      // console.log(element.currYearTotalSettledClaimAmount);
     });
 
     // create crossfilter object
@@ -134,11 +137,11 @@ export class WaterfallData {
     }
 
 
-
-
-
     this.claimsAggregateData = [];
     const aggregateData = this.conditionGroupingDimensionGroup.reduce(this.reduceAdd, this.reduceRemove, this.reduceInit).all();
+
+
+
 
     // aggregation
     for (const item of aggregateData) {
@@ -154,12 +157,21 @@ export class WaterfallData {
         prevYeartotalClaimCostAmount: item.value.prevYeartotalClaimCostAmount_sum,
         prevYearClaimFrequency: item.value.prevYearClaimCount_sum / this.prevYearMemberCount,
         prevYearPerCapitalClaimCost: item.value.prevYeartotalClaimCostAmount_sum / this.prevYearMemberCount,
-        prevYearAvgClaimCost: item.value.prevYeartotalClaimCostAmount_sum / item.value.prevYearClaimCount_sum
+        prevYearAvgClaimCost: item.value.prevYeartotalClaimCostAmount_sum / item.value.prevYearClaimCount_sum,
+
+        // extra stuff for settle amount
+        currYeartotalSettledAmount: item.value.currYeartotalSettledAmount_sum,
+        currYearPerCapitalSettledAmount: item.value.currYeartotalSettledAmount_sum / this.currYearMemberCount,
+        currYearAvgSettledAmount: item.value.currYeartotalSettledAmount_sum / item.value.currYearClaimCount_sum,
+
+        prevYeartotalSettledAmount: item.value.prevYeartotalSettledAmount_sum,
+        prevYearPerCapitalSettledAmount: item.value.prevYeartotalSettledAmount_sum / this.prevYearMemberCount,
+        prevYearAvgSettledAmount: item.value.prevYeartotalSettledAmount_sum / item.value.prevYearClaimCount_sum,
+
       };
 
       this.claimsAggregateData.push(temp);
     }
-
 
 
     const total = this.claimsAggregateData.reduce((accumulator, currVal) => {
@@ -170,12 +182,18 @@ export class WaterfallData {
         currYearClaimFrequency: currVal.currYearClaimFrequency + 0,
         currYearPerCapitalClaimCost: currVal.currYearPerCapitalClaimCost + 0,
         currYearAvgClaimCost: currVal.currYearAvgClaimCost + 0,
+        currYeartotalSettledAmount: accumulator.currYeartotalSettledAmount + currVal.currYeartotalSettledAmount,
+        currYearPerCapitalSettledAmount: currVal.currYearPerCapitalSettledAmount + 0,
+        currYearAvgSettledAmount: currVal.currYearAvgSettledAmount + 0,
 
         prevYearClaimCount: accumulator.prevYearClaimCount + currVal.prevYearClaimCount,
         prevYeartotalClaimCostAmount: accumulator.prevYeartotalClaimCostAmount + currVal.prevYeartotalClaimCostAmount,
         prevYearClaimFrequency: accumulator.prevYearClaimFrequency + 0,
         prevYearPerCapitalClaimCost: accumulator.prevYearPerCapitalClaimCost + 0,
-        prevYearAvgClaimCost: accumulator.prevYearAvgClaimCost + 0
+        prevYearAvgClaimCost: accumulator.prevYearAvgClaimCost + 0,
+        prevYeartotalSettledAmount: accumulator.prevYeartotalSettledAmount + currVal.prevYeartotalSettledAmount,
+        prevYearPerCapitalSettledAmount: currVal.prevYearPerCapitalSettledAmount + 0,
+        prevYearAvgSettledAmount: currVal.prevYearAvgSettledAmount + 0
       };
     }, {
         key: 'TOTAL',
@@ -184,12 +202,18 @@ export class WaterfallData {
         currYearClaimFrequency: 0,
         currYearPerCapitalClaimCost: 0,
         currYearAvgClaimCost: 0,
+        currYeartotalSettledAmount: 0,
+        currYearPerCapitalSettledAmount: 0,
+        currYearAvgSettledAmount: 0,
 
         prevYearClaimCount: 0,
         prevYeartotalClaimCostAmount: 0,
         prevYearClaimFrequency: 0,
         prevYearPerCapitalClaimCost: 0,
-        prevYearAvgClaimCost: 0
+        prevYearAvgClaimCost: 0,
+        prevYeartotalSettledAmount: 0,
+        prevYearPerCapitalSettledAmount: 0,
+        prevYearAvgSettledAmount: 0,
       });
 
     total.currYearClaimFrequency = total.currYearClaimCount / this.currYearMemberCount;
@@ -201,59 +225,108 @@ export class WaterfallData {
     total.currYearAvgClaimCost = total.currYeartotalClaimCostAmount / total.currYearClaimCount;
     total.prevYearAvgClaimCost = total.prevYeartotalClaimCostAmount / total.prevYearClaimCount;
 
+    total.currYearPerCapitalSettledAmount = total.currYeartotalSettledAmount / this.currYearMemberCount;
+    total.prevYearPerCapitalSettledAmount = total.prevYeartotalSettledAmount / this.prevYearMemberCount;
+
+    total.currYearAvgSettledAmount = total.currYeartotalSettledAmount / total.currYearClaimCount;
+    total.prevYearAvgSettledAmount = total.prevYeartotalSettledAmount / total.prevYearClaimCount;
+
     this.claimsAggregateDataTotal = total;
+
   }
 
 
-  createWaterfallData(sorting: string, type: string) {
+  createWaterfallData(sorting: string, type: string, claimOrSettled?: string) {
     // frequency  vs percapita
-    this.conditionGroupPrevYearData = {
-      key: 'PREVYEAR',
-      Base: 0,
-      Fall: 0,
-      Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency,
-      value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency
-    };
 
-    this.conditionGroupCurrYearData = {
-      key: 'CURRYEAR',
-      Base: 0,
-      Fall: 0,
-      Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
-      value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
-    };
+    if (claimOrSettled === 'claim') {
+      this.conditionGroupPrevYearData = {
+        key: 'PREVYEAR',
+        Base: 0,
+        Fall: 0,
+        Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency,
+        value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalClaimCost : this.claimsAggregateDataTotal.prevYearClaimFrequency
+      };
 
-    this.conditionGroupData = [];
+      this.conditionGroupCurrYearData = {
+        key: 'CURRYEAR',
+        Base: 0,
+        Fall: 0,
+        Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
+        value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalClaimCost : this.claimsAggregateDataTotal.currYearClaimFrequency,
+      };
+
+      this.conditionGroupData = [];
+      // conditionGroup keys
+      this.conditionGroup.forEach(element => {
+        const item = this.claimsAggregateData.find((val) => val.key === element);
+        if (item === undefined) {
+          this.conditionGroupData.push({
+            key: element,
+            Base: 0,
+            Fall: 0,
+            Rise: 0,
+            value: 0
+          });
+        } else {
+          this.conditionGroupData.push({
+            key: element,
+            Base: 0,
+            Fall: 0,
+            Rise: 0,
+            value: type === WaterfallData.type.PERCAPITA ? (item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost) : (item.currYearClaimFrequency - item.prevYearClaimFrequency)
+          });
+        }
+      });
 
 
-    // conditionGroup keys
-    this.conditionGroup.forEach(element => {
-      const item = this.claimsAggregateData.find((val) => val.key === element);
 
-      if (item === undefined) {
-        this.conditionGroupData.push({
-          key: element,
-          Base: 0,
-          Fall: 0,
-          Rise: 0,
-          value: 0
-        });
-      } else {
-        this.conditionGroupData.push({
-          key: element,
-          Base: 0,
-          Fall: 0,
-          Rise: 0,
-          value: type === WaterfallData.type.PERCAPITA ? (item.currYearPerCapitalClaimCost - item.prevYearPerCapitalClaimCost) : (item.currYearClaimFrequency - item.prevYearClaimFrequency)
-        });
-      }
+    } else {
+      this.conditionGroupPrevYearData = {
+        key: 'PREVYEAR',
+        Base: 0,
+        Fall: 0,
+        Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalSettledAmount : this.claimsAggregateDataTotal.prevYearClaimFrequency,
+        value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.prevYearPerCapitalSettledAmount : this.claimsAggregateDataTotal.prevYearClaimFrequency
+      };
 
-    });
+      this.conditionGroupCurrYearData = {
+        key: 'CURRYEAR',
+        Base: 0,
+        Fall: 0,
+        Rise: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalSettledAmount : this.claimsAggregateDataTotal.currYearClaimFrequency,
+        value: type === WaterfallData.type.PERCAPITA ? this.claimsAggregateDataTotal.currYearPerCapitalSettledAmount : this.claimsAggregateDataTotal.currYearClaimFrequency,
+      };
 
+
+      this.conditionGroupData = [];
+      // conditionGroup keys
+      this.conditionGroup.forEach(element => {
+        const item = this.claimsAggregateData.find((val) => val.key === element);
+        if (item === undefined) {
+          this.conditionGroupData.push({
+            key: element,
+            Base: 0,
+            Fall: 0,
+            Rise: 0,
+            value: 0
+          });
+        } else {
+          this.conditionGroupData.push({
+            key: element,
+            Base: 0,
+            Fall: 0,
+            Rise: 0,
+            value: type === WaterfallData.type.PERCAPITA ? (item.currYearPerCapitalSettledAmount - item.prevYearPerCapitalSettledAmount) : (item.currYearClaimFrequency - item.prevYearClaimFrequency)
+          });
+        }
+      });
+
+
+    }
 
     this.sortConditionGroupData(sorting, this.conditionGroup);
-
-    this.calculateWaterfallBaseFallRise();
+    // this.calculateWaterfallBaseFallRise();
     // graph data is ready
   }
 
@@ -350,6 +423,9 @@ export class WaterfallData {
     p.currYeartotalClaimCostAmount_sum += v.currYearTotalClaimCostAmount;
     p.prevYeartotalClaimCostAmount_sum += v.prevYearTotalClaimCostAmount;
 
+    p.currYeartotalSettledAmount_sum += v.currYearTotalSettledClaimAmount;
+    p.prevYeartotalSettledAmount_sum += v.prevYearTotalSettledClaimAmount;
+
     return p;
   }
 
@@ -359,6 +435,9 @@ export class WaterfallData {
 
     p.currYeartotalClaimCostAmount_sum -= v.currYeartotalClaimCostAmount;
     p.prevYeartotalClaimCostAmount_sum -= v.prevYearTotalClaimCostAmount;
+
+    p.currYeartotalSettledAmount_sum -= v.currYearTotalSettledClaimAmount;
+    p.prevYeartotalSettledAmount_sum -= v.prevYearTotalSettledClaimAmount;
     return p;
   }
 
@@ -367,7 +446,11 @@ export class WaterfallData {
       currYearClaimCount_sum: 0,
       prevYearClaimCount_sum: 0,
       currYeartotalClaimCostAmount_sum: 0,
-      prevYeartotalClaimCostAmount_sum: 0
+      prevYeartotalClaimCostAmount_sum: 0,
+
+      currYeartotalSettledAmount_sum: 0,
+      prevYeartotalSettledAmount_sum: 0
+
     };
   }
 
@@ -397,8 +480,8 @@ export interface ClaimJSONInput {
   currYearTotalClaimCostAmount: number;
   prevYearClaimCount: number;
   prevYearTotalClaimCostAmount: number;
-  currYearTotalSettledClaimAmount?: number;
-  prevYearTotalSettleClaimAmount?: number;
+  currYearTotalSettledClaimAmount: number;
+  prevYearTotalSettledClaimAmount: number;
 }
 
 
@@ -417,4 +500,12 @@ export interface ClaimsAggregateData {
   prevYearPerCapitalClaimCost: number;
   prevYearAvgClaimCost: number;
 
+  currYeartotalSettledAmount: number;
+  prevYeartotalSettledAmount: number;
+
+  currYearPerCapitalSettledAmount: number;
+  prevYearPerCapitalSettledAmount: number;
+
+  currYearAvgSettledAmount: number;
+  prevYearAvgSettledAmount: number;
 }

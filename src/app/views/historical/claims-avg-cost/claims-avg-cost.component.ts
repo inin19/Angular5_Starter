@@ -55,8 +55,6 @@ export class ClaimsAvgCostComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.claimsAvgCostContainer);
-
     this.populateDomainValue();
     this.createChartData();
     this.createChart();
@@ -192,8 +190,7 @@ export class ClaimsAvgCostComponent implements OnInit {
 
   updateChart() {
 
-    console.log('max value');
-    console.log(this.getMaxAvgCost());
+
 
     const config: AvgClaimCostChartConfig = {
       title: 'Avg cost',
