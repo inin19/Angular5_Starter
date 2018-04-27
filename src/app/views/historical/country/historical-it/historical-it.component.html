@@ -167,7 +167,7 @@
     <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
       [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      [claimSelectors]="claimsSelectors" #claimsPerCapita></app-claims-percapita>
+      [claimSelectors]="claimsSelectors" [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
   </tab>
 
   <tab id="claimsFrequency" (select)="onSelect($event)">

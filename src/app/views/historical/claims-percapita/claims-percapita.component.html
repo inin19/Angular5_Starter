@@ -6,14 +6,17 @@
 
 
         <form class="form-inline">
-          Claim/Settled Amount &nbsp;
-          <div class="btn-group">
-            <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="claim" tabindex="0"
-              role="button" (click)="changeAmountType()">Claim</label>
-            <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="settled" tabindex="0"
-              role="button" (click)="changeAmountType()">Settled</label>
-          </div>
 
+          <div *ngIf="countryCode==='ISO2_IT'">
+            Claim/Settled Amount &nbsp;
+            <div class="btn-group">
+              <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="claim" tabindex="0"
+                role="button" (click)="changeAmountType()">Claim</label>
+              <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="settled" tabindex="0"
+                role="button" (click)="changeAmountType()">Settled</label>
+            </div>
+
+          </div>
 
           &nbsp; Sorting &nbsp;
           <div class="btn-group">

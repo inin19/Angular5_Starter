@@ -28,6 +28,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
 
+  @Input() private countryCode: string;
 
 
   @Input() private conditionGroups: string[];
@@ -73,6 +74,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     console.log('claim PerCapita init');
+
+    console.log('conutry code in percapita: ', this.countryCode);
 
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
 
@@ -282,17 +285,6 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
     this.updateChartData(this.conditionGroups, this.claimSelectors);
     this.updateChart();
-
-
-
-    // this.claimPerCapitaComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
-    // this.claimPerCapitaComponent.updateChart();
-
-    // if (this.proposalClaimPerCapita) {
-
-    // } else {
-
-    // }
   }
 
 

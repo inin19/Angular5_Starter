@@ -153,7 +153,28 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   }
 
 
+  // getConditionGroups()
+  private getConditionGroups(): string[] {
+    return HistoricalUkComponent.conditionGroups;
+  }
 
+
+  private getClaimDimensions(): string[] {
+    return HistoricalUkComponent.claimDimensions;
+  }
+
+  private getDemographicDimensions(): string[] {
+    return HistoricalUkComponent.demographicDimensions;
+  }
+
+
+  private getClaimMargin() {
+    return HistoricalUkComponent.claimMargin;
+  }
+
+  private getDemographicMargin() {
+    return HistoricalUkComponent.demographicMargin;
+  }
 
 
   constructor(private demographicService: DemographicService, private claimDataService: ClaimsService, private toastr: ToastrService) {
@@ -196,16 +217,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
 
 
-  getClaimMargin() {
-    return HistoricalUkComponent.claimMargin;
-  }
-
-  getDemographicMargin() {
-    return HistoricalUkComponent.demographicMargin;
-  }
-
   createDemographicSelectors() {
-    for (const item of HistoricalUkComponent.demographicDimensions) {
+    for (const item of this.getDemographicDimensions()) {
       if (this.hasClaimData === true) {
         const commonElements = new Set([...this.proposalDemographic.getSelectorValuesByName(item).sort(), ...this.benchmarkDemographic.getSelectorValuesByName(item).sort()]);
         this.demographicSelectors.push(new Selector(Array.from(commonElements).sort(), item));
@@ -216,7 +229,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   }
 
   createClaimsSelectors() {
-    for (const item of HistoricalUkComponent.claimDimensions) {
+    for (const item of this.getClaimDimensions()) {
       if (this.hasClaimData === true) {
         const commonElements = new Set([...this.proposalClaimPerCapita.getSelectorValuesByName(item).sort(), ...this.benchmarkClaimPerCapita.getSelectorValuesByName(item).sort()]);
         this.claimsSelectors.push(new Selector(Array.from(commonElements).sort(), item));
@@ -252,8 +265,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     this.benchmarkClaimPerCapita = new WaterfallData(
       this.benchmarkClaimData,
       this.benchmarkMemberCount,
-      HistoricalUkComponent.conditionGroups,
-      HistoricalUkComponent.claimDimensions,
+      this.getConditionGroups(),
+      this.getClaimDimensions(),
       WaterfallData.type.PERCAPITA
     );
 
@@ -261,8 +274,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     this.benchmarkClaimFrequency = new WaterfallData(
       this.benchmarkClaimData,
       this.benchmarkMemberCount,
-      HistoricalUkComponent.conditionGroups,
-      HistoricalUkComponent.claimDimensions,
+      this.getConditionGroups(),
+      this.getClaimDimensions(),
       WaterfallData.type.FREQUENCY
     );
 
@@ -271,8 +284,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     this.benchmarkClaimAvgCost = new WaterfallData(
       this.benchmarkClaimData,
       this.benchmarkMemberCount,
-      HistoricalUkComponent.conditionGroups,
-      HistoricalUkComponent.claimDimensions,
+      this.getConditionGroups(),
+      this.getClaimDimensions(),
       WaterfallData.type.AVGCOST
     );
 
@@ -280,8 +293,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.proposalClaimPerCapita = new WaterfallData(
         this.proposalClaimData,
         this.proposalMemberCount,
-        HistoricalUkComponent.conditionGroups,
-        HistoricalUkComponent.claimDimensions,
+        this.getConditionGroups(),
+        this.getClaimDimensions(),
         WaterfallData.type.PERCAPITA
       );
 
@@ -289,16 +302,16 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.proposalClaimFrequency = new WaterfallData(
         this.proposalClaimData,
         this.proposalMemberCount,
-        HistoricalUkComponent.conditionGroups,
-        HistoricalUkComponent.claimDimensions,
+        this.getConditionGroups(),
+        this.getClaimDimensions(),
         WaterfallData.type.FREQUENCY
       );
 
       this.proposalClaimAvgCost = new WaterfallData(
         this.proposalClaimData,
         this.proposalMemberCount,
-        HistoricalUkComponent.conditionGroups,
-        HistoricalUkComponent.claimDimensions,
+        this.getConditionGroups(),
+        this.getClaimDimensions(),
         WaterfallData.type.AVGCOST
       );
 
@@ -309,10 +322,10 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   createDemographicData() {
     if (this.hasClaimData === true) {
-      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
-      this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+      this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
     } else {
-      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), HistoricalUkComponent.demographicDimensions);
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
     }
   }
 
@@ -491,17 +504,17 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsPerCapita': {
-        this.claimPerCapitaComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimPerCapitaComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
         this.claimPerCapitaComponent.updateChart();
         break;
       }
       case 'claimsFrequency': {
-        this.claimFrequencyComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimFrequencyComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
         this.claimFrequencyComponent.updateChart();
         break;
       }
       case 'claimsAvgCost': {
-        this.claimAvgCostComponent.updateChartData(HistoricalUkComponent.conditionGroups, this.claimsSelectors);
+        this.claimAvgCostComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
         this.claimAvgCostComponent.updateChart();
         break;
       }
