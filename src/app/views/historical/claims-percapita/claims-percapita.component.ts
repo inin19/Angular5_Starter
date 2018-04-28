@@ -134,7 +134,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   createChart_benchmark() {
 
-    if (this.benchmarkClaimsPerCapita.nativeElement.offsetWidth === 0 && this.benchmarkClaimsPerCapita.nativeElement.offsetWidth === 0) {
+    if (this.benchmarkClaimsPerCapita.nativeElement.offsetWidth === 0 && this.benchmarkClaimsPerCapita.nativeElement.offsetHeight === 0) {
       console.log('container size is zero, chart is not created');
     } else {
       if (!this.benchmarkD3Chart) {

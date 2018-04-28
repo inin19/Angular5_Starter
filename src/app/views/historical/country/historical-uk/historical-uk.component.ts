@@ -511,7 +511,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       }
       case 'claimsFrequency': {
         this.claimFrequencyComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
-        this.claimFrequencyComponent.updateChart();
+        this.claimFrequencyComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsAvgCost': {
