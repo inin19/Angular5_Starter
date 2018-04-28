@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { DemographicComponent } from '../../demographic/demographic.component';
 import { ClaimsPerCapitaComponent } from '../../claims-percapita/claims-percapita.component';
-import { ClaimsFrequencyComponent } from '../../claims-frequency/claims-frequency.component';
 import { ClaimsAvgCostComponent } from './../../claims-avg-cost/claims-avg-cost.component';
 import { DemographicService } from '../../../../providers/charts/demographic.service';
 import { ClaimsService } from '../../../../providers/charts/claims.service';
@@ -11,6 +10,8 @@ import { Selector } from './../../../../model/utils/selector.model';
 import { TornadoData } from './../../../../model/D3chartData/tornado-data.model';
 import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
 import { ToastrService } from 'ngx-toastr';
+import { ClaimsFrequencyComponent } from './../../claims-frequency/claims-frequency.component';
+
 
 @Component({
   selector: 'app-historical-uk',
@@ -138,7 +139,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   @ViewChild('demographic') demographicComponent: DemographicComponent;
   @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsPerCapitaComponent;
-  @ViewChild('claimsFrequency') claimFrequencyComponent: ClaimsPerCapitaComponent;
+  @ViewChild('claimsFrequency') claimFrequencyComponent: ClaimsFrequencyComponent;
   @ViewChild('claimsAvgCost') claimAvgCostComponent: ClaimsAvgCostComponent;
 
 
@@ -505,7 +506,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       }
       case 'claimsPerCapita': {
         this.claimPerCapitaComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
-        this.claimPerCapitaComponent.updateChart();
+        this.claimPerCapitaComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsFrequency': {
