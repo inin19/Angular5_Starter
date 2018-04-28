@@ -26,8 +26,8 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
   }
 
-  onSelect() {
-    console.log('onSelect');
-  }
+  // onSelect() {
+  //   console.log('onSelect');
+  // }
 
 }

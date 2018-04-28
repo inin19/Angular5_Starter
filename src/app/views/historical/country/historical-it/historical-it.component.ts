@@ -1,3 +1,4 @@
+import { ClaimsFrequencyComponent } from './../../claims-frequency/claims-frequency.component';
 import { ToastrService } from 'ngx-toastr';
 import { ClaimsAvgCostComponent } from './../../claims-avg-cost/claims-avg-cost.component';
 import { TornadoData } from '../../../../model/D3chartData/tornado-data.model';
@@ -187,7 +188,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
 
   @ViewChild('demographic') demographicComponent: DemographicComponent;
   @ViewChild('claimsPerCapita') claimPerCapitaComponent: ClaimsPerCapitaComponent;
-  @ViewChild('claimsFrequency') claimFrequencyComponent: ClaimsPerCapitaComponent;
+  @ViewChild('claimsFrequency') claimFrequencyComponent: ClaimsFrequencyComponent;
   @ViewChild('claimsAvgCost') claimAvgCostComponent: ClaimsAvgCostComponent;
 
 
@@ -281,8 +282,6 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
         this.demographicSelectors.push(new Selector(this.benchmarkDemographic.getSelectorValuesByName(item).sort(), item));
       }
     }
-
-    console.log(this.demographicSelectors);
   }
 
   createClaimsSelectors() {
@@ -562,7 +561,8 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
       }
       case 'claimsPerCapita': {
         this.claimPerCapitaComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
-        this.claimPerCapitaComponent.updateChart();
+        // this.claimPerCapitaComponent.updateChart();
+        this.claimPerCapitaComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsFrequency': {

@@ -1,21 +1,10 @@
-<tabset type="pills">
-  <tab id="historical" (select)="onSelect($event)">
-    <ng-template tabHeading>Historical</ng-template>
-    <div class="card-body">
+<div class="card-body">
 
 
-      <div [ngSwitch]="countryCode">
-        <app-historical-uk *ngSwitchCase="'ISO2_GB'"></app-historical-uk>
-        <app-historical-it *ngSwitchCase="'ISO2_IT'"></app-historical-it>
+  <div [ngSwitch]="countryCode">
+    <app-historical-uk *ngSwitchCase="'ISO2_GB'"></app-historical-uk>
+    <app-historical-it *ngSwitchCase="'ISO2_IT'"></app-historical-it>
 
-      </div>
+  </div>
 
-    </div>
-
-
-  </tab>
-  <tab id="simulator" (select)="onSelect($event)">
-    <ng-template tabHeading>Simulator</ng-template>
-  </tab>
-
-</tabset>
+</div>

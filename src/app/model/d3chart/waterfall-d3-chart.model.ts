@@ -54,6 +54,9 @@ export class WaterfallD3Chart {
     this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
 
 
+
+
+
     this.svg = d3.select(chartConfig.domID).append('svg')
       .attr('width', htmlElement.offsetWidth)
       .attr('height', htmlElement.offsetHeight);
