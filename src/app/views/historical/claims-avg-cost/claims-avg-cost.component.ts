@@ -57,8 +57,9 @@ export class ClaimsAvgCostComponent implements OnInit {
 
     this.populateDomainValue();
     this.createChartData();
-    this.createChart();
-    this.updateChart();
+    // this.createChart();
+    // this.updateChart();
+    this.creatOrUpdateChart();
 
   }
 
@@ -172,44 +173,54 @@ export class ClaimsAvgCostComponent implements OnInit {
   }
 
   createChart() {
-    const config: AvgClaimCostChartConfig = {
-      title: 'Avg cost',
-      margin: this.claimMargin,
-      chartContainer: this.claimsAvgCostGraph,
-      domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
-      xScaleDomain: this.xDomain,
-      x1ScaleDomain: this.x1Domain,
-      yScaleDomain: [0, this.getMaxAvgCost()],
-      toolTipParent: this.claimsAvgCostContainer.nativeElement.id,
-      conditionGroupTranslation: this.conditionGroupTranslation
-    };
-
-    this.avgCostD3Chart = new AvgCostD3Chart(config);
+    if (this.claimsAvgCostGraph.nativeElement.offsetWidth === 0 && this.claimsAvgCostGraph.nativeElement.offsetHeight === 0) {
+      console.log('container size is zero, chart is not created');
+    } else {
+      if (!this.avgCostD3Chart) {
+        const config: AvgClaimCostChartConfig = {
+          title: 'Avg cost',
+          margin: this.claimMargin,
+          chartContainer: this.claimsAvgCostGraph,
+          domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
+          xScaleDomain: this.xDomain,
+          x1ScaleDomain: this.x1Domain,
+          yScaleDomain: [0, this.getMaxAvgCost()],
+          toolTipParent: this.claimsAvgCostContainer.nativeElement.id,
+          conditionGroupTranslation: this.conditionGroupTranslation
+        };
+        this.avgCostD3Chart = new AvgCostD3Chart(config);
+      }
+    }
   }
 
 
   updateChart() {
-
-
-
-    const config: AvgClaimCostChartConfig = {
-      title: 'Avg cost',
-      margin: this.claimMargin,
-      chartContainer: this.claimsAvgCostGraph,
-      domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
-      xScaleDomain: this.xDomain,
-      x1ScaleDomain: this.x1Domain,
-      yScaleDomain: [0, this.getMaxAvgCost()],
-      toolTipParent: this.claimsAvgCostContainer,
-      tooltipDomID: '#avgCostTooltip',
-      conditionGroupTranslation: this.conditionGroupTranslation,
-      barData: this.avgCostGraphData
-    };
-
-    this.avgCostD3Chart.updateChart(config);
-
-    console.log('avg cost chart update!');
+    if (this.avgCostD3Chart) {
+      const config: AvgClaimCostChartConfig = {
+        title: 'Avg cost',
+        margin: this.claimMargin,
+        chartContainer: this.claimsAvgCostGraph,
+        domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
+        xScaleDomain: this.xDomain,
+        x1ScaleDomain: this.x1Domain,
+        yScaleDomain: [0, this.getMaxAvgCost()],
+        toolTipParent: this.claimsAvgCostContainer,
+        tooltipDomID: '#avgCostTooltip',
+        conditionGroupTranslation: this.conditionGroupTranslation,
+        barData: this.avgCostGraphData
+      };
+      this.avgCostD3Chart.updateChart(config);
+      console.log('avg cost chart update!');
+    }
   }
+
+
+
+  creatOrUpdateChart() {
+    this.createChart();
+    this.updateChart();
+  }
+
 
   listenToDivResize() {
     this.resizeDetector.listenTo(this.claimsAvgCostContainer.nativeElement, (elem: HTMLElement) => {
