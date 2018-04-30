@@ -69,6 +69,11 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
+  // checkModel: any = { grid: false };
+
+  grid: false;
+
+  gridDispaly = 'Grid';
 
   constructor() { }
 
@@ -365,6 +370,23 @@ export class DemographicComponent implements OnInit, OnDestroy {
   }
 
 
+  toggleGridGraph() {
+
+    console.log('toggle Grid Graph');
+    if (this.gridDispaly === 'Grid') {
+      this.gridDispaly = 'Graph';
+    } else {
+      this.gridDispaly = 'Grid';
+    }
+
+
+    setTimeout(() => {
+      this.updateChart_combined();
+      this.updateChart_proposal();
+      this.updateChart_benchmark();
+    });
+
+  }
 
 
 }
