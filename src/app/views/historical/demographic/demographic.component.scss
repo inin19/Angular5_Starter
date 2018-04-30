@@ -78,12 +78,26 @@ ul {
   stroke-width: 0.5px;
 }
 
-// .grid .tick line {
-//   /* stroke-dasharray: "5, 5"; */
-//   stroke: darkgrey;
-//   stroke-width: 0.5px;
-// }
 
-// #proposalDemographic .x.axis .tick:nth-last-child(5) line {
 
-// }
+.tornadoGrid{
+  margin-left: 50px;
+  margin-top: 50px;
+  margin-right: 20px;
+  // top: 50, right: 20, bottom: 30, left: 50
+}
+
+
+#demographicCombinedGrid tbody tr td {
+  text-align:center;
+}
+
+#demographicCombinedGrid thead tr td {
+  text-align:center;
+}
+
+
+#demographicCombinedGrid thead tr th {
+  text-align:center;
+}
+

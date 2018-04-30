@@ -171,7 +171,13 @@ export class TornadoData {
     return this.dimensions.find(item => item.dimensionName === selectorName).dimension;
   }
 
+  getGridDetail(ageGroup: string[]) {
+    // const ageGroup = ['0-18', '19-23', '24-28', '29-33', '34-38', '39-43', '44-48', '49-53', '54-58', '59-63', '64+'];
+    this.gridDetail.sort((a, b) =>
+      ageGroup.indexOf(a.ageGroup) > ageGroup.indexOf(b.ageGroup) ? 1 : -1);
 
+    return this.gridDetail;
+  }
 
   getGraphData(): any {
     return this.graphData;

@@ -115,6 +115,9 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   proposalID = '3';
   hasClaimData = true;
 
+
+  ageGroupReverse = this.ageGroup.slice().reverse();
+
   // 0-18
   // 19-23
   // 24-28
@@ -376,14 +379,24 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   }
 
 
+  // createDemographicData() {
+  //   if (this.hasClaimData === true) {
+  //     this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+  //     this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+  //   } else {
+  //     this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+  //   }
+  // }
+
   createDemographicData() {
     if (this.hasClaimData === true) {
-      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
-      this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroupReverse, this.getDemographicDimensions());
+      this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroupReverse, this.getDemographicDimensions());
     } else {
-      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+      this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroupReverse, this.getDemographicDimensions());
     }
   }
+
 
 
   // check tab status
@@ -556,12 +569,11 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
     switch (this.currentTab) {
       case 'historicalDemographic': {
         this.demographicComponent.updateChartData(this.demographicSelectors);
-        this.demographicComponent.updateChart();
+        this.demographicComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsPerCapita': {
         this.claimPerCapitaComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
-        // this.claimPerCapitaComponent.updateChart();
         this.claimPerCapitaComponent.creatOrUpdateChart();
         break;
       }

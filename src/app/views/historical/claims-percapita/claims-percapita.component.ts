@@ -1,3 +1,4 @@
+import { TornadoGrid } from './../../../model/D3grid/tornado-grid.model';
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart.model';
 import { WaterfallChartConfig } from './../../../model/utils/chart-config';
@@ -78,6 +79,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     this.zoom = false;
     this.createChartData();
     this.creatOrUpdateChart();
+    this.createOrUpdateGrid();
   }
 
 
@@ -97,6 +99,10 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
+
+  createOrUpdateGrid() {
+
+  }
 
   // ???
   updateChartData(conditionGroup: string[], selectors: Selector[]) {

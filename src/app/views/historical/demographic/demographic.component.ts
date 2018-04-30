@@ -1,3 +1,4 @@
+import { TornadoGrid, TornadoCombinedGrid } from './../../../model/D3grid/tornado-grid.model';
 import { TornadoD3Chart, ChartConfig } from './../../../model/D3chart/tornado-d3-chart.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
@@ -36,6 +37,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
   @ViewChild('demographicCombinedContainer') private demographicCombinedParent: ElementRef;
 
 
+  private ageGroupReverse: string[];
 
 
   private proposalgraphData: any[];
@@ -53,7 +55,14 @@ export class DemographicComponent implements OnInit, OnDestroy {
   private maxPercentage: number;
 
 
+  // grid
+  private proposalGridData: any[];
+  private benchmarkGridData: any[];
 
+
+  private proposalGrid: TornadoGrid;
+  private benchmarkGrid: TornadoGrid;
+  private combinedGrid: TornadoCombinedGrid;
 
   zoom: boolean;
   disabled: boolean;
@@ -65,10 +74,12 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     console.log('in demographic init');
+    this.ageGroupReverse = this.ageGroup.slice().reverse();
 
+    // console.log(this.ageGroupReverse);
     this.zoom = false;
     this.createChartData();
-    this.createChart();
+    this.creatOrUpdateChart();
     this.listenToDivResize();
   }
 
@@ -113,6 +124,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
       el.source = 'Benchmark';
     });
 
+    this.benchmarkGridData = this.benchmarkDemographic.getGridDetail(this.ageGroupReverse);
+
     // if proposal has demographic data
     if (this.proposalDemographic) {
       this.proposalgraphData = this.proposalDemographic.getGraphData();
@@ -123,89 +136,183 @@ export class DemographicComponent implements OnInit, OnDestroy {
       });
 
       this.graphDataCombined = this.benchmarkgraphData.concat(this.proposalgraphData);
+
+      // grid
+      this.proposalGridData = this.proposalDemographic.getGridDetail(this.ageGroupReverse);
     } else {
       this.maxPercentage = this.benchmarkDemographic.getMaxPercentage();
     }
-
-
   }
 
 
-  createChart() {
+  // createChart() {
+  //   if (this.proposalDemographic) {
+  //     this.createChart_proposal();
+  //     this.updateChart_proposal();
+  //     // create combined chart
+  //     this.createChart_combined();
+  //     this.updateChart_combined();
+  //   }
+  //   this.createChart_benchmark();
+  //   this.updateChart_benchmark();
+  // }
+
+
+  creatOrUpdateChart() {
+    this.createChart_benchmark();
+    this.updateChart_benchmark();
+    this.createGrid_benchmark();
+    this.updateGrid_benchmark();
+
     if (this.proposalDemographic) {
       this.createChart_proposal();
       this.updateChart_proposal();
       // create combined chart
       this.createChart_combined();
       this.updateChart_combined();
+
+      this.createGrid_proposal();
+      this.updateGrid_proposal();
+
+      this.createGrid_combined();
+      this.updateGrid_combined();
+
     }
-    this.createChart_benchmark();
-    this.updateChart_benchmark();
+
+    // this.updateGrid();
   }
+
+
+
 
 
   updateChartData(selectors: Selector[]) {
     this.benchmarkDemographic.updateData(selectors);
     this.benchmarkgraphData = this.benchmarkDemographic.getGraphData();
 
+    this.benchmarkGridData = this.benchmarkDemographic.getGridDetail(this.ageGroupReverse);
+
+
     if (this.proposalDemographic) {
       this.proposalDemographic.updateData(selectors);
       this.proposalgraphData = this.proposalDemographic.getGraphData();
       this.maxPercentage = this.proposalDemographic.getMaxPercentage() > this.benchmarkDemographic.getMaxPercentage() ? this.proposalDemographic.getMaxPercentage() : this.benchmarkDemographic.getMaxPercentage();
+
+      // grid
+      this.proposalGridData = this.proposalDemographic.getGridDetail(this.ageGroupReverse);
     } else {
       this.maxPercentage = this.benchmarkDemographic.getMaxPercentage();
     }
-
   }
 
 
-  updateChart() {
-    this.updateChart_benchmark();
-    if (this.proposalDemographic) {
-      this.updateChart_proposal();
-      this.updateChart_combined();
+  // updateChart() {
+  //   this.updateChart_benchmark();
+  //   if (this.proposalDemographic) {
+  //     this.updateChart_proposal();
+  //     this.updateChart_combined();
+  //   }
+  // }
+
+  createGrid_proposal() {
+    if (!this.proposalGrid) {
+      this.proposalGrid = new TornadoGrid(this.proposalGridData, '#proposalDemographicGrid');
+    } else {
+      console.log('propoal grid proposed!');
+    }
+    // create detail grid
+  }
+
+  createGrid_benchmark() {
+    if (!this.benchmarkGrid) {
+      this.benchmarkGrid = new TornadoGrid(this.benchmarkGridData, '#benchmarkDemographicGrid');
     }
   }
 
+
+  createGrid_combined() {
+    if (!this.combinedGrid) {
+      this.combinedGrid = new TornadoCombinedGrid(this.proposalGridData, this.benchmarkGridData, '#demographicCombinedGrid');
+    }
+  }
+
+
+  updateGrid_proposal() {
+    this.proposalGrid.updateGrid(this.proposalGridData);
+  }
+
+  updateGrid_benchmark() {
+    this.benchmarkGrid.updateGrid(this.benchmarkGridData);
+  }
+
+
+  updateGrid_combined() {
+    this.combinedGrid.updateGrid(this.proposalGridData, this.benchmarkGridData);
+  }
+
+
   createChart_proposal() {
-    const chartConfig = {
-      title: 'proposal',
-      chartContainer: this.proposalDemoChartContainer,
-      margin: this.demographicMargin,
-      ageGroup: this.ageGroup,
-      maxPercentage: this.maxPercentage,
-      chartType: 1
-    };
-    this.proposalD3Chart = new TornadoD3Chart('#proposalDemographic', chartConfig);
+    if (this.proposalDemoChartContainer.nativeElement.offsetWidth === 0 && this.proposalDemoChartContainer.nativeElement.offsetHeight === 0) {
+
+    } else {
+      if (!this.proposalD3Chart) {
+        const chartConfig = {
+          title: 'proposal',
+          chartContainer: this.proposalDemoChartContainer,
+          margin: this.demographicMargin,
+          ageGroup: this.ageGroup,
+          maxPercentage: this.maxPercentage,
+          chartType: 1
+        };
+        this.proposalD3Chart = new TornadoD3Chart('#proposalDemographic', chartConfig);
+      }
+    }
+
 
   }
 
   createChart_benchmark() {
-    const chartConfig = {
-      title: 'benchmark',
-      chartContainer: this.proposalDemoChartContainer,
-      margin: this.demographicMargin,
-      ageGroup: this.ageGroup,
-      maxPercentage: this.maxPercentage,
-      chartType: 2
-    };
+    if (this.benchmarkDemoChartContainer.nativeElement.offsetWidth === 0 && this.benchmarkDemoChartContainer.nativeElement.offsetHeight === 0) {
 
-    this.benchmarkD3Chart = new TornadoD3Chart('#benchmarkDemographic', chartConfig);
+    } else {
+      if (!this.benchmarkD3Chart) {
+        const chartConfig = {
+          title: 'benchmark',
+          chartContainer: this.benchmarkDemoChartContainer,
+          margin: this.demographicMargin,
+          ageGroup: this.ageGroup,
+          maxPercentage: this.maxPercentage,
+          chartType: 2
+        };
+
+        this.benchmarkD3Chart = new TornadoD3Chart('#benchmarkDemographic', chartConfig);
+      }
+    }
   }
 
 
+  // to do?
   createChart_combined() {
-    const chartConfig = {
-      title: 'client & benchmark',
-      chartContainer: this.combinedDemoChartContainer,
-      margin: this.demographicMargin,
-      ageGroup: this.ageGroup,
-      maxPercentage: this.maxPercentage,
-      cluster: true,
-      chartType: 3
-    };
-    this.combinedD3Chart = new TornadoD3Chart('#combinedDemographic', chartConfig);
+    if (this.combinedDemoChartContainer.nativeElement.offsetWidth === 0 && this.combinedDemoChartContainer.nativeElement.offsetHeight === 0) {
+      console.log('combined graph 0');
+    } else {
+      console.log(this.combinedDemoChartContainer.nativeElement.offsetWidth, this.combinedDemoChartContainer.nativeElement.offsetHeight);
+      if (!this.combinedD3Chart) {
+        const chartConfig = {
+          title: 'client & benchmark',
+          chartContainer: this.combinedDemoChartContainer,
+          margin: this.demographicMargin,
+          ageGroup: this.ageGroup,
+          maxPercentage: this.maxPercentage,
+          cluster: true,
+          chartType: 3
+        };
+        this.combinedD3Chart = new TornadoD3Chart('#combinedDemographic', chartConfig);
+      }
+    }
   }
+
+
 
 
   updateChart_proposal() {
@@ -256,5 +363,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
       });
     }
   }
+
+
+
 
 }

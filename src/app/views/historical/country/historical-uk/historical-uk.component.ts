@@ -11,7 +11,7 @@ import { TornadoData } from './../../../../model/D3chartData/tornado-data.model'
 import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
 import { ToastrService } from 'ngx-toastr';
 import { ClaimsFrequencyComponent } from './../../claims-frequency/claims-frequency.component';
-
+import { ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster';
 
 @Component({
   selector: 'app-historical-uk',
@@ -501,7 +501,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     switch (this.currentTab) {
       case 'historicalDemographic': {
         this.demographicComponent.updateChartData(this.demographicSelectors);
-        this.demographicComponent.updateChart();
+        this.demographicComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsPerCapita': {
