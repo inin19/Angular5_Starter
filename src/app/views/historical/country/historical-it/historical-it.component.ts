@@ -12,6 +12,7 @@ import { ClaimsService } from '../../../../providers/charts/claims.service';
 import { TabDirective } from 'ngx-bootstrap/tabs';
 import { TabsetComponent } from 'ngx-bootstrap';
 
+
 @Component({
   selector: 'app-historical-it',
   templateUrl: './historical-it.component.html',

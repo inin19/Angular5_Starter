@@ -1,4 +1,4 @@
-import { TornadoGrid, TornadoCombinedGrid } from './../../../model/D3grid/tornado-grid.model';
+import { TornadoGrid, TornadoCombinedGrid, TornadoSummaryGrid } from './../../../model/D3grid/tornado-grid.model';
 import { TornadoD3Chart, ChartConfig } from './../../../model/D3chart/tornado-d3-chart.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
@@ -63,6 +63,10 @@ export class DemographicComponent implements OnInit, OnDestroy {
   private proposalGrid: TornadoGrid;
   private benchmarkGrid: TornadoGrid;
   private combinedGrid: TornadoCombinedGrid;
+
+  private benchmarkSummaryGrid: TornadoSummaryGrid;
+  private proposalSummaryGrid: TornadoSummaryGrid;
+
 
   zoom: boolean;
   disabled: boolean;
@@ -222,6 +226,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
   createGrid_proposal() {
     if (!this.proposalGrid) {
       this.proposalGrid = new TornadoGrid(this.proposalGridData, '#proposalDemographicGrid');
+      this.proposalSummaryGrid = new TornadoSummaryGrid(this.proposalDemographic.getGridSummary(), '#proposalDemographicGridSummary');
+
     } else {
       console.log('propoal grid proposed!');
     }
@@ -231,6 +237,7 @@ export class DemographicComponent implements OnInit, OnDestroy {
   createGrid_benchmark() {
     if (!this.benchmarkGrid) {
       this.benchmarkGrid = new TornadoGrid(this.benchmarkGridData, '#benchmarkDemographicGrid');
+      this.benchmarkSummaryGrid = new TornadoSummaryGrid(this.benchmarkDemographic.getGridSummary(), '#benchmarkDemographicGridSummary');
     }
   }
 
@@ -244,10 +251,15 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
   updateGrid_proposal() {
     this.proposalGrid.updateGrid(this.proposalGridData);
+
+    console.log(this.proposalDemographic.getGridSummary());
+
+    this.proposalSummaryGrid.updateGrid(this.proposalDemographic.getGridSummary());
   }
 
   updateGrid_benchmark() {
     this.benchmarkGrid.updateGrid(this.benchmarkGridData);
+    this.benchmarkSummaryGrid.updateGrid(this.benchmarkDemographic.getGridSummary());
   }
 
 
@@ -380,11 +392,11 @@ export class DemographicComponent implements OnInit, OnDestroy {
     }
 
 
-    setTimeout(() => {
-      this.updateChart_combined();
-      this.updateChart_proposal();
-      this.updateChart_benchmark();
-    });
+    // setTimeout(() => {
+    //   this.updateChart_combined();
+    //   this.updateChart_proposal();
+    //   this.updateChart_benchmark();
+    // });
 
   }
 

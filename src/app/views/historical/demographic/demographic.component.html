@@ -25,9 +25,39 @@
   <div [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
     <div class="col-6">
       <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
+
+      <div class="tornadoSummaryGrid tornadoGrid" id="proposalDemographicGridSummary" #proposalDemographicGridSummary>
+        <!-- <table class="table table-hover table-sm">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Female</th>
+              <th>Male</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td scope="row">Avg Age</td>
+              <td>44</td>
+              <td>45</td>
+            </tr>
+            <tr>
+              <td scope="row">%</td>
+              <td>51%</td>
+              <td>49%</td>
+            </tr>
+          </tbody>
+        </table> -->
+
+      </div>
+
+
+
     </div>
     <div class="col-6">
       <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
+      <div class="tornadoSummaryGrid tornadoGrid" id="benchmarkDemographicGridSummary" #benchmarkDemographicGridSummary></div>
+
     </div>
     <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
   </div>
@@ -38,6 +68,7 @@
       <div class="tornadoGrid" id='proposalDemographicGrid' #proposalDemographicGrid>
 
       </div>
+
     </div>
 
     <div class="col-6">
@@ -45,6 +76,8 @@
 
       </div>
     </div>
+
+
   </div>
 
 </div>

@@ -128,6 +128,22 @@ export class TornadoData {
 
     this.graphData = this.demographicAggregateData;
 
+    // calculate Avg Age
+
+    // console.log('total age');
+    // console.log(this.gridSummary);
+
+    this.genderDimensionGroup.reduceSum((d) => d.totalAge).all().forEach(element => {
+      if (element.key === TornadoData.FEMALE) {
+        this.gridSummary.avgAge.female = element.value / this.femaleMemberCount;
+      }
+      if (element.key === TornadoData.MALE) {
+        this.gridSummary.avgAge.male = element.value / this.maleMemberCount;
+      }
+    });
+
+
+
     this.graphData.forEach(element => {
 
       const gridDetailItem = this.gridDetail.find(d => d.ageGroup === element.key.ageGroup);
@@ -177,6 +193,11 @@ export class TornadoData {
       ageGroup.indexOf(a.ageGroup) > ageGroup.indexOf(b.ageGroup) ? 1 : -1);
 
     return this.gridDetail;
+  }
+
+
+  getGridSummary() {
+    return this.gridSummary;
   }
 
   getGraphData(): any {

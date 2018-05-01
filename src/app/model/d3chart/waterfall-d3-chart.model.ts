@@ -120,6 +120,11 @@ export class WaterfallD3Chart {
   }
 
   updateChart(chartConfig: WaterfallChartConfig) {
+
+    if (chartConfig.chartContainer.nativeElement.offsetWidth === 0 && chartConfig.chartContainer.nativeElement.offsetHeight === 0) {
+      return;
+    }
+
     const htmlElement = chartConfig.chartContainer.nativeElement;
     this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;

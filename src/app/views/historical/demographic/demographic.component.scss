@@ -87,6 +87,11 @@ ul {
   // top: 50, right: 20, bottom: 30, left: 50
 }
 
+.tornadoSummaryGrid {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
 
 #demographicCombinedGrid tbody tr td {
   text-align:center;
@@ -101,3 +106,16 @@ ul {
   text-align:center;
 }
 
+
+
+.tornadoSummaryGrid thead tr th {
+  text-align:center;
+}
+
+.tornadoSummaryGrid tbody tr td {
+  text-align:center;
+}
+
+// .percentage tr {
+
+// }

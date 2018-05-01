@@ -169,6 +169,11 @@ export class TornadoD3Chart {
 
 
   updateChart(dom: string, chartConfig: ChartConfig, barData: any[], chartParent: ElementRef, tooltipDom: string) {
+
+    if (chartConfig.chartContainer.nativeElement.offsetWidth === 0 && chartConfig.chartContainer.nativeElement.offsetHeight === 0) {
+      return;
+    }
+
     const htmlElement = chartConfig.chartContainer.nativeElement;
     this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
