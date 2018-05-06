@@ -52,7 +52,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   private static demographicMargin: any = { top: 50, right: 20, bottom: 30, left: 50 };
 
 
-  private conditionGroupTranslation = {
+  conditionGroupTranslation = {
     'PREVYEAR': '',
     'CONDITION_GROUPING_CIRCULATORY': 'Circulatory',
     'CONDITION_GROUPING_DIGESTIVE': 'Digestive',

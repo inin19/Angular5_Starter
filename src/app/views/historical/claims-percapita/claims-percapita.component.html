@@ -1,50 +1,40 @@
 <div class="row">
   <div class="col">
     <div class="float-right">
-      <div>
-
-
-
-        <form class="form-inline">
-
-          <div *ngIf="countryCode==='ISO2_IT'">
-            Claim/Settled Amount &nbsp;
-            <div class="btn-group">
-              <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="claim" tabindex="0"
-                role="button" (click)="changeAmountType()">Claim</label>
-              <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" [ngModelOptions]="{standalone: true}" btnRadio="settled" tabindex="0"
-                role="button" (click)="changeAmountType()">Settled</label>
-            </div>
-
-          </div>
-
-          &nbsp; Sorting &nbsp;
-          <div class="btn-group">
-            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Asc" tabindex="0"
-              role="button" (click)="changeSorting()">Asc</label>
-            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Desc" tabindex="0"
-              role="button" (click)="changeSorting()">Desc</label>
-            <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" [ngModelOptions]="{standalone: true}" btnRadio="Default" tabindex="0"
-              role="button" (click)="changeSorting()">Default</label>
-          </div>
-
-          &nbsp; Zoom &nbsp;
-          <div>
-            <label class="switch switch-3d switch-primary" title="Zoom">
-              <input type="checkbox" class="switch-input" [(ngModel)]="zoom" [ngModelOptions]="{standalone: true}" (change)="creatOrUpdateChart()">
-              <span class="switch-label"></span>
-              <span class="switch-handle"></span>
-            </label>
-          </div>
-
-        </form>
-
+      <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="btn-group" style="display: inline-block;">
+        Claim/Settled Amount
+        <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="claim" tabindex="0" role="button" (click)="changeAmountType()">Claim</label>
+        <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="settled" tabindex="0" role="button" (click)="changeAmountType()">Settled</label>
       </div>
+
+      <div [hidden]='grid' class="btn-group" style="display: inline-block;">
+        Sorting
+        <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Asc" tabindex="0" role="button" (click)="changeSorting()">Asc</label>
+        <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Desc" tabindex="0" role="button" (click)="changeSorting()">Desc</label>
+        <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Default" tabindex="0" role="button" (click)="changeSorting()">Default</label>
+      </div>
+
+      <div [hidden]='grid' style="display: inline-block;">
+        Zoom
+        <label class="switch switch-3d switch-primary" title="Zoom">
+          <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="creatOrUpdateChart()">
+          <span class="switch-label"></span>
+          <span class="switch-handle"></span>
+        </label>
+      </div>
+
+      <div class="btn-group" style="display: inline-block;">
+        <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
+      </div>
+
+
     </div>
   </div>
 </div>
 
-<div class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
+
+
+<div [hidden]='grid' class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
   <div class="col-6">
     <div class="waterfallChart" id="proposalClaimsPerCapita" #proposalClaimsPerCapita></div>
   </div>
@@ -52,4 +42,53 @@
     <div class="waterfallChart" id="benchmarkClaimsPerCapita" #benchmarkClaimsPerCapita></div>
   </div>
   <div id="waterfallTooltip">Tooltip</div>
+</div>
+
+
+<div [hidden]='!grid' class="row">
+  <div class="col">
+    <div class="waterfallGrid" id="claimsPerCapitaGrid" #claimsPerCapitaGrid>
+
+      <table class="table table-hover">
+        <thead>
+          <tr class="d-flex">
+            <th class="col-3">
+              Condition Group &nbsp;
+              <i (click)="sortByHeader('conditionGroup','default')" [ngClass]="{headerSelected:gridSorting.conditionGroup.default,headerUnSelected: !gridSorting.conditionGroup.default}"
+                class=" fa fa-sort-alpha-asc" aria-hidden="true"></i>
+
+            </th>
+            <th class="col-3">
+              Prevvious Year &nbsp;
+              <i (click)="sortByHeader('prev','asc')" [ngClass]="{headerSelected:gridSorting.prev.asc,headerUnSelected: !gridSorting.prev.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('prev','desc')" [ngClass]="{headerSelected:gridSorting.prev.desc,headerUnSelected: !gridSorting.prev.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+            <th class="col-3">
+              Current Year &nbsp;
+              <i (click)="sortByHeader('curr','asc')" [ngClass]="{headerSelected:gridSorting.curr.asc,headerUnSelected: !gridSorting.curr.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('curr','desc')" [ngClass]="{headerSelected:gridSorting.curr.desc,headerUnSelected: !gridSorting.curr.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+            <th class="col-3">
+              Benchmark &nbsp;
+              <i (click)="sortByHeader('benchmark','asc')" [ngClass]="{headerSelected:gridSorting.benchmark.asc,headerUnSelected: !gridSorting.benchmark.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('benchmark','desc')" [ngClass]="{headerSelected:gridSorting.benchmark.desc,headerUnSelected: !gridSorting.benchmark.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
 </div>

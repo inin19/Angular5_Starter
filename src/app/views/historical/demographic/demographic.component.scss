@@ -58,14 +58,6 @@ ul {
 }
 
 
-// .dropdown-toggle {
-//   width: 200px;
-// }
-
-// #demographicCombinedChartArea {
-//   display: none;
-// }
-
 
 .y.axis path {
   visibility: hidden;
@@ -82,30 +74,14 @@ ul {
 
 .tornadoGrid{
   margin-left: 50px;
-  margin-top: 50px;
-  margin-right: 20px;
-  // top: 50, right: 20, bottom: 30, left: 50
+  margin-top: 30px;
+  margin-right: 50px;
 }
 
 .tornadoSummaryGrid {
   margin-left: 100px;
   margin-right: 100px;
 }
-
-
-#demographicCombinedGrid tbody tr td {
-  text-align:center;
-}
-
-#demographicCombinedGrid thead tr td {
-  text-align:center;
-}
-
-
-#demographicCombinedGrid thead tr th {
-  text-align:center;
-}
-
 
 
 .tornadoSummaryGrid thead tr th {
@@ -116,6 +92,71 @@ ul {
   text-align:center;
 }
 
-// .percentage tr {
 
+.tornadoGrid thead tr th {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.tornadoGrid thead tr th:nth-child(2) {
+  text-align: right
+}
+
+.tornadoGrid thead tr th:nth-child(3) {
+  text-align: right
+}
+
+
+.tornadoGrid tbody tr td {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.tornadoGrid tbody tr td:nth-child(2) {
+  text-align: right
+}
+
+.tornadoGrid tbody tr td:nth-child(3) {
+  text-align: right
+}
+
+
+
+#demographicCombinedGrid {
+  margin-left: 100px;
+  margin-right: 100px;
+}
+
+
+#demographicCombinedGrid tbody tr td {
+  text-align:right;
+}
+
+#demographicCombinedGrid tbody tr td:first-child {
+  text-align:left;
+}
+
+#demographicCombinedGrid thead tr td {
+  text-align:right;
+}
+
+// #demographicCombinedGrid thead tr td:first-child {
+//   text-align:left;
 // }
+
+
+#demographicCombinedGrid thead tr th {
+  text-align:center;
+}
+
+
+#demographicCombinedGrid thead tr th:first-child {
+  text-align:left;
+}
+
+
+#demographicCombinedGrid thead tr td {
+  padding-left: 50px;
+  padding-right: 50px;
+}
+

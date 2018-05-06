@@ -63,7 +63,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   private static demographicMargin: any = { top: 50, right: 20, bottom: 30, left: 50 };
 
 
-  private conditionGroupTranslation = {
+  conditionGroupTranslation = {
     'PREVYEAR': '',
     'CONDITION_GROUPING_HOSPITALIZATION': 'Ricovero',
     'CONDITION_GROUPING_DAILY_HOSPITALIZATION': 'Ricovero Diaria',
@@ -113,7 +113,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   // country varication
   countryCode = 'ISO2_IT';
   ageGroup = ['0-18', '19-23', '24-28', '29-33', '34-38', '39-43', '44-48', '49-53', '54-58', '59-63', '64+'];
-  proposalID = '3';
+  proposalID = '25';
   hasClaimData = true;
 
 

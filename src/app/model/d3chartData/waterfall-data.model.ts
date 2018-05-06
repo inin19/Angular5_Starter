@@ -509,3 +509,11 @@ export interface ClaimsAggregateData {
   currYearAvgSettledAmount: number;
   prevYearAvgSettledAmount: number;
 }
+
+
+// export interface WaterfallGridData {
+//   conditionGroup: string;
+//   prevYear: number;
+//   currYear: number;
+//   benchmarkCurrYear: number;
+// }

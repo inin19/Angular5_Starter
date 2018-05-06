@@ -1,3 +1,4 @@
+import { WaterfallD3Grid } from './../../../model/D3grid/waterfall-grid.model';
 import { Selector } from './../../../model/utils/selector.model';
 import { AvgClaimCostChartConfig } from './../../../model/utils/chart-config';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
@@ -12,6 +13,8 @@ import { trigger, style, transition, animate, keyframes, query, stagger } from '
   templateUrl: './claims-avg-cost.component.html',
   styleUrls: ['./claims-avg-cost.component.scss']
 })
+
+
 export class ClaimsAvgCostComponent implements OnInit {
 
   static series = {
@@ -24,6 +27,7 @@ export class ClaimsAvgCostComponent implements OnInit {
   @Input() private proposalClaimAvgCost: WaterfallData;
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
+  @Input() private conditionGroups: string[];
 
 
   @ViewChild('claimsAvgCostContainer') private claimsAvgCostContainer: ElementRef;
@@ -45,6 +49,28 @@ export class ClaimsAvgCostComponent implements OnInit {
 
   private xDomain: any[];
   private x1Domain: any[];
+
+
+  // gridData
+  private waterfallGridData: WaterfallGridData[];
+  private waterfallGridDataTotal: WaterfallGridData;
+
+
+  // D3 Grid
+  private avgCostGrid: WaterfallD3Grid;
+
+  private gridSorting = {
+    conditionGroup: { default: true },
+    prev: { asc: false, desc: false },
+    curr: { asc: false, desc: false },
+    benchmark: { asc: false, desc: false }
+  };
+
+  private currenctSorting = { column: 'conditionGroup', order: 'default' };
+
+  grid: false;
+
+  gridDispaly = 'Grid';
 
 
 
@@ -87,6 +113,10 @@ export class ClaimsAvgCostComponent implements OnInit {
   }
 
   createChartData() {
+
+    this.waterfallGridData = [];
+
+
     // combine benchmark and proposal data here
     this.avgCostGraphData = [];
 
@@ -142,6 +172,29 @@ export class ClaimsAvgCostComponent implements OnInit {
 
       this.avgCostGraphData.push(total, total1, total2);
 
+
+      // create grid data
+      this.conditionGroups.forEach(element => {
+        const proposal = this.proposalClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+
+        const temp: WaterfallGridData = {
+          key: element,
+          prev: proposal.prevYearAvgClaimCost,
+          curr: proposal.currYearAvgClaimCost,
+          benchmark: benchmark.currYearAvgClaimCost
+        };
+        this.waterfallGridData.push(temp);
+      });
+
+      // total
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().prevYearAvgClaimCost,
+        curr: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost,
+        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
+      };
+
     } else {
       // no proposal data, only benchmark
       for (const item of this.benchmarkAggregate) {
@@ -159,6 +212,39 @@ export class ClaimsAvgCostComponent implements OnInit {
         value: this.benchmarkAggregateTotal.currYearAvgClaimCost
       };
       this.avgCostGraphData.push(total);
+
+      this.conditionGroups.forEach(element => {
+        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+
+        let temp: WaterfallGridData = null;
+        if (benchmark) {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: benchmark.currYearAvgClaimCost
+          };
+        } else {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: 0
+          };
+        }
+
+        this.waterfallGridData.push(temp);
+      });
+
+
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: 0,
+        curr: 0,
+        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
+      };
+
+
     }
   }
 
@@ -219,6 +305,20 @@ export class ClaimsAvgCostComponent implements OnInit {
   creatOrUpdateChart() {
     this.createChart();
     this.updateChart();
+
+    this.createGrid();
+    this.updateGrid();
+  }
+
+  createGrid() {
+    if (!this.avgCostGrid) {
+      this.avgCostGrid = new WaterfallD3Grid(this.waterfallGridData, this.waterfallGridDataTotal, '#avgCostGrid', this.conditionGroupTranslation);
+    }
+
+  }
+
+  updateGrid() {
+    this.avgCostGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, this.currenctSorting.column, this.currenctSorting.order, this.conditionGroups);
   }
 
 
@@ -234,6 +334,41 @@ export class ClaimsAvgCostComponent implements OnInit {
     console.log('unlisten claims avg cost divs');
   }
 
+
+  sortByHeader(column: string, order: string) {
+    this.resetGridSorting();
+    this.gridSorting[column][order] = true;
+
+    this.currenctSorting.column = column;
+    this.currenctSorting.order = order;
+
+    this.avgCostGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, column, order, this.conditionGroups);
+  }
+
+  resetGridSorting() {
+    this.gridSorting.conditionGroup.default = false;
+    this.gridSorting.curr.asc = false;
+    this.gridSorting.curr.desc = false;
+    this.gridSorting.prev.asc = false;
+    this.gridSorting.prev.desc = false;
+    this.gridSorting.benchmark.asc = false;
+    this.gridSorting.benchmark.desc = false;
+  }
+
+
+  toggleGridGraph() {
+    console.log('toggle Grid Graph');
+    if (this.gridDispaly === 'Grid') {
+      this.gridDispaly = 'Graph';
+    } else {
+      this.gridDispaly = 'Grid';
+    }
+
+    // needed?
+    setTimeout(() => {
+      this.creatOrUpdateChart();
+    });
+  }
 }
 
 
@@ -242,4 +377,12 @@ export interface AvgCostGraph {
   key: string;
   series: number;
   value: number;
+}
+
+
+export interface WaterfallGridData {
+  key: string;
+  prev: number;
+  curr: number;
+  benchmark: number;
 }

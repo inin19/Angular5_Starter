@@ -23,7 +23,6 @@ export class HistoricalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     console.log('historical on destroy');
-
   }
 
 

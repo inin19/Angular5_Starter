@@ -1,9 +1,11 @@
+import { WaterfallD3Grid } from './../../../model/D3grid/waterfall-grid.model';
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { WaterfallChartConfig } from './../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
 import { Selector } from './../../../model/utils/selector.model';
 import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart.model';
+
 
 
 @Component({
@@ -24,7 +26,7 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() private proposalClaimFrequency: WaterfallData;
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
-
+  @Input() private conditionGroups: string[];
 
 
 
@@ -49,7 +51,7 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   private proposalD3Chart: WaterfallD3Chart;
 
 
-  private zoom: boolean;
+  zoom: boolean;
 
   private claimPerCapitaXDomain: string[];
 
@@ -58,6 +60,27 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   sorting: string;
 
 
+  // gridData
+  private waterfallGridData: WaterfallGridData[];
+  private waterfallGridDataTotal: WaterfallGridData;
+
+
+
+  private gridSorting = {
+    conditionGroup: { default: true },
+    prev: { asc: false, desc: false },
+    curr: { asc: false, desc: false },
+    benchmark: { asc: false, desc: false }
+  };
+
+  private currenctSorting = { column: 'conditionGroup', order: 'default' };
+
+  grid: false;
+
+  gridDispaly = 'Grid';
+
+  // D3 Grid
+  private frequencyGrid: WaterfallD3Grid;
 
   constructor() { }
 
@@ -85,18 +108,79 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
 
 
   createChartData() {
+    this.waterfallGridData = [];
     this.benchmarkConditionGroupData = this.benchmarkClaimFrequency.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaimFrequency.getGraphData();
 
     if (this.proposalClaimFrequency) {
       this.proposalConditionGroupData = this.proposalClaimFrequency.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaimFrequency.getGraphData();
+
+      // default to claim acount
+      // console.log(this.conditionGroups);
+      this.conditionGroups.forEach(element => {
+        const proposal = this.proposalClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+        const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+
+        const temp: WaterfallGridData = {
+          key: element,
+          prev: proposal.prevYearClaimFrequency,
+          curr: proposal.currYearClaimFrequency,
+          benchmark: benchmark.currYearClaimFrequency
+        };
+        this.waterfallGridData.push(temp);
+      });
+
+
+      // total
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: this.proposalClaimFrequency.getClaimsAggregateDataTotal().prevYearClaimFrequency,
+        curr: this.proposalClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency,
+        benchmark: this.benchmarkClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency
+      };
+    } else {
+      this.conditionGroups.forEach(element => {
+        const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+
+        let temp: WaterfallGridData = null;
+
+        if (benchmark) {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: benchmark.currYearClaimFrequency
+          };
+        } else {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: 0
+          };
+        }
+
+        this.waterfallGridData.push(temp);
+      });
+
+
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: 0,
+        curr: 0,
+        benchmark: this.benchmarkClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency
+      };
     }
+
+
   }
 
 
   updateChartData(conditionGroup: string[], selectors: Selector[]) {
-    // this.benchmarkClaim.updateGraphData(params);
+
+    this.waterfallGridData = [];
+
     this.benchmarkClaimFrequency.updateData(conditionGroup, selectors);
     this.benchmarkClaimFrequency.createWaterfallData(this.sorting, 'frequency');
 
@@ -110,6 +194,67 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
 
       this.proposalConditionGroupData = this.proposalClaimFrequency.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaimFrequency.getGraphData();
+
+
+      // update grid
+
+      // default to claim acount
+      // console.log(this.conditionGroups);
+      this.conditionGroups.forEach(element => {
+        const proposal = this.proposalClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+        const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+
+        const temp: WaterfallGridData = {
+          key: element,
+          prev: proposal.prevYearClaimFrequency,
+          curr: proposal.currYearClaimFrequency,
+          benchmark: benchmark.currYearClaimFrequency
+        };
+        this.waterfallGridData.push(temp);
+      });
+
+      // total
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: this.proposalClaimFrequency.getClaimsAggregateDataTotal().prevYearClaimFrequency,
+        curr: this.proposalClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency,
+        benchmark: this.benchmarkClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency
+      };
+
+    } else {
+      this.conditionGroups.forEach(element => {
+        const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
+
+        let temp: WaterfallGridData = null;
+
+        if (benchmark) {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: benchmark.currYearClaimFrequency
+          };
+        } else {
+          temp = {
+            key: element,
+            prev: 0,
+            curr: 0,
+            benchmark: 0
+          };
+        }
+        this.waterfallGridData.push(temp);
+      });
+
+
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: 0,
+        curr: 0,
+        benchmark: this.benchmarkClaimFrequency.getClaimsAggregateDataTotal().currYearClaimFrequency
+      };
+
+
+
     }
   }
 
@@ -209,8 +354,23 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
       this.createChart_proposal();
       this.updateChart_proposal();
     }
+
+    this.createGrid();
+    this.updateGrid();
   }
 
+
+
+  createGrid() {
+    if (!this.frequencyGrid) {
+      this.frequencyGrid = new WaterfallD3Grid(this.waterfallGridData, this.waterfallGridDataTotal, '#claimsFrequencyGrid', this.conditionGroupTranslation);
+    }
+  }
+
+  updateGrid() {
+    this.frequencyGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, this.currenctSorting.column, this.currenctSorting.order, this.conditionGroups);
+
+  }
 
   ngOnDestroy() {
     console.log('claim PerCapita component destroy');
@@ -261,4 +421,52 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
+  sortByHeader(column: string, order: string) {
+    this.resetGridSorting();
+    this.gridSorting[column][order] = true;
+
+    this.currenctSorting.column = column;
+    this.currenctSorting.order = order;
+
+    this.frequencyGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, column, order, this.conditionGroups);
+
+  }
+
+  resetGridSorting() {
+    this.gridSorting.conditionGroup.default = false;
+    this.gridSorting.curr.asc = false;
+    this.gridSorting.curr.desc = false;
+    this.gridSorting.prev.asc = false;
+    this.gridSorting.prev.desc = false;
+    this.gridSorting.benchmark.asc = false;
+    this.gridSorting.benchmark.desc = false;
+  }
+
+
+  toggleGridGraph() {
+    console.log('toggle Grid Graph');
+    if (this.gridDispaly === 'Grid') {
+      this.gridDispaly = 'Graph';
+    } else {
+      this.gridDispaly = 'Grid';
+    }
+
+    // needed?
+    setTimeout(() => {
+      this.creatOrUpdateChart();
+    });
+  }
+
+
+
+
+
+}
+
+
+export interface WaterfallGridData {
+  key: string;
+  prev: number;
+  curr: number;
+  benchmark: number;
 }
