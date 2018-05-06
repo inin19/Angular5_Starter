@@ -8,8 +8,6 @@ import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { ToastrModule } from 'ngx-toastr';
-
 import { HistoricalRoutingModule } from './historical-routing.module';
 import { HistoricalComponent } from './historical.component';
 import { DemographicService } from '../../providers/charts/demographic.service';
@@ -36,7 +34,6 @@ import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.compon
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
     ButtonsModule.forRoot(),
-    ToastrModule.forRoot()
   ],
   declarations: [
     HistoricalComponent,

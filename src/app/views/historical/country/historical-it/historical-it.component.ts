@@ -1,5 +1,4 @@
 import { ClaimsFrequencyComponent } from './../../claims-frequency/claims-frequency.component';
-import { ToastrService } from 'ngx-toastr';
 import { ClaimsAvgCostComponent } from './../../claims-avg-cost/claims-avg-cost.component';
 import { TornadoData } from '../../../../model/D3chartData/tornado-data.model';
 import { WaterfallData } from './../../../../model/D3chartData/waterfall-data.model';
@@ -202,9 +201,6 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   @ViewChild('staticTabs') staticTabs: TabsetComponent;
 
 
-  showSuccess() {
-    this.toastr.success('Claims Data loaded!');
-  }
 
 
   // getConditionGroups()
@@ -231,7 +227,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   }
 
 
-  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService, private toastr: ToastrService) {
+  constructor(private demographicService: DemographicService, private claimDataService: ClaimsService) {
 
   }
 
@@ -746,7 +742,6 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
           this.staticTabs.tabs[3].disabled = false;
 
 
-          this.showSuccess();
 
           console.log('done loading claims data');
         }
@@ -774,7 +769,6 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
           this.staticTabs.tabs[2].disabled = false;
           this.staticTabs.tabs[3].disabled = false;
 
-          this.showSuccess();
           console.log('done loading claims data for benchmark only');
         }
       );
