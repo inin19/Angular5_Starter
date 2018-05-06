@@ -68,7 +68,20 @@ export class TornadoGrid {
 
     cells.exit().remove();
     // update exisitng cell table
-    cells.transition().text((d) => d.value);
+    // cells
+    //   .text((d) => d.value)
+    //   .transition()
+    //   .style('font-weight', 'bold')
+    //   .duration(500)
+    //   .transition()
+    //   .style('font-weight', 'normal')
+    //   .duration(500);
+    cells
+      .transition()
+      .text((d) => d.value)
+      .duration(2000)
+
+      ;
 
     cells
       .enter()

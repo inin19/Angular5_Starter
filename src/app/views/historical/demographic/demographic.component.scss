@@ -94,8 +94,8 @@ ul {
 
 
 .tornadoGrid thead tr th {
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .tornadoGrid thead tr th:nth-child(2) {
@@ -108,8 +108,9 @@ ul {
 
 
 .tornadoGrid tbody tr td {
-  padding-left: 50px;
-  padding-right: 50px;
+  padding-left: 20px;
+  padding-right: 20px;
+  // line-height: 22px;
 }
 
 .tornadoGrid tbody tr td:nth-child(2) {
