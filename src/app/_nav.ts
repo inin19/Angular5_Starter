@@ -18,6 +18,11 @@ export const navigation = [
     url: '/historical',
     icon: 'icon-pin'
   },
+  {
+    name: 'Brush',
+    url: '/brush',
+    icon: 'icon-pin'
+  },
 
 
 ];

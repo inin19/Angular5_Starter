@@ -122,12 +122,15 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
         const proposal = this.proposalClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
 
-        const temp: WaterfallGridData = {
+        let temp: WaterfallGridData = null;
+        temp = {
           key: element,
-          prev: proposal.prevYearClaimFrequency,
-          curr: proposal.currYearClaimFrequency,
-          benchmark: benchmark.currYearClaimFrequency
+          prev: (proposal) ? proposal.prevYearClaimFrequency : 0,
+          curr: (proposal) ? proposal.currYearClaimFrequency : 0,
+          benchmark: (benchmark) ? benchmark.currYearClaimFrequency : 0
         };
+
+
         this.waterfallGridData.push(temp);
       });
 
@@ -188,28 +191,26 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
     this.benchmarkGraphData = this.benchmarkClaimFrequency.getGraphData();
 
     if (this.proposalClaimFrequency) {
-      // this.proposalClaim.updateGraphData(params);
       this.proposalClaimFrequency.updateData(conditionGroup, selectors);
       this.proposalClaimFrequency.createWaterfallData(this.sorting, 'frequency');
 
       this.proposalConditionGroupData = this.proposalClaimFrequency.getConditionGroupDataCombined();
       this.proposalGraphData = this.proposalClaimFrequency.getGraphData();
 
-
-      // update grid
-
-      // default to claim acount
-      // console.log(this.conditionGroups);
       this.conditionGroups.forEach(element => {
         const proposal = this.proposalClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimFrequency.getClaimsAggregateData().find(item => item.key === element);
 
-        const temp: WaterfallGridData = {
+
+        let temp: WaterfallGridData = null;
+        temp = {
           key: element,
-          prev: proposal.prevYearClaimFrequency,
-          curr: proposal.currYearClaimFrequency,
-          benchmark: benchmark.currYearClaimFrequency
+          prev: (proposal) ? proposal.prevYearClaimFrequency : 0,
+          curr: (proposal) ? proposal.currYearClaimFrequency : 0,
+          benchmark: (benchmark) ? benchmark.currYearClaimFrequency : 0
         };
+
+
         this.waterfallGridData.push(temp);
       });
 

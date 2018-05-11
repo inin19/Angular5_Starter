@@ -13,6 +13,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ProjectionComponent } from './projection/projection.component';
 import { ClickOutsideModule } from 'ng4-click-outside';
 
+import { FixedNumberFormatPipe, BigNumberFormatPipe } from './../pipes/grid/grid-format';
 
 
 
@@ -26,7 +27,7 @@ import { ClickOutsideModule } from 'ng4-click-outside';
     BsDropdownModule.forRoot(),
     ClickOutsideModule
   ],
-  declarations: [DashboardComponent, ProjectionComponent, UKPrjectionPipes],
+  declarations: [DashboardComponent, ProjectionComponent, UKPrjectionPipes, FixedNumberFormatPipe, BigNumberFormatPipe],
   providers: [ProjectionService]
 
 })

@@ -4,6 +4,8 @@ import { ProjectionD3Chart } from '../../../model/D3chart/projection-d3-chart.mo
 import { ProjectionChartConfig } from '../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { Selector } from '../../../model/utils/selector.model';
+import { ProjectionGridData } from './../../../model/D3chartData/projection-data.model';
+import { ProjectionGrid } from './../../../model/D3grid/projection-grid.model';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { Selector } from '../../../model/utils/selector.model';
 export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   static graphCategories = ['EMPLOYER_PREMIUM', 'FUNDING_GAP', 'MEMBER_PREMIUM', 'TAX', 'FEES'];
+  static gridCategories = ['TOTAL_LIVES', 'TOTAL_COST', 'MEMBER_PREMIUM', 'EMPLOYER_PREMIUM', 'FUNDING_GAP', 'ESTIMATED_MEMBER_OOP_COST', 'TAX', 'FEES'];
 
 
 
@@ -29,10 +32,16 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   private projectionGraphData: ProjectionOutput[];
   private projectionD3Chart: ProjectionD3Chart;
 
-  private categorySelector: Selector;
-  private planSelector: Selector;
-  private periodSelector: Selector;
-  private projectionSelector: Selector;
+
+  projectionGridData: ProjectionGridData[];
+
+
+  // private projectionD3Grid: ProjectionGrid;
+
+  categorySelector: Selector;
+  planSelector: Selector;
+  periodSelector: Selector;
+  projectionSelector: Selector;
 
   private margin: any = { top: 60, right: 20, bottom: 40, left: 40 };
 
@@ -52,12 +61,12 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
     return ProjectionComponent.graphCategories;
   }
 
+  private getGridCategories(): string[] {
+    return ProjectionComponent.gridCategories;
+  }
+
   ngOnInit() {
     console.log('projection init');
-
-    // ProjectionComponent.categories.forEach(element => {
-    //   console.log(Translations.categoryTranslate[element]);
-    // });
 
     // listen to div resize event
     this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
@@ -70,6 +79,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
     this.createChart();
     this.updateChart();
+
+
   }
 
   createSelector() {
@@ -77,7 +88,6 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
     this.planSelector = new Selector(this.projectionData.getAllPlan());
     this.periodSelector = new Selector(this.projectionData.getAllPeriod());
     this.projectionSelector = new Selector(this.projectionData.getAllProjection());
-    // console.log(this.projectionSelector);
   }
 
   ngOnChanges() {
@@ -95,16 +105,25 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
     console.log('projection ondestroy');
   }
 
+
+  // createGrid() {
+  //   this.projectionD3Grid = new ProjectionGrid(this.projectionGridData, '#projectionGrid', Translations.categoryTranslate);
+  // }
+
+  // updateGrid(periods: number[]) {
+  //   this.projectionD3Grid.updateGrid(this.projectionGridData, periods);
+  // }
+
   createChartData() {
-    this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories());
+    this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories(), this.getGridCategories());
     this.projectionGraphData = this.projectionData.getGraphData();
-    // this.projectionData.updateGraphData([2], [0, 1, 2, 3, 4, 5], ProjectionComponent.categories, ['CURRENT', 'PROPOSED']);
+    this.projectionGridData = this.projectionData.getFinalGrid();
   }
 
   updateChartData(plans: number[], periods: number[], categories: string[], currentProposed: string[]) {
     this.projectionData.updateGraphData(plans, periods, categories, currentProposed);
     this.projectionGraphData = this.projectionData.getGraphData();
-    console.log(this.projectionGraphData);
+    this.projectionGridData = this.projectionData.getFinalGrid(currentProposed);
   }
 
   createChart() {
@@ -120,6 +139,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       translation: Translations.categoryTranslate
     };
     this.projectionD3Chart = new ProjectionD3Chart(chartConfig);
+
+    // this.createGrid();
   }
 
 
@@ -192,7 +213,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       this.categorySelector.getCurrentSelction(), this.projectionSelector.getCurrentSelction());
 
     this.updateChart();
-
+    // this.updateGrid(periods);
   }
 
   checkIfAllElementSelected(dropdownID: string) {
@@ -245,20 +266,12 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       this.categorySelector.getCurrentSelction(), this.projectionSelector.getCurrentSelction());
 
     this.updateChart();
+    // this.updateGrid(periods);
 
   }
 
 
 
-  // private getCategoryTranslation(categoryKey: string) {
-  //   Translations.translate.forEach(element => {
-  //     if (element.key === categoryKey) {
-  //       return element.value;
-  //     }
-  //   });
-
-  //   return '';
-  // }
 
 
 }

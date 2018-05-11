@@ -31,6 +31,10 @@ export const routes: Routes = [
       {
         path: 'historical',
         loadChildren: './views/historical/historical.module#HistoricalModule'
+      },
+      {
+        path: 'brush',
+        loadChildren: './views/brush/brush.module#BrushModule'
       }
     ]
   }

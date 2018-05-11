@@ -178,12 +178,15 @@ export class ClaimsAvgCostComponent implements OnInit {
         const proposal = this.proposalClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
 
-        const temp: WaterfallGridData = {
+
+        let temp: WaterfallGridData = null;
+        temp = {
           key: element,
-          prev: proposal.prevYearAvgClaimCost,
-          curr: proposal.currYearAvgClaimCost,
-          benchmark: benchmark.currYearAvgClaimCost
+          prev: (proposal) ? proposal.prevYearAvgClaimCost : 0,
+          curr: (proposal) ? proposal.currYearAvgClaimCost : 0,
+          benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0
         };
+
         this.waterfallGridData.push(temp);
       });
 

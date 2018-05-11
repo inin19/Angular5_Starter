@@ -2,9 +2,14 @@
   <div class="col-6">
     <div id='projectionChart' #projectionChart></div>
   </div>
-  <div id="projectionToolip">Tooltip</div>
+
+
+
+
 
   <div class="col-6">
+
+
     <div class="row">
       <div class="col">
         <div class="float-right">
@@ -112,5 +117,53 @@
 
       </div>
     </div>
+
+    <div class="row">
+      <div class="col">&nbsp;</div>
+    </div>
+
+    <!-- table -->
+    <div class="row">
+      <div class="col">
+        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-align-middle mb-0 table-responsive-sm table-striped table-sm">
+          <thead>
+            <tr class="bg-primary">
+              <th>Attribute</th>
+              <th *ngFor="let n of periodSelector.getCurrentSelction()">
+                <b>Period {{ n }}</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of projectionGridData">
+              <ng-container [ngSwitch]="record.attribute">
+                <ng-container *ngSwitchCase="'CURRENT'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'PROPOSED'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  <td>{{record.attribute | UKProjectionCategory }}</td>
+                  <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
+                </ng-container>
+
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+
+
+      </div>
+    </div>
+
+
   </div>
+
+
+  <div id="projectionToolip">Tooltip</div>
+
 </div>
+

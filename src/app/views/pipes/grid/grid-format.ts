@@ -18,3 +18,11 @@ export class FixedNumberFormatPipe implements PipeTransform {
     return formatFixedPercent(value);
   }
 }
+
+@Pipe({ name: 'BigNumberFormatPipe' })
+export class BigNumberFormatPipe implements PipeTransform {
+  transform(value: number): string {
+    const format = d3.format('.2s');
+    return format(value);
+  }
+}

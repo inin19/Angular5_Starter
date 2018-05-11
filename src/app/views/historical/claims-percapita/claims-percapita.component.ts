@@ -130,7 +130,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
         const proposal = this.proposalClaimPerCapita.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimPerCapita.getClaimsAggregateData().find(item => item.key === element);
 
-        const temp: WaterfallGridData = {
+        let temp: WaterfallGridData = null;
+        temp = {
           key: element,
           prev: proposal.prevYearPerCapitalClaimCost,
           curr: proposal.currYearPerCapitalClaimCost,
@@ -214,12 +215,24 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
         const proposal = this.proposalClaimPerCapita.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimPerCapita.getClaimsAggregateData().find(item => item.key === element);
 
-        const temp: WaterfallGridData = {
-          key: element,
-          prev: this.amountType === 'claim' ? proposal.prevYearPerCapitalClaimCost : proposal.prevYearPerCapitalSettledAmount,
-          curr: this.amountType === 'claim' ? proposal.currYearPerCapitalClaimCost : proposal.currYearPerCapitalSettledAmount,
-          benchmark: this.amountType === 'claim' ? benchmark.currYearPerCapitalClaimCost : benchmark.currYearPerCapitalSettledAmount
-        };
+        let temp: WaterfallGridData = null;
+
+        if (this.amountType === 'claim') {
+          temp = {
+            key: element,
+            prev: (proposal) ? proposal.prevYearPerCapitalClaimCost : 0,
+            curr: (proposal) ? proposal.currYearPerCapitalClaimCost : 0,
+            benchmark: (benchmark) ? benchmark.currYearPerCapitalClaimCost : 0
+          };
+        } else {
+          temp = {
+            key: element,
+            prev: (proposal) ? proposal.prevYearPerCapitalSettledAmount : 0,
+            curr: (proposal) ? proposal.currYearPerCapitalSettledAmount : 0,
+            benchmark: (benchmark) ? benchmark.currYearPerCapitalSettledAmount : 0
+          };
+        }
+
         this.waterfallGridData.push(temp);
       });
 

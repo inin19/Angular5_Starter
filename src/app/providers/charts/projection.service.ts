@@ -25,15 +25,24 @@ export class ProjectionService extends ErrorHandler {
 
 
 
+  private projectionLocal = 'http://localhost:3000/projection';
 
   constructor(private http: HttpClient, injector: Injector) {
     super(injector);
   }
 
 
-  getProjectionData(country: string, proposalId: string, trendType: string ): Observable<any> {
+  // getProjectionData(country: string, proposalId: string, trendType: string ): Observable<any> {
+  //   const l: number = new Date().getMilliseconds();
+  //   return this.http.get<any>(this.projectionPlanUrlModified + country + '/' + proposalId + '/' + trendType + '?' + l, httpOptions);
+  // }
+
+
+  // local
+
+  getProjectionData(country: string, proposalId: string, trendType: string): Observable<any> {
     const l: number = new Date().getMilliseconds();
-    return this.http.get<any>(this.projectionPlanUrlModified + country + '/' + proposalId + '/' + trendType + '?' + l, httpOptions);
+    return this.http.get<any>(this.projectionLocal + '?' + l, httpOptions);
   }
 
 }
