@@ -147,14 +147,14 @@
   <tab id="claimsFrequency" (select)="onSelect($event)">
     <ng-template tabHeading>Claims Frequency</ng-template>
     <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
       #claimsFrequency></app-claims-frequency>
   </tab>
 
   <tab id="claimsAvgCost" (select)="onSelect($event)">
     <ng-template tabHeading>Claims AvgCost</ng-template>
     <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
       #claimsAvgCost></app-claims-avg-cost>
   </tab>
 

@@ -4,7 +4,6 @@ import { WaterfallChartConfig } from './../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
 import { Selector } from './../../../model/utils/selector.model';
-import { WaterfallD3Grid } from '../../../model/D3grid/waterfall-grid.model';
 
 @Component({
   selector: 'app-claims-percapita',
@@ -75,7 +74,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
 
   // D3 Grid
-  private perCapitaGrid: WaterfallD3Grid;
+  // private perCapitaGrid: WaterfallD3Grid;
 
   private gridSorting = {
     conditionGroup: { default: true },
@@ -348,16 +347,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  // D3 grid
-  createGrid() {
-    if (!this.perCapitaGrid) {
-      this.perCapitaGrid = new WaterfallD3Grid(this.waterfallGridData, this.waterfallGridDataTotal, '#claimsPerCapitaGrid', this.conditionGroupTranslation);
-    }
-  }
 
-  updateGrid() {
-    this.perCapitaGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, this.currenctSorting.column, this.currenctSorting.order, this.conditionGroups);
-  }
 
   updateChart_benchmark() {
     if (this.benchmarkD3Chart) {
@@ -459,7 +449,13 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     this.currenctSorting.column = column;
     this.currenctSorting.order = order;
 
-    this.perCapitaGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, column, order, this.conditionGroups);
+    if (column === 'conditionGroup') {
+      this.waterfallGridData.sort((a, b) =>
+        this.conditionGroups.indexOf(a.key) > this.conditionGroups.indexOf(b.key) ? 1 : -1);
+    } else {
+      this.waterfallGridData.sort((a, b) => order === 'asc' ? a[column] - b[column] : b[column] - a[column]);
+    }
+
   }
 
   resetGridSorting() {

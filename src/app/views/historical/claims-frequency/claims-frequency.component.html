@@ -78,7 +78,22 @@
             </th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody>
+          <tr class="conditionGroupElement d-flex" *ngFor="let row of waterfallGridData">
+            <td class="col-3">{{ row.key | ConditionGroupPipe: countryCode }}</td>
+            <td class="col-3">{{ row.prev | FixedNumberFormatPipe }}</td>
+            <td class="col-3">{{ row.curr | FixedNumberFormatPipe }}</td>
+            <td class="col-3">{{ row.benchmark | FixedNumberFormatPipe}}</td>
+          </tr>
+
+          <tr class="conditionGroupTotal d-flex">
+            <td class="col-3">{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
+            <td class="col-3">{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
+            <td class="col-3">{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
+            <td class="col-3">{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
+          </tr>
+        </tbody>
+
       </table>
     </div>
   </div>

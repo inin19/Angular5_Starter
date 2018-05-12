@@ -1,4 +1,4 @@
-import { WaterfallD3Grid } from './../../../model/D3grid/waterfall-grid.model';
+// import { WaterfallD3Grid } from './../../../model/D3grid/waterfall-grid.model';
 import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
 import { WaterfallChartConfig } from './../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
@@ -27,6 +27,9 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
   @Input() private conditionGroups: string[];
+
+  @Input() countryCode: string;
+
 
 
 
@@ -61,8 +64,8 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
 
 
   // gridData
-  private waterfallGridData: WaterfallGridData[];
-  private waterfallGridDataTotal: WaterfallGridData;
+  waterfallGridData: WaterfallGridData[];
+  waterfallGridDataTotal: WaterfallGridData;
 
 
 
@@ -79,19 +82,13 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
 
   gridDispaly = 'Grid';
 
-  // D3 Grid
-  private frequencyGrid: WaterfallD3Grid;
 
   constructor() { }
-
-
 
   ngOnInit() {
     console.log('claim frequency init');
 
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
-
-    // console.log(this.claimMargin);
 
     this.sorting = 'Default';
     this.zoom = false;
@@ -356,22 +353,10 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
       this.updateChart_proposal();
     }
 
-    this.createGrid();
-    this.updateGrid();
   }
 
 
 
-  createGrid() {
-    if (!this.frequencyGrid) {
-      this.frequencyGrid = new WaterfallD3Grid(this.waterfallGridData, this.waterfallGridDataTotal, '#claimsFrequencyGrid', this.conditionGroupTranslation);
-    }
-  }
-
-  updateGrid() {
-    this.frequencyGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, this.currenctSorting.column, this.currenctSorting.order, this.conditionGroups);
-
-  }
 
   ngOnDestroy() {
     console.log('claim PerCapita component destroy');
@@ -429,7 +414,15 @@ export class ClaimsFrequencyComponent implements OnInit, OnChanges, OnDestroy {
     this.currenctSorting.column = column;
     this.currenctSorting.order = order;
 
-    this.frequencyGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, column, order, this.conditionGroups);
+
+
+
+    if (column === 'conditionGroup') {
+      this.waterfallGridData.sort((a, b) =>
+        this.conditionGroups.indexOf(a.key) > this.conditionGroups.indexOf(b.key) ? 1 : -1);
+    } else {
+      this.waterfallGridData.sort((a, b) => order === 'asc' ? a[column] - b[column] : b[column] - a[column]);
+    }
 
   }
 

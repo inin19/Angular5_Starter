@@ -1,4 +1,3 @@
-import { WaterfallD3Grid } from './../../../model/D3grid/waterfall-grid.model';
 import { Selector } from './../../../model/utils/selector.model';
 import { AvgClaimCostChartConfig } from './../../../model/utils/chart-config';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
@@ -6,7 +5,6 @@ import { WaterfallData, ClaimsAggregateData } from './../../../model/D3chartData
 import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
-import { trigger, style, transition, animate, keyframes, query, stagger } from '@angular/animations';
 
 @Component({
   selector: 'app-claims-avg-cost',
@@ -28,6 +26,8 @@ export class ClaimsAvgCostComponent implements OnInit {
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
   @Input() private conditionGroups: string[];
+
+  @Input() countryCode: string;
 
 
   @ViewChild('claimsAvgCostContainer') private claimsAvgCostContainer: ElementRef;
@@ -52,12 +52,11 @@ export class ClaimsAvgCostComponent implements OnInit {
 
 
   // gridData
-  private waterfallGridData: WaterfallGridData[];
-  private waterfallGridDataTotal: WaterfallGridData;
+  waterfallGridData: WaterfallGridData[];
+  waterfallGridDataTotal: WaterfallGridData;
 
 
-  // D3 Grid
-  private avgCostGrid: WaterfallD3Grid;
+
 
   private gridSorting = {
     conditionGroup: { default: true },
@@ -72,19 +71,12 @@ export class ClaimsAvgCostComponent implements OnInit {
 
   gridDispaly = 'Grid';
 
-
-
   constructor() { }
-
-
-
 
   ngOnInit() {
 
     this.populateDomainValue();
     this.createChartData();
-    // this.createChart();
-    // this.updateChart();
     this.creatOrUpdateChart();
 
   }
@@ -115,7 +107,6 @@ export class ClaimsAvgCostComponent implements OnInit {
   createChartData() {
 
     this.waterfallGridData = [];
-
 
     // combine benchmark and proposal data here
     this.avgCostGraphData = [];
@@ -308,20 +299,6 @@ export class ClaimsAvgCostComponent implements OnInit {
   creatOrUpdateChart() {
     this.createChart();
     this.updateChart();
-
-    this.createGrid();
-    this.updateGrid();
-  }
-
-  createGrid() {
-    if (!this.avgCostGrid) {
-      this.avgCostGrid = new WaterfallD3Grid(this.waterfallGridData, this.waterfallGridDataTotal, '#avgCostGrid', this.conditionGroupTranslation);
-    }
-
-  }
-
-  updateGrid() {
-    this.avgCostGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, this.currenctSorting.column, this.currenctSorting.order, this.conditionGroups);
   }
 
 
@@ -345,7 +322,13 @@ export class ClaimsAvgCostComponent implements OnInit {
     this.currenctSorting.column = column;
     this.currenctSorting.order = order;
 
-    this.avgCostGrid.updateGrid(this.waterfallGridData, this.waterfallGridDataTotal, this.conditionGroupTranslation, column, order, this.conditionGroups);
+    if (column === 'conditionGroup') {
+      this.waterfallGridData.sort((a, b) =>
+        this.conditionGroups.indexOf(a.key) > this.conditionGroups.indexOf(b.key) ? 1 : -1);
+    } else {
+      this.waterfallGridData.sort((a, b) => order === 'asc' ? a[column] - b[column] : b[column] - a[column]);
+    }
+
   }
 
   resetGridSorting() {
