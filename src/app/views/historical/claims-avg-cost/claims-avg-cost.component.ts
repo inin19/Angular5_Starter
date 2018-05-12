@@ -56,8 +56,6 @@ export class ClaimsAvgCostComponent implements OnInit {
   waterfallGridDataTotal: WaterfallGridData;
 
 
-
-
   private gridSorting = {
     conditionGroup: { default: true },
     prev: { asc: false, desc: false },
@@ -65,7 +63,7 @@ export class ClaimsAvgCostComponent implements OnInit {
     benchmark: { asc: false, desc: false }
   };
 
-  private currenctSorting = { column: 'conditionGroup', order: 'default' };
+  private currentGridSorting = { column: 'conditionGroup', order: 'default' };
 
   grid: false;
 
@@ -74,21 +72,16 @@ export class ClaimsAvgCostComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-
     this.populateDomainValue();
-    this.createChartData();
+    this.createGridGraphData();
     this.creatOrUpdateChart();
-
   }
 
-
-
-  getMaxAvgCost(): number {
+  private getMaxAvgCost(): number {
     return (d3.max(this.avgCostGraphData, (d) => d.value)) ? d3.max(this.avgCostGraphData, (d) => d.value) : 0;
   }
 
-
-  populateDomainValue() {
+  private populateDomainValue() {
     // x axis text
     this.xDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
     this.xDomain[0] = 'Total';
@@ -101,13 +94,9 @@ export class ClaimsAvgCostComponent implements OnInit {
     }
 
     this.conditionGroupTranslation['TOTAL'] = 'Total';
-
   }
 
-  createChartData() {
-
-    this.waterfallGridData = [];
-
+  private createChartData() {
     // combine benchmark and proposal data here
     this.avgCostGraphData = [];
 
@@ -164,14 +153,36 @@ export class ClaimsAvgCostComponent implements OnInit {
       this.avgCostGraphData.push(total, total1, total2);
 
 
+
+
+    } else {
+      for (const item of this.benchmarkAggregate) {
+        const temp: AvgCostGraph = {
+          key: item.key,
+          series: ClaimsAvgCostComponent.series.benchmarkCurrYear,
+          value: this.benchmarkAggregateTotal.currYearAvgClaimCost
+        };
+        this.avgCostGraphData.push(temp);
+      }
+
+      const total: AvgCostGraph = {
+        key: this.benchmarkAggregateTotal.key,
+        series: ClaimsAvgCostComponent.series.benchmarkCurrYear,
+        value: this.benchmarkAggregateTotal.currYearAvgClaimCost
+      };
+      this.avgCostGraphData.push(total);
+    }
+  }
+
+  private populateGridData(column: string, order: string) {
+    this.waterfallGridData = [];
+
+    if (this.proposalClaimAvgCost) {
       // create grid data
       this.conditionGroups.forEach(element => {
         const proposal = this.proposalClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
         const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
-
-
-        let temp: WaterfallGridData = null;
-        temp = {
+        const temp: WaterfallGridData = {
           key: element,
           prev: (proposal) ? proposal.prevYearAvgClaimCost : 0,
           curr: (proposal) ? proposal.currYearAvgClaimCost : 0,
@@ -188,48 +199,13 @@ export class ClaimsAvgCostComponent implements OnInit {
         curr: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost,
         benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
       };
-
     } else {
-      // no proposal data, only benchmark
-      for (const item of this.benchmarkAggregate) {
-        const temp: AvgCostGraph = {
-          key: item.key,
-          series: ClaimsAvgCostComponent.series.benchmarkCurrYear,
-          value: this.benchmarkAggregateTotal.currYearAvgClaimCost
-        };
-        this.avgCostGraphData.push(temp);
-      }
-
-      const total: AvgCostGraph = {
-        key: this.benchmarkAggregateTotal.key,
-        series: ClaimsAvgCostComponent.series.benchmarkCurrYear,
-        value: this.benchmarkAggregateTotal.currYearAvgClaimCost
-      };
-      this.avgCostGraphData.push(total);
 
       this.conditionGroups.forEach(element => {
         const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
-
-        let temp: WaterfallGridData = null;
-        if (benchmark) {
-          temp = {
-            key: element,
-            prev: 0,
-            curr: 0,
-            benchmark: benchmark.currYearAvgClaimCost
-          };
-        } else {
-          temp = {
-            key: element,
-            prev: 0,
-            curr: 0,
-            benchmark: 0
-          };
-        }
-
+        const temp: WaterfallGridData = { key: element, prev: 0, curr: 0, benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0 };
         this.waterfallGridData.push(temp);
       });
-
 
       this.waterfallGridDataTotal = {
         key: 'TOTAL',
@@ -237,22 +213,24 @@ export class ClaimsAvgCostComponent implements OnInit {
         curr: 0,
         benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
       };
-
-
     }
+
   }
 
+  private createGridGraphData() {
+    this.createChartData();
+    this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
+  }
 
-  updateChartData(conditionGroup: string[], selectors: Selector[]) {
+  private updateChartData(conditionGroup: string[], selectors: Selector[]) {
     this.benchmarkClaimAvgCost.updateData(conditionGroup, selectors);
     if (this.proposalClaimAvgCost) {
       this.proposalClaimAvgCost.updateData(conditionGroup, selectors);
     }
-
     this.createChartData();
   }
 
-  createChart() {
+  private createChart() {
     if (this.claimsAvgCostGraph.nativeElement.offsetWidth === 0 && this.claimsAvgCostGraph.nativeElement.offsetHeight === 0) {
       console.log('container size is zero, chart is not created');
     } else {
@@ -274,7 +252,7 @@ export class ClaimsAvgCostComponent implements OnInit {
   }
 
 
-  updateChart() {
+  private updateChart() {
     if (this.avgCostD3Chart) {
       const config: AvgClaimCostChartConfig = {
         title: 'Avg cost',
@@ -294,13 +272,15 @@ export class ClaimsAvgCostComponent implements OnInit {
     }
   }
 
-
-
   creatOrUpdateChart() {
     this.createChart();
     this.updateChart();
   }
 
+  updateGridGraphData(conditionGroup: string[], selectors: Selector[]) {
+    this.updateChartData(conditionGroup, selectors);
+    this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
+  }
 
   listenToDivResize() {
     this.resizeDetector.listenTo(this.claimsAvgCostContainer.nativeElement, (elem: HTMLElement) => {
@@ -314,13 +294,12 @@ export class ClaimsAvgCostComponent implements OnInit {
     console.log('unlisten claims avg cost divs');
   }
 
-
   sortByHeader(column: string, order: string) {
     this.resetGridSorting();
     this.gridSorting[column][order] = true;
 
-    this.currenctSorting.column = column;
-    this.currenctSorting.order = order;
+    this.currentGridSorting.column = column;
+    this.currentGridSorting.order = order;
 
     if (column === 'conditionGroup') {
       this.waterfallGridData.sort((a, b) =>
@@ -340,7 +319,6 @@ export class ClaimsAvgCostComponent implements OnInit {
     this.gridSorting.benchmark.asc = false;
     this.gridSorting.benchmark.desc = false;
   }
-
 
   toggleGridGraph() {
     console.log('toggle Grid Graph');

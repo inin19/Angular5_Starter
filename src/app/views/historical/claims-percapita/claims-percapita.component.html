@@ -51,14 +51,14 @@
 
       <table class="table table-hover">
         <thead>
-          <tr class="d-flex">
-            <th class="col-3">
+          <tr>
+            <th>
               Condition Group &nbsp;
               <i (click)="sortByHeader('conditionGroup','default')" [ngClass]="{headerSelected:gridSorting.conditionGroup.default,headerUnSelected: !gridSorting.conditionGroup.default}"
                 class=" fa fa-sort-alpha-asc" aria-hidden="true"></i>
 
             </th>
-            <th class="col-3">
+            <th>
               Prevvious Year &nbsp;
               <i (click)="sortByHeader('prev','asc')" [ngClass]="{headerSelected:gridSorting.prev.asc,headerUnSelected: !gridSorting.prev.asc}"
                 class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
@@ -66,7 +66,7 @@
               <i (click)="sortByHeader('prev','desc')" [ngClass]="{headerSelected:gridSorting.prev.desc,headerUnSelected: !gridSorting.prev.desc}"
                 class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
             </th>
-            <th class="col-3">
+            <th>
               Current Year &nbsp;
               <i (click)="sortByHeader('curr','asc')" [ngClass]="{headerSelected:gridSorting.curr.asc,headerUnSelected: !gridSorting.curr.asc}"
                 class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
@@ -74,7 +74,7 @@
               <i (click)="sortByHeader('curr','desc')" [ngClass]="{headerSelected:gridSorting.curr.desc,headerUnSelected: !gridSorting.curr.desc}"
                 class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
             </th>
-            <th class="col-3">
+            <th>
               Benchmark &nbsp;
               <i (click)="sortByHeader('benchmark','asc')" [ngClass]="{headerSelected:gridSorting.benchmark.asc,headerUnSelected: !gridSorting.benchmark.asc}"
                 class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
@@ -85,18 +85,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="conditionGroupElement d-flex" *ngFor="let row of waterfallGridData">
-            <td class="col-3">{{ row.key | ConditionGroupPipe: countryCode }}</td>
-            <td class="col-3">{{ row.prev | FixedNumberFormatPipe }}</td>
-            <td class="col-3">{{ row.curr | FixedNumberFormatPipe }}</td>
-            <td class="col-3">{{ row.benchmark | FixedNumberFormatPipe}}</td>
+          <tr class="conditionGroupElement" *ngFor="let row of waterfallGridData">
+            <td>{{ row.key | ConditionGroupPipe: countryCode }}</td>
+            <td>{{ row.prev | FixedNumberFormatPipe }}</td>
+            <td>{{ row.curr | FixedNumberFormatPipe }}</td>
+            <td>{{ row.benchmark | FixedNumberFormatPipe}}</td>
           </tr>
 
-          <tr class="conditionGroupTotal d-flex">
-            <td class="col-3">{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
-            <td class="col-3">{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
-            <td class="col-3">{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
-            <td class="col-3">{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
+          <tr class="conditionGroupTotal">
+            <td>{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
+            <td>{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
+            <td>{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
+            <td>{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
           </tr>
         </tbody>
       </table>

@@ -574,17 +574,17 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
         break;
       }
       case 'claimsPerCapita': {
-        this.claimPerCapitaComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
+        this.claimPerCapitaComponent.updateGridGraphData(this.getConditionGroups(), this.claimsSelectors);
         this.claimPerCapitaComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsFrequency': {
-        this.claimFrequencyComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
+        this.claimFrequencyComponent.updateGridGraphData(this.getConditionGroups(), this.claimsSelectors);
         this.claimFrequencyComponent.creatOrUpdateChart();
         break;
       }
       case 'claimsAvgCost': {
-        this.claimAvgCostComponent.updateChartData(this.getConditionGroups(), this.claimsSelectors);
+        this.claimAvgCostComponent.updateGridGraphData(this.getConditionGroups(), this.claimsSelectors);
         this.claimAvgCostComponent.creatOrUpdateChart();
         break;
       }
