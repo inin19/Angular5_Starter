@@ -1,4 +1,3 @@
-import { TornadoGrid, TornadoCombinedGrid } from './../../../model/D3grid/tornado-grid.model';
 import { TornadoD3Chart, ChartConfig } from './../../../model/D3chart/tornado-d3-chart.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef } from '@angular/core';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
@@ -58,14 +57,8 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
 
   // grid
-  private proposalGridData: any[];
-  private benchmarkGridData: any[];
-
-
-  private proposalGrid: TornadoGrid;
-  private benchmarkGrid: TornadoGrid;
-  private combinedGrid: TornadoCombinedGrid;
-
+  proposalGridData: any[];
+  benchmarkGridData: any[];
 
 
   zoom: boolean;
@@ -173,6 +166,10 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
       // grid
       this.proposalGridData = this.proposalDemographic.getGridDetail(this.ageGroupReverse);
+
+
+
+
     } else {
       this.maxPercentage = this.benchmarkDemographic.getMaxPercentage();
     }
@@ -182,22 +179,15 @@ export class DemographicComponent implements OnInit, OnDestroy {
   creatOrUpdateChart() {
     this.createChart_benchmark();
     this.updateChart_benchmark();
-    this.createGrid_benchmark();
-    this.updateGrid_benchmark();
+
 
     if (this.proposalDemographic) {
       this.createChart_proposal();
       this.updateChart_proposal();
+
       // create combined chart
       this.createChart_combined();
       this.updateChart_combined();
-
-      this.createGrid_proposal();
-      this.updateGrid_proposal();
-
-      this.createGrid_combined();
-      this.updateGrid_combined();
-
     }
 
   }
@@ -227,41 +217,6 @@ export class DemographicComponent implements OnInit, OnDestroy {
     } else {
       this.maxPercentage = this.benchmarkDemographic.getMaxPercentage();
     }
-  }
-
-  createGrid_proposal() {
-    if (!this.proposalGrid) {
-      this.proposalGrid = new TornadoGrid(this.proposalGridData, '#proposalDemographicGrid');
-    } else {
-      console.log('propoal grid proposed!');
-    }
-  }
-
-  createGrid_benchmark() {
-    if (!this.benchmarkGrid) {
-      this.benchmarkGrid = new TornadoGrid(this.benchmarkGridData, '#benchmarkDemographicGrid');
-    }
-  }
-
-
-  createGrid_combined() {
-    if (!this.combinedGrid) {
-      this.combinedGrid = new TornadoCombinedGrid(this.proposalGridData, this.benchmarkGridData, '#demographicCombinedGrid');
-    }
-  }
-
-
-  updateGrid_proposal() {
-    this.proposalGrid.updateGrid(this.proposalGridData);
-  }
-
-  updateGrid_benchmark() {
-    this.benchmarkGrid.updateGrid(this.benchmarkGridData);
-  }
-
-
-  updateGrid_combined() {
-    this.combinedGrid.updateGrid(this.proposalGridData, this.benchmarkGridData);
   }
 
 

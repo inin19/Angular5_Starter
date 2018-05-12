@@ -85,7 +85,13 @@
               <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr class="d-flex" *ngFor="let row of proposalGridData">
+              <td class="col-4">{{row.ageGroup}}</td>
+              <td class="col-4">{{row.percentage.female | PercentageFormatPipe }}</td>
+              <td class="col-4">{{row.percentage.male | PercentageFormatPipe }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -98,7 +104,13 @@
               <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr class="d-flex" *ngFor="let row of benchmarkGridData">
+              <td class="col-4">{{row.ageGroup}}</td>
+              <td class="col-4">{{row.percentage.female | PercentageFormatPipe }}</td>
+              <td class="col-4">{{row.percentage.male | PercentageFormatPipe }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -128,7 +140,15 @@
               <td *ngFor="let subHeaderName of getGridCombinedColumnHeader()">{{ subHeaderName }}</td>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            <tr *ngFor="let row of benchmarkGridData; let i = index">
+              <td>{{ row.ageGroup }}</td>
+              <td>{{ proposalGridData[i].percentage.female | PercentageFormatPipe }}</td>
+              <td>{{ row.percentage.female | PercentageFormatPipe }}</td>
+              <td>{{ proposalGridData[i].percentage.male | PercentageFormatPipe }}</td>
+              <td>{{ row.percentage.male | PercentageFormatPipe }}</td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </div>

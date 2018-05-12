@@ -1,129 +1,188 @@
-<div class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
-  <div class="col-6">
-    <div id='projectionChart' #projectionChart></div>
+<!-- <div class="row">
+  <div class="col float-right">
+    <div class="float-right">
+      <div class="btn-group" id="planDropdown" dropdown #planDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['planDropdown']"
+        (isOpenChange)="toggleDropdown($event, 'planDropdown' )" (clickOutside)="onClickedOutside($event ,'planDropdown' )"
+        placement="top" attachOutsideOnClick="true">
+        <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
+          Select Plans
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll('planDropdown')" /> (All)
+            </label>
+          </li>
+
+          <li *ngFor="let n of planSelector.selectionItems" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('planDropdown')"> {{n.elementName}}
+            </label>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="btn-group" id="periodDropdown" dropdown #periodDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['periodDropdown']"
+        (isOpenChange)="toggleDropdown($event, 'periodDropdown' )" (clickOutside)="onClickedOutside($event,'periodDropdown' )"
+        placement="top" attachOutsideOnClick="true">
+        <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
+          Select Periods
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll('periodDropdown')" /> (All)
+            </label>
+          </li>
+
+
+          <li *ngFor="let n of periodSelector.selectionItems" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('periodDropdown')"> {{n.elementName}}
+            </label>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="btn-group" id="projectionDropdown" dropdown #projectionDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['projectionDropdown']"
+        (isOpenChange)="toggleDropdown($event, 'projectionDropdown' )" (clickOutside)="onClickedOutside($event, 'projectionDropdown' )"
+        placement="top" attachOutsideOnClick="true">
+        <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
+          Select Projection
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll('projectionDropdown')" /> (All)
+            </label>
+          </li>
+
+          <li *ngFor="let n of projectionSelector.selectionItems" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('projectionDropdown')"> {{n.elementName}}
+            </label>
+          </li>
+
+        </ul>
+      </div>
+
+      <div class="btn-group" id="categoryDropdown" dropdown #categoryDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['categoryDropdown']"
+        (isOpenChange)="toggleDropdown($event, 'categoryDropdown' )" (clickOutside)="onClickedOutside($event, 'categoryDropdown' )"
+        placement="top" attachOutsideOnClick="true">
+        <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
+          Select Categories
+          <span class="caret"></span>
+        </button>
+        <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+          <li role="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll('categoryDropdown')" /> (All)
+            </label>
+          </li>
+
+          <li *ngFor="let n of categorySelector.selectionItems" class="menuitem">
+            <label class="dropdown-item">
+              <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('categoryDropdown')"> {{n.elementName | UKProjectionCategory }}
+            </label>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+
+
+<div class="row">
+  <div class="col">
+    <div class="float-right">
+      <label class="switch switch-3d switch-primary" title="Zoom">
+        <input type="checkbox" class="switch-input" [(ngModel)]="grid" (change)="toggleGridGraph()">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+
+  <div class="col-2">
+
+    <p>Plans</p>
+    <img src="http://hypsypops.com/wp-content/uploads/2016/12/pie-chart.png" alt="Smiley face" height="150" width="150">
+
+    <!-- <ul class="list-group">
+      <li class="list-group-item active">Plans</li>
+      <li class="list-group-item">Plan1</li>
+      <li class="list-group-item">Plan2</li>
+    </ul> -->
+
+    <hr>
+    <ul class="list-group">
+      <li class="list-group-item active">Projection</li>
+      <li class="list-group-item">Current</li>
+      <li class="list-group-item">Proposed</li>
+    </ul>
+
   </div>
 
 
+  <div class="col-10">
 
-
-
-  <div class="col-6">
-
-
-    <div class="row">
+    <div [hidden]='grid' class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
       <div class="col">
-        <div class="float-right">
-          <!-- dropdown: plan -->
-          <div class="btn-group" id="planDropdown" dropdown #planDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['planDropdown']"
-            (isOpenChange)="toggleDropdown($event, 'planDropdown' )" (clickOutside)="onClickedOutside($event ,'planDropdown' )"
-            placement="top" attachOutsideOnClick="true">
-            <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
-              Select Plans
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-
-              <li role="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="planSelector.all" (change)="toggleMultiSelectAll('planDropdown')" /> (All)
-                </label>
-              </li>
-
-              <li *ngFor="let n of planSelector.selectionItems" class="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('planDropdown')"> {{n.elementName}}
-                </label>
-              </li>
-
-            </ul>
-          </div>
-
-          <!-- dropdown: period -->
-          <div class="btn-group" id="periodDropdown" dropdown #periodDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['periodDropdown']"
-            (isOpenChange)="toggleDropdown($event, 'periodDropdown' )" (clickOutside)="onClickedOutside($event,'periodDropdown' )"
-            placement="top" attachOutsideOnClick="true">
-            <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
-              Select Periods
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-
-              <li role="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="periodSelector.all" (change)="toggleMultiSelectAll('periodDropdown')" /> (All)
-                </label>
-              </li>
-
-
-              <li *ngFor="let n of periodSelector.selectionItems" class="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('periodDropdown')"> {{n.elementName}}
-                </label>
-              </li>
-
-            </ul>
-          </div>
-
-          <!-- dropdown: projection -->
-          <div class="btn-group" id="projectionDropdown" dropdown #projectionDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['projectionDropdown']"
-            (isOpenChange)="toggleDropdown($event, 'projectionDropdown' )" (clickOutside)="onClickedOutside($event, 'projectionDropdown' )"
-            placement="top" attachOutsideOnClick="true">
-            <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
-              Select Projection
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-
-              <li role="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="projectionSelector.all" (change)="toggleMultiSelectAll('projectionDropdown')" /> (All)
-                </label>
-              </li>
-
-              <li *ngFor="let n of projectionSelector.selectionItems" class="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('projectionDropdown')"> {{n.elementName}}
-                </label>
-              </li>
-
-            </ul>
-          </div>
-
-          <!-- dropdown: category -->
-          <div class="btn-group" id="categoryDropdown" dropdown #categoryDropdown="bs-dropdown" [autoClose]="false" [isOpen]="dropdownStatus['categoryDropdown']"
-            (isOpenChange)="toggleDropdown($event, 'categoryDropdown' )" (clickOutside)="onClickedOutside($event, 'categoryDropdown' )"
-            placement="top" attachOutsideOnClick="true">
-            <button dropdownToggle type="button" class="btn btn-primary  btn-sm  dropdown-toggle">
-              Select Categories
-              <span class="caret"></span>
-            </button>
-            <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-
-              <li role="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="categorySelector.all" (change)="toggleMultiSelectAll('categoryDropdown')" /> (All)
-                </label>
-              </li>
-
-              <li *ngFor="let n of categorySelector.selectionItems" class="menuitem">
-                <label class="dropdown-item">
-                  <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('categoryDropdown')"> {{n.elementName | UKProjectionCategory }}
-                </label>
-              </li>
-
-            </ul>
-          </div>
+        <div>
+          <h5> Loss Ratio and Renewal Rate</h5>
+          <div id="lossRatioChart"></div>
         </div>
+        <div id="projectionLegend">
+          <ul>
+            <li class="list-inline-item" (click)="resetCategory()" [ngStyle]="{opacity: categorySelector.all ? 0.5:1 }">
+              <i class="fas fa-redo"></i>Reset
+            </li>
+            <li *ngFor="let category of getGraphCategories(); let i = index" class="list-inline-item" (click)="category !== 'FUNDING_GAP' &&  toggleCategory(category)">
 
+              <ng-container *ngIf="category === 'FUNDING_GAP'; else otherCategory ">
+                <span>
+                  <span class="legendRect"> </span>
+                  {{ category | UKProjectionCategory}}
+                </span>
+              </ng-container>
+
+              <ng-template #otherCategory>
+                <span [ngClass]="{ 'li-wrapper-unselected': graphCategoriesStatus[category], 'li-wrapper-selected': !graphCategoriesStatus[category]  }">
+                  <span class="legendRect"> </span>
+                  {{ category | UKProjectionCategory}}
+                </span>
+              </ng-template>
+
+              <!-- <span [ngClass]="{ 'li-wrapper': category==='FUNDING_GAP'? false: true }">
+            <span class="legendRect"> </span>
+            {{ category | UKProjectionCategory}}
+          </span> -->
+            </li>
+          </ul>
+        </div>
+        <div id='projectionChart' #projectionChart></div>
       </div>
+      <div id="projectionToolip">Tooltip</div>
     </div>
 
-    <div class="row">
-      <div class="col">&nbsp;</div>
-    </div>
 
-    <!-- table -->
-    <div class="row">
+
+    <div [hidden]='!grid' class="row">
       <div class="col">
         <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-align-middle mb-0 table-responsive-sm table-striped table-sm">
           <thead>
@@ -154,16 +213,9 @@
             </tr>
           </tbody>
         </table>
-
-
       </div>
     </div>
 
-
   </div>
 
-
-  <div id="projectionToolip">Tooltip</div>
-
 </div>
-

@@ -1,4 +1,6 @@
 import { PercentageFormatPipe, FixedNumberFormatPipe } from './../pipes/grid/grid-format';
+import { ConditionGroupPipe } from './../pipes/charts/conditionGroup-pipe';
+
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng4-click-outside';
@@ -25,6 +27,7 @@ import { HistoricalItComponent } from './country/historical-it/historical-it.com
 import { TestingComponent } from './country/historical-it/testing/testing.component';
 import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.component';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -48,7 +51,8 @@ import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.compon
     TestingComponent,
     ClaimsAvgCostComponent,
     PercentageFormatPipe,
-    FixedNumberFormatPipe
+    FixedNumberFormatPipe,
+    ConditionGroupPipe
   ],
   providers: [
     DemographicService,

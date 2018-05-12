@@ -25,10 +25,22 @@ export class Selector {
     return this.selectionItems.filter(d => d.elementName === item)[0].checked;
   }
 
+  // new
   toggleElementStatus(item: string) {
     const status = this.selectionItems.filter(d => d.elementName === item)[0].checked;
     this.selectionItems.filter(d => d.elementName === item)[0].checked = !status;
+    this.setAll();
   }
+
+  // new
+  setAll() {
+    if (this.checkIfAllChecked() === true) {
+      this.all = true;
+    } else {
+      this.all = false;
+    }
+  }
+
 
   checkIfAllChecked() {
     const num = this.selectionItems.filter(d => d.checked === true).length;

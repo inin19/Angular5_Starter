@@ -5,7 +5,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { HttpClientModule } from '@angular/common/http';
 
 import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 
 import { DashboardComponent } from './dashboard.component';
 import { DashboardRoutingModule } from './dashboard-routing.module';
@@ -13,7 +13,7 @@ import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ProjectionComponent } from './projection/projection.component';
 import { ClickOutsideModule } from 'ng4-click-outside';
 
-import { FixedNumberFormatPipe, BigNumberFormatPipe } from './../pipes/grid/grid-format';
+import { BigNumberFormatPipe } from './../pipes/grid/grid-format';
 
 
 
@@ -27,7 +27,7 @@ import { FixedNumberFormatPipe, BigNumberFormatPipe } from './../pipes/grid/grid
     BsDropdownModule.forRoot(),
     ClickOutsideModule
   ],
-  declarations: [DashboardComponent, ProjectionComponent, UKPrjectionPipes, FixedNumberFormatPipe, BigNumberFormatPipe],
+  declarations: [DashboardComponent, ProjectionComponent, UKPrjectionPipes, BigNumberFormatPipe],
   providers: [ProjectionService]
 
 })

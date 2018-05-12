@@ -1,6 +1,9 @@
 import { Component, OnInit, ViewChild, Input, OnChanges, OnDestroy, ElementRef, ViewEncapsulation } from '@angular/core';
 import { ProjectionData, ProjectionOutput } from '../../../model/D3chartData/projection-data.model';
-import { ProjectionD3Chart } from '../../../model/D3chart/projection-d3-chart.model';
+// import { ProjectionD3Chart } from '../../../model/D3chart/projection-d3-chart.model';
+
+import { ProjectionD3ChartNEW } from './../../../model/D3chart/projection-d3-chart.model';
+
 import { ProjectionChartConfig } from '../../../model/utils/chart-config';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { Selector } from '../../../model/utils/selector.model';
@@ -27,10 +30,16 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('projectionChart') private projectionChart: ElementRef;
 
 
+  graphCategoriesStatus = {
+    EMPLOYER_PREMIUM: true,
+    MEMBER_PREMIUM: true,
+    TAX: true,
+    FEES: true
+  };
 
   private projectionData: ProjectionData;
   private projectionGraphData: ProjectionOutput[];
-  private projectionD3Chart: ProjectionD3Chart;
+  private projectionD3Chart: ProjectionD3ChartNEW;
 
 
   projectionGridData: ProjectionGridData[];
@@ -43,7 +52,9 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   periodSelector: Selector;
   projectionSelector: Selector;
 
-  private margin: any = { top: 60, right: 20, bottom: 40, left: 40 };
+  grid = false;
+
+  private margin: any = { top: 20, right: 20, bottom: 40, left: 40 };
 
   dropdownStatus = {
     planDropdown: false,
@@ -57,7 +68,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor() { }
 
-  private getGraphCategories(): string[] {
+  getGraphCategories(): string[] {
     return ProjectionComponent.graphCategories;
   }
 
@@ -106,13 +117,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  // createGrid() {
-  //   this.projectionD3Grid = new ProjectionGrid(this.projectionGridData, '#projectionGrid', Translations.categoryTranslate);
-  // }
 
-  // updateGrid(periods: number[]) {
-  //   this.projectionD3Grid.updateGrid(this.projectionGridData, periods);
-  // }
 
   createChartData() {
     this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories(), this.getGridCategories());
@@ -138,7 +143,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       categories: this.getGraphCategories(),
       translation: Translations.categoryTranslate
     };
-    this.projectionD3Chart = new ProjectionD3Chart(chartConfig);
+    this.projectionD3Chart = new ProjectionD3ChartNEW(chartConfig);
 
     // this.createGrid();
   }
@@ -271,7 +276,23 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
+  toggleCategory(input: string) {
+    this.graphCategoriesStatus[input] = !this.graphCategoriesStatus[input];
+    this.categorySelector.toggleElementStatus(input);
 
+    console.log(this.categorySelector);
+  }
+
+  resetCategory() {
+    this.categorySelector.resetSelector();
+  }
+
+
+  toggleGridGraph() {
+    setTimeout(() => {
+      this.updateChart();
+    });
+  }
 
 
 }

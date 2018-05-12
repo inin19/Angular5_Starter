@@ -140,7 +140,7 @@
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
       #claimsPerCapita></app-claims-percapita>
   </tab>
 

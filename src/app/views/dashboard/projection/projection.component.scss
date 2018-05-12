@@ -87,29 +87,106 @@
 }
 
 
+#projectionLegend {
+  display: table;   /* Allow the centering to work */
+	margin: 0 auto;
+}
+
+.legendRect {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: cornflowerblue;
+}
 
 
-#projectionGrid1  {
-    font-size: 10px;
-  }
-  
-  
-  
-  #projectionGrid1 tbody td {
-    padding-right: 30px;
-    text-align: right;
-  }
-  
-  #projectionGrid1 tbody td:nth-child(1) {
-    text-align: left;
-  }
-  
-  
-  #projectionGrid1 thead th {
-    padding-right: 30px;
-    text-align: right;
-  }
-  
-  #projectionGrid1 thead th:nth-child(1) {
-    text-align: left;
-  }
+
+#projectionLegend li {
+  // background-color:yellow;
+  cursor: auto;
+  // padding: 5px;
+}
+
+// #projectionLegend li:hover {
+//   opacity: 0.8;
+//   background-color: aqua;
+//   transition: all 800ms ease-out;
+// }
+
+
+
+
+.li-wrapper-unselected {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  padding: 5px;;
+}
+
+.li-wrapper-unselected:before, .li-wrapper-unselected:after {
+  content: '';
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  top: 50%;
+  margin-top: -0.5px;
+  background:darkgray;
+}
+
+
+
+.li-wrapper-unselected:before {
+  left: -2.5px;
+}
+
+.li-wrapper-unselected:after {
+  right: 2.5px;
+  background: darkgray;
+  transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+
+
+
+.li-wrapper-unselected:hover:before {
+  background : darkgray;
+  width: 100%;
+  transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.li-wrapper-unselected:hover:after {
+  background: transparent;
+  width: 100%;
+  transition: 0s;
+}
+
+
+.li-wrapper-unselected:hover {
+ background-color: yellow;
+ transition: all 800ms ease-out;
+}
+
+
+.li-wrapper-selected {
+  position: relative;
+  display: block;
+  cursor: pointer;
+  padding: 5px;
+  background-color: darkgray;
+}
+
+
+
+
+#projectionChartsArea h5 {
+  text-align: center;
+}
+
+// top: 20, right: 20, bottom: 40, left: 40
+
+#lossRatioChart{
+  margin: 5px, 20px,40px,5px; 
+  border: solid 1px black;
+
+  height: 150px;
+}

@@ -27,10 +27,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   @Input() private claimMargin: any;
 
   @Input() countryCode: string;
-
-
   @Input() private conditionGroups: string[];
   @Input() private claimSelectors: Selector[];
+
+
+  // language
+  private language: string;
 
 
   // for tooltip
@@ -59,7 +61,6 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   private claimPerCapitaXDomain: string[];
 
 
-  // new form
   sorting: string;
 
   // [claim, settled]
@@ -68,8 +69,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
 
   // gridData
-  private waterfallGridData: WaterfallGridData[];
-  private waterfallGridDataTotal: WaterfallGridData;
+  waterfallGridData: WaterfallGridData[];
+  waterfallGridDataTotal: WaterfallGridData;
 
 
 
@@ -95,8 +96,9 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
 
   ngOnInit() {
     console.log('claim PerCapita init');
-    this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
 
+
+    this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
     // this.amountType = 'settled';
     this.amountType = 'claim';
     this.sorting = 'Default';
@@ -181,6 +183,11 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
         curr: 0,
         benchmark: this.benchmarkClaimPerCapita.getClaimsAggregateDataTotal().currYearPerCapitalClaimCost
       };
+
+
+      // this.waterfallGridData.forEach(element => {
+      //   console.log(element);
+      // });
 
     }
   }
@@ -336,8 +343,8 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     }
 
 
-    this.createGrid();
-    this.updateGrid();
+    //    this.createGrid();
+    // this.updateGrid();
   }
 
 
