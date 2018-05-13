@@ -7,7 +7,7 @@
       </div>
 
 
-      <div [hidden]="!hasClaim" style="display: inline-block;">
+      <div *ngIf="proposalDemographic" style="display: inline-block;">
         &nbsp;Combined Graph &nbsp;
         <label class="switch switch-3d switch-primary" title="Zoom">
           <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
@@ -25,7 +25,7 @@
   <div [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
     <div class="col-6">
 
-      <div #proposalDemographic id="proposalDemographic">
+      <div *ngIf="proposalDemographic" #proposalDemographic id="proposalDemographic">
         <svg class="tornadoChart" width="100%">
           <g class="bars">
             <g class="x axis"></g>
@@ -34,7 +34,7 @@
         </svg>
       </div>
 
-      <div *ngIf="proposalGridSummary" class="tornadoSummaryGrid">
+      <div *ngIf="proposalDemographic" class="tornadoSummaryGrid">
         <table class="table table-hover table-sm">
           <thead>
             <tr>
@@ -66,6 +66,7 @@
           </g>
         </svg>
       </div>
+
       <div class="tornadoSummaryGrid">
         <table class="table table-hover table-sm">
           <thead>
@@ -94,7 +95,7 @@
 
   <div [hidden]='!grid' class="row">
     <div class="col-6">
-      <div [hidden]="!hasClaim" class="tornadoGrid">
+      <div *ngIf="proposalDemographic" class="tornadoGrid">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -142,14 +143,21 @@
 
   <div [hidden]='grid' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
     <div class="col">
-      <div id="combinedDemographic" #combinedDemographic></div>
+      <div *ngIf="proposalDemographic" id="combinedDemographic" #combinedDemographic>
+        <svg class="tornadoCombinedChart" width="100%">
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
+      </div>
     </div>
     <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
   </div>
 
   <div [hidden]='!grid' class="row">
     <div class="col">
-      <div class="tornadoGrid" id='demographicCombinedGrid'>
+      <div *ngIf="proposalDemographic" class="tornadoGrid" id='demographicCombinedGrid'>
         <table class="table table-hover">
           <thead>
             <tr>

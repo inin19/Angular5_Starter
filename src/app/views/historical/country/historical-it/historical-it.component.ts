@@ -569,8 +569,8 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   updateCurrentTabCharts() {
     switch (this.currentTab) {
       case 'historicalDemographic': {
-        this.demographicComponent.updateChartData(this.demographicSelectors);
-        this.demographicComponent.creatOrUpdateChart();
+        this.demographicComponent.createOrUpdateData(this.demographicSelectors);
+        this.demographicComponent.createOrUpdateChart();
         break;
       }
       case 'claimsPerCapita': {

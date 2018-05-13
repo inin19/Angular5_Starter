@@ -73,8 +73,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
   proposalID = '3';
-  hasClaimData = true;
-  // hasClaimData = false;
+  // hasClaimData = true;
+  hasClaimData = false;
 
 
   // -----------------------------SELECTORS----------------------
@@ -327,6 +327,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
     } else {
       this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
+      // this.proposalDemographic = null;
     }
   }
 
@@ -485,7 +486,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     }
     setTimeout(() => {
       this.updateCurrentTabCharts();
-
     });
 
 
@@ -500,8 +500,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   updateCurrentTabCharts() {
     switch (this.currentTab) {
       case 'historicalDemographic': {
-        this.demographicComponent.updateChartData(this.demographicSelectors);
-        this.demographicComponent.creatOrUpdateChart();
+        this.demographicComponent.createOrUpdateData(this.demographicSelectors);
+        this.demographicComponent.createOrUpdateChart();
         break;
       }
       case 'claimsPerCapita': {

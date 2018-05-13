@@ -37,7 +37,7 @@ export class DemographicService {
 
   getBenchmarkDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<any> {
     const l: number = new Date().getMilliseconds();
-    return this.http.get(this.benchmarkDemographicUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions);
+    return this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions);
   }
 
 
