@@ -1,4 +1,4 @@
-import { TornadoD3ChartNew, TornadoD3CharCombined } from './../../../model/D3chart/tornado-d3-chart.model';
+import { TornadoD3Chart, TornadoD3CharCombined } from './../../../model/D3chart/tornado-d3-chart.model';
 import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
 import { Selector } from './../../../model/utils/selector.model';
@@ -7,7 +7,6 @@ import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 
 
-import { ResizedEvent } from './../../../directives/custom/resized-event';
 
 @Component({
   selector: 'app-demographic',
@@ -44,8 +43,8 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
   private proposalgraphData: any[];
   private benchmarkgraphData: any[];
 
-  private proposalD3Chart: TornadoD3ChartNew;
-  private benchmarkD3Chart: TornadoD3ChartNew;
+  private proposalD3Chart: TornadoD3Chart;
+  private benchmarkD3Chart: TornadoD3Chart;
   private combinedD3Chart: TornadoD3CharCombined;
 
   private maxPercentage: number;
@@ -85,19 +84,14 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     console.log('in demographic init');
-
     this.ageGroupReverse = this.ageGroup.slice().reverse();
-
     this.createOrUpdateData();
-    // this.createOrUpdateChart();
   }
 
 
   ngAfterViewInit() {
     this.createOrUpdateChart();
-
     this.listenToDivResize();
-
   }
 
   ngOnDestroy() {
@@ -230,7 +224,7 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
         'PROPOSAL'
       );
     } else {
-      this.proposalD3Chart = new TornadoD3ChartNew(
+      this.proposalD3Chart = new TornadoD3Chart(
         this.demographicParent,
         this.proposalDemoChartContainer,
         this.demographicMargin,
@@ -258,7 +252,7 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
       );
 
     } else {
-      this.benchmarkD3Chart = new TornadoD3ChartNew(
+      this.benchmarkD3Chart = new TornadoD3Chart(
         this.demographicParent,
         this.benchmarkDemoChartContainer,
         this.demographicMargin,
@@ -296,24 +290,22 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
-
-
   // NEW onResize
-  private onResized(event: ResizedEvent, element: string): void {
+  // private onResized(event: ResizedEvent, element: string): void {
+  //   switch (element) {
+  //     case 'benchmark': {
+  //       this.createUpdateChart_benchmark();
+  //       break;
+  //     }
+  //     case 'proposal': {
+  //       this.createUpdateChart_proposal();
+  //       break;
+  //     }
+  //     case 'combined': {
+  //       this.createUpdateChart_combined();
+  //       break;
+  //     }
+  //   }
+  // }
 
-    switch (element) {
-      case 'benchmark': {
-        this.createUpdateChart_benchmark();
-        break;
-      }
-      case 'proposal': {
-        this.createUpdateChart_proposal();
-        break;
-      }
-      case 'combined': {
-        this.createUpdateChart_combined();
-        break;
-      }
-    }
-  }
 }
