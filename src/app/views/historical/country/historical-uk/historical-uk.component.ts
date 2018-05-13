@@ -73,8 +73,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   countryCode = 'ISO2_GB';
   ageGroup = ['0-18', '19-25', '26-35', '36-45', '46-55', '56-60', '61-65', '66-70', '71-75', '76+'];
   proposalID = '3';
-  // hasClaimData = true;
-  hasClaimData = false;
+  hasClaimData = true;
+  // hasClaimData = false;
 
 
   // -----------------------------SELECTORS----------------------

@@ -23,16 +23,20 @@ export class ResizeDirective implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.sensor = new ResizeSensor(this.element.nativeElement, x => this.onResized());
+    console.log('attache!!!', this.element.nativeElement.id);
   }
 
 
   ngOnDestroy() {
     this.sensor.detach();
+    console.log('detach');
   }
 
   private onResized() {
+
     const newWidth = this.element.nativeElement.clientWidth;
     const newHeight = this.element.nativeElement.clientHeight;
+
 
     if (newWidth === this.oldWidth && newHeight === this.oldHeight) {
       return;

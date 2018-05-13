@@ -25,7 +25,8 @@
   <div [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
     <div class="col-6">
 
-      <div *ngIf="proposalDemographic" #proposalDemographic id="proposalDemographic">
+      <!--  (appResize)="onResized($event, 'proposal')" -->
+      <div *ngIf="proposalDemographic" id="proposalDemographic" #proposalDemographic>
         <svg class="tornadoChart" width="100%">
           <g class="bars">
             <g class="x axis"></g>
@@ -58,7 +59,7 @@
     </div>
 
     <div class="col-6">
-      <div (appResize)="onResized($event)" class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic>
+      <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic>
         <svg class="tornadoChart" width="100%">
           <g class="bars">
             <g class="x axis"></g>

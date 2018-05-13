@@ -96,12 +96,12 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
   ngAfterViewInit() {
     this.createOrUpdateChart();
 
-    // this.listenToDivResize();
+    this.listenToDivResize();
 
   }
 
   ngOnDestroy() {
-    // this.unListenToDivResize();
+    this.unListenToDivResize();
     console.log('demographic component destroyed');
   }
 
@@ -137,11 +137,11 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   unListenToDivResize() {
+    this.resizeDetector.removeAllListeners(this.benchmarkDemoChartContainer.nativeElement);
     if (this.proposalDemographic) {
       this.resizeDetector.removeAllListeners(this.combinedDemoChartContainer.nativeElement);
       this.resizeDetector.removeAllListeners(this.proposalDemoChartContainer.nativeElement);
     }
-    this.resizeDetector.removeAllListeners(this.benchmarkDemoChartContainer.nativeElement);
     console.log('unlisten to demographic divs');
   }
 
@@ -299,15 +299,21 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   // NEW onResize
+  private onResized(event: ResizedEvent, element: string): void {
 
-  onResized(event: ResizedEvent): void {
-
-    // setTimeout(() => {
-    this.createUpdateChart_benchmark();
-    // }, 200);
-
+    switch (element) {
+      case 'benchmark': {
+        this.createUpdateChart_benchmark();
+        break;
+      }
+      case 'proposal': {
+        this.createUpdateChart_proposal();
+        break;
+      }
+      case 'combined': {
+        this.createUpdateChart_combined();
+        break;
+      }
+    }
   }
-
-
-
 }
