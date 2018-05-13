@@ -1,10 +1,13 @@
 import { TornadoD3ChartNew, TornadoD3CharCombined } from './../../../model/D3chart/tornado-d3-chart.model';
-import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
 import { Selector } from './../../../model/utils/selector.model';
 
 import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
+
+
+import { ResizedEvent } from './../../../directives/custom/resized-event';
 
 @Component({
   selector: 'app-demographic',
@@ -14,7 +17,7 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
 })
 
 
-export class DemographicComponent implements OnInit, OnDestroy {
+export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
   static gridDetailColumnHeader = ['AGE_GROUP', 'FEMALE', 'MALE'];
@@ -58,6 +61,11 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
 
 
+  width: number;
+  height: number;
+
+
+
   // UI specific
   zoom = false;
   grid: false;
@@ -81,12 +89,19 @@ export class DemographicComponent implements OnInit, OnDestroy {
     this.ageGroupReverse = this.ageGroup.slice().reverse();
 
     this.createOrUpdateData();
+    // this.createOrUpdateChart();
+  }
+
+
+  ngAfterViewInit() {
     this.createOrUpdateChart();
-    this.listenToDivResize();
+
+    // this.listenToDivResize();
+
   }
 
   ngOnDestroy() {
-    this.unListenToDivResize();
+    // this.unListenToDivResize();
     console.log('demographic component destroyed');
   }
 
@@ -281,6 +296,17 @@ export class DemographicComponent implements OnInit, OnDestroy {
     }
   }
 
+
+
+  // NEW onResize
+
+  onResized(event: ResizedEvent): void {
+
+    // setTimeout(() => {
+    this.createUpdateChart_benchmark();
+    // }, 200);
+
+  }
 
 
 

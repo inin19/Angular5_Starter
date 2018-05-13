@@ -30,6 +30,7 @@
     "@angular/upgrade": "5.0.5",
     "@types/element-resize-detector": "^1.1.0",
     "angular-calendar": "0.22.1",
+    "angular-resize-event": "^0.4.2",
     "angular2-datatable": "0.6.0",
     "angular2-ladda": "1.2.2",
     "angular2-multiselect-dropdown": "^2.6.0",

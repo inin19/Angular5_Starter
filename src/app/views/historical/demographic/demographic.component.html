@@ -58,7 +58,7 @@
     </div>
 
     <div class="col-6">
-      <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic>
+      <div (appResize)="onResized($event)" class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic>
         <svg class="tornadoChart" width="100%">
           <g class="bars">
             <g class="x axis"></g>

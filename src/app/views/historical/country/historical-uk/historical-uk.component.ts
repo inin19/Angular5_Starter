@@ -327,7 +327,6 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
       this.proposalDemographic = new TornadoData(this.proposalDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
     } else {
       this.benchmarkDemographic = new TornadoData(this.benchmarkDemographicData, this.ageGroup.reverse(), this.getDemographicDimensions());
-      // this.proposalDemographic = null;
     }
   }
 

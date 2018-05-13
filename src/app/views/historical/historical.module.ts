@@ -27,6 +27,9 @@ import { HistoricalItComponent } from './country/historical-it/historical-it.com
 import { TestingComponent } from './country/historical-it/testing/testing.component';
 import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.component';
 
+import { ResizeDirective } from './../../directives/custom/resize.directive';
+
+
 
 @NgModule({
   imports: [
@@ -52,7 +55,8 @@ import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.compon
     ClaimsAvgCostComponent,
     PercentageFormatPipe,
     FixedNumberFormatPipe,
-    ConditionGroupPipe
+    ConditionGroupPipe,
+    ResizeDirective
   ],
   providers: [
     DemographicService,
