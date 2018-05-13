@@ -177,13 +177,13 @@ export class DemographicComponent implements OnInit, OnDestroy {
 
 
   creatOrUpdateChart() {
-    this.createChart_benchmark();
-    this.updateChart_benchmark();
+    // this.createChart_benchmark();
+    // this.updateChart_benchmark();
 
 
     if (this.proposalDemographic) {
-      this.createChart_proposal();
-      this.updateChart_proposal();
+      // this.createChart_proposal();
+      // this.updateChart_proposal();
 
       // create combined chart
       this.createChart_combined();

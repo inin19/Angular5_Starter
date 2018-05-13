@@ -11,11 +11,11 @@
         &nbsp;Combined Graph &nbsp;
         <label class="switch switch-3d switch-primary" title="Zoom">
           <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
-
           <span class="switch-label"></span>
           <span class="switch-handle"></span>
         </label>
       </div>
+
     </div>
   </div>
 </div>
@@ -24,8 +24,13 @@
 <div [hidden]='zoom'>
   <div [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
     <div class="col-6">
-      <div class="tornadoChart" id='proposalDemographic' #proposalDemographic></div>
-      <div *ngIf="proposalGridSummary" class="tornadoSummaryGrid tornadoGrid" id="proposalDemographicGridSummary" #proposalDemographicGridSummary>
+
+      <div class="tornadoChart" id='proposalDemographic' #proposalDemographic>
+        <svg></svg>
+
+      </div>
+
+      <div *ngIf="proposalGridSummary" class="tornadoSummaryGrid">
         <table class="table table-hover table-sm">
           <thead>
             <tr>
@@ -49,8 +54,10 @@
     </div>
 
     <div class="col-6">
-      <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic></div>
-      <div class="tornadoSummaryGrid tornadoGrid" id="benchmarkDemographicGridSummary" #benchmarkDemographicGridSummary>
+      <div class="tornadoChart" id='benchmarkDemographic' #benchmarkDemographic>
+
+      </div>
+      <div class="tornadoSummaryGrid">
         <table class="table table-hover table-sm">
           <thead>
             <tr>
@@ -78,7 +85,7 @@
 
   <div [hidden]='!grid' class="row">
     <div class="col-6">
-      <div [hidden]="!hasClaim" class="tornadoGrid" id='proposalDemographicGrid' #proposalDemographicGrid>
+      <div [hidden]="!hasClaim" class="tornadoGrid">
         <table class="table table-hover">
           <thead>
             <tr class="d-flex">
@@ -97,7 +104,7 @@
     </div>
 
     <div class="col-6">
-      <div class="tornadoGrid" id='benchmarkDemographicGrid' #benchmarkDemographicGrid>
+      <div class="tornadoGrid">
         <table class="table table-hover">
           <thead>
             <tr class="d-flex">
@@ -120,7 +127,10 @@
 </div>
 
 
+<!-- Combined Grip -->
+
 <div [hidden]='!zoom'>
+
   <div [hidden]='grid' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
     <div class="col">
       <div id="combinedDemographic" #combinedDemographic></div>
@@ -130,7 +140,7 @@
 
   <div [hidden]='!grid' class="row">
     <div class="col">
-      <div class="tornadoGrid" id='demographicCombinedGrid' #demographicCombinedGrid>
+      <div class="tornadoGrid" id='demographicCombinedGrid'>
         <table class="table table-hover">
           <thead>
             <tr>

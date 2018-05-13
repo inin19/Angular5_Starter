@@ -25,17 +25,18 @@ export class TornadoD3Chart {
 
 
   constructor(dom: string, chartConfig: ChartConfig) {
+    this.createChart(dom, chartConfig);
+  }
+
+
+
+  private createChart(dom: string, chartConfig: ChartConfig) {
     const htmlElement = chartConfig.chartContainer.nativeElement;
     this.margin = chartConfig.margin;
     this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
 
 
-
-
-    // this.svg_1 = d3.select('#proposalDemographic').append('svg')
-    // .attr('width', htmlElement.offsetWidth)
-    // .attr('height', htmlElement.offsetHeight);
     this.svg = d3.select(dom).append('svg')
       .attr('width', htmlElement.offsetWidth)
       .attr('height', htmlElement.offsetHeight);
@@ -151,21 +152,12 @@ export class TornadoD3Chart {
     this.xAxis = this.chart.append('g')
       .attr('class', 'x axis')
       .attr('transform', `translate(0, ${this.height})`);
-    // .call(xaxis);
 
     this.yAxis = this.chart.append('g')
       .attr('class', 'y axis');
-    // .call(yaxis);
-
-    // this.line = this.chart.append('line')
-    //     .attr('class', 'middleLine')
-    //     .attr('stroke', '#000')
-    //     .attr('x1', this.xScale(0))
-    //     .attr('x2', this.xScale(0))
-    //     .attr('y2', this.height)
-    //     .attr('stroke-width', '1px');
 
   }
+
 
 
   updateChart(dom: string, chartConfig: ChartConfig, barData: any[], chartParent: ElementRef, tooltipDom: string) {
