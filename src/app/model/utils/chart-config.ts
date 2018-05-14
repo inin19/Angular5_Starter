@@ -12,15 +12,7 @@ export interface ChartConfig {
     toolTipParent?: ElementRef;
 }
 
-export interface WaterfallChartConfig extends ChartConfig {
-    zoom?: boolean;
-    // stackColor?: { Base: string; Fall: string; Rise: string; };
-    barData?: any[];
-    previousYearKey?: string;
-    currentYearKey?: string;
-    conditionGroupTranslation: any;
-    chartType: string; // 'percapita' 'frequency'
-}
+
 
 
 // AvgClaimCostChartConfig

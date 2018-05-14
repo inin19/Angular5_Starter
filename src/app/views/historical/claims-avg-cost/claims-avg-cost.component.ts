@@ -2,7 +2,7 @@ import { Selector } from './../../../model/utils/selector.model';
 import { AvgClaimCostChartConfig } from './../../../model/utils/chart-config';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
 import { WaterfallData, ClaimsAggregateData } from './../../../model/D3chartData/waterfall-data.model';
-import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
 
@@ -13,7 +13,7 @@ import * as d3 from 'd3';
 })
 
 
-export class ClaimsAvgCostComponent implements OnInit {
+export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit {
 
   static series = {
     prevYear: 1,
@@ -74,7 +74,15 @@ export class ClaimsAvgCostComponent implements OnInit {
   ngOnInit() {
     this.populateDomainValue();
     this.createGridGraphData();
-    this.creatOrUpdateChart();
+  }
+
+  ngAfterViewInit() {
+    this.createOrUpdateChart();
+    console.log('after view init');
+  }
+
+  ngOnDestroy() {
+    console.log('claims avg');
   }
 
   private getMaxAvgCost(): number {
@@ -96,7 +104,66 @@ export class ClaimsAvgCostComponent implements OnInit {
     this.conditionGroupTranslation['TOTAL'] = 'Total';
   }
 
-  private createChartData() {
+
+  private populateGridData(column: string, order: string) {
+    this.waterfallGridData = [];
+
+    if (this.proposalClaimAvgCost) {
+      // create grid data
+      this.conditionGroups.forEach(element => {
+        const proposal = this.proposalClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+        const temp: WaterfallGridData = {
+          key: element,
+          prev: (proposal) ? proposal.prevYearAvgClaimCost : 0,
+          curr: (proposal) ? proposal.currYearAvgClaimCost : 0,
+          benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0
+        };
+
+        this.waterfallGridData.push(temp);
+      });
+
+      // total
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().prevYearAvgClaimCost,
+        curr: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost,
+        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
+      };
+    } else {
+
+      this.conditionGroups.forEach(element => {
+        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
+        const temp: WaterfallGridData = { key: element, prev: 0, curr: 0, benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0 };
+        this.waterfallGridData.push(temp);
+      });
+
+      this.waterfallGridDataTotal = {
+        key: 'TOTAL',
+        prev: 0,
+        curr: 0,
+        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
+      };
+    }
+
+  }
+
+  private createGridGraphData() {
+    this.createOrUpdateData();
+    this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
+  }
+
+
+
+  private createOrUpdateData(conditionGroup?: string[], selectors?: Selector[]) {
+
+    if (conditionGroup && selectors) {
+      this.benchmarkClaimAvgCost.updateData(conditionGroup, selectors);
+      if (this.proposalClaimAvgCost) {
+        this.proposalClaimAvgCost.updateData(conditionGroup, selectors);
+      }
+    }
+
     // combine benchmark and proposal data here
     this.avgCostGraphData = [];
 
@@ -174,117 +241,51 @@ export class ClaimsAvgCostComponent implements OnInit {
     }
   }
 
-  private populateGridData(column: string, order: string) {
-    this.waterfallGridData = [];
-
-    if (this.proposalClaimAvgCost) {
-      // create grid data
-      this.conditionGroups.forEach(element => {
-        const proposal = this.proposalClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
-        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
-        const temp: WaterfallGridData = {
-          key: element,
-          prev: (proposal) ? proposal.prevYearAvgClaimCost : 0,
-          curr: (proposal) ? proposal.currYearAvgClaimCost : 0,
-          benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0
-        };
-
-        this.waterfallGridData.push(temp);
-      });
-
-      // total
-      this.waterfallGridDataTotal = {
-        key: 'TOTAL',
-        prev: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().prevYearAvgClaimCost,
-        curr: this.proposalClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost,
-        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
-      };
-    } else {
-
-      this.conditionGroups.forEach(element => {
-        const benchmark = this.benchmarkClaimAvgCost.getClaimsAggregateData().find(item => item.key === element);
-        const temp: WaterfallGridData = { key: element, prev: 0, curr: 0, benchmark: (benchmark) ? benchmark.currYearAvgClaimCost : 0 };
-        this.waterfallGridData.push(temp);
-      });
-
-      this.waterfallGridDataTotal = {
-        key: 'TOTAL',
-        prev: 0,
-        curr: 0,
-        benchmark: this.benchmarkClaimAvgCost.getClaimsAggregateDataTotal().currYearAvgClaimCost
-      };
-    }
-
-  }
-
-  private createGridGraphData() {
-    this.createChartData();
-    this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
-  }
-
-  private updateChartData(conditionGroup: string[], selectors: Selector[]) {
-    this.benchmarkClaimAvgCost.updateData(conditionGroup, selectors);
-    if (this.proposalClaimAvgCost) {
-      this.proposalClaimAvgCost.updateData(conditionGroup, selectors);
-    }
-    this.createChartData();
-  }
-
-  private createChart() {
-    if (this.claimsAvgCostGraph.nativeElement.offsetWidth === 0 && this.claimsAvgCostGraph.nativeElement.offsetHeight === 0) {
-      console.log('container size is zero, chart is not created');
-    } else {
-      if (!this.avgCostD3Chart) {
-        const config: AvgClaimCostChartConfig = {
-          title: 'Avg cost',
-          margin: this.claimMargin,
-          chartContainer: this.claimsAvgCostGraph,
-          domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
-          xScaleDomain: this.xDomain,
-          x1ScaleDomain: this.x1Domain,
-          yScaleDomain: [0, this.getMaxAvgCost()],
-          toolTipParent: this.claimsAvgCostContainer.nativeElement.id,
-          conditionGroupTranslation: this.conditionGroupTranslation
-        };
-        this.avgCostD3Chart = new AvgCostD3Chart(config);
-      }
-    }
-  }
 
 
-  private updateChart() {
+  createOrUpdateChart() {
     if (this.avgCostD3Chart) {
-      const config: AvgClaimCostChartConfig = {
-        title: 'Avg cost',
-        margin: this.claimMargin,
-        chartContainer: this.claimsAvgCostGraph,
-        domID: '#' + this.claimsAvgCostGraph.nativeElement.id,
-        xScaleDomain: this.xDomain,
-        x1ScaleDomain: this.x1Domain,
-        yScaleDomain: [0, this.getMaxAvgCost()],
-        toolTipParent: this.claimsAvgCostContainer,
-        tooltipDomID: '#avgCostTooltip',
-        conditionGroupTranslation: this.conditionGroupTranslation,
-        barData: this.avgCostGraphData
-      };
-      this.avgCostD3Chart.updateChart(config);
-      console.log('avg cost chart update!');
-    }
-  }
+      this.avgCostD3Chart.updateChart(
+        this.claimsAvgCostContainer,
+        this.claimsAvgCostGraph,
+        this.claimMargin,
+        this.xDomain,
+        this.x1Domain,
+        [0, this.getMaxAvgCost()],
+        this.avgCostGraphData,
+        this.conditionGroupTranslation,
+        '#avgCostTooltip'
+      );
 
-  creatOrUpdateChart() {
-    this.createChart();
-    this.updateChart();
+    } else {
+      if (this.claimsAvgCostGraph.nativeElement.offsetWidth === 0 && this.claimsAvgCostGraph.nativeElement.offsetHeight === 0) {
+        console.log('Claims Avg Costcontainer size is zero, chart is not created');
+        return;
+      }
+
+      this.avgCostD3Chart = new AvgCostD3Chart(
+        this.claimsAvgCostContainer,
+        this.claimsAvgCostGraph,
+        this.claimMargin,
+        this.xDomain,
+        this.x1Domain,
+        [0, this.getMaxAvgCost()],
+        this.avgCostGraphData,
+        this.conditionGroupTranslation,
+        '#avgCostTooltip'
+      );
+
+    }
   }
 
   updateGridGraphData(conditionGroup: string[], selectors: Selector[]) {
-    this.updateChartData(conditionGroup, selectors);
+    this.createOrUpdateData(conditionGroup, selectors);
     this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
   }
 
   listenToDivResize() {
     this.resizeDetector.listenTo(this.claimsAvgCostContainer.nativeElement, (elem: HTMLElement) => {
-      this.updateChart();
+      this.createOrUpdateChart();
     });
     console.log('listen to claims avg cost divs');
   }
@@ -330,7 +331,7 @@ export class ClaimsAvgCostComponent implements OnInit {
 
     // needed?
     setTimeout(() => {
-      this.creatOrUpdateChart();
+      this.createOrUpdateChart();
     });
   }
 }

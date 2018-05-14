@@ -1,39 +1,70 @@
 import { ElementRef } from '@angular/core';
-import { WaterfallChartConfig } from './../utils/chart-config';
-
 import * as d3 from 'd3';
 
 
 export class WaterfallD3Chart {
+
   static chartType = {
-    PERCAPITA: 'percapita',
-    FREQUENCY: 'frequency'
+    PERCAPITA: 'PERCAPITA',
+    FREQUENCY: 'FREQUENCY'
   };
 
-  private width: number;
-  private height: number;
-  private svg: any;
-  private chart: any;
-
-  private graphTitle: any;
-  private xScale: any;
-  private yScale: any;
-  private yInnerScale: any;
-  private xAxis: any;
-  private yAxis: any;
-
-  private legend: any;
-
-  private margin: { top: number, right: number, bottom: number, left: number };
-
-  private stackColor: { firstLastBar: string, fall: string, rise: string };
+  static stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
 
 
   private yScaleFormat: any;
   private tooltipFormat: any;
 
-  constructor(chartConfig: WaterfallChartConfig) {
-    if (chartConfig.chartType === WaterfallD3Chart.chartType.PERCAPITA) {
+  private width: number;
+  private height: number;
+
+  private svg: any;
+  private chart: any;
+  private xScale: any;
+  private yScale: any;
+
+  private xAxis: any;
+  private yAxis: any;
+
+
+  private margin: { top: number, right: number, bottom: number, left: number };
+
+  private stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
+
+  constructor(
+    chartParent: ElementRef,
+    elementRef: ElementRef,
+    margin: any,
+    chartType: string,
+    xScaleDomain: any[],
+    yScaleDomain: any[],
+    barData: any[],
+    conditionGroupTranslation: any,
+    zoom: boolean,
+    tooltipDomID: string) {
+
+    this.updateChart(chartParent, elementRef, margin, chartType, xScaleDomain, yScaleDomain, barData, conditionGroupTranslation, zoom, tooltipDomID);
+  }
+
+
+  updateChart(chartParent: ElementRef,
+    elementRef: ElementRef,
+    margin: any,
+    chartType: string,
+    xScaleDomain: any[],
+    yScaleDomain: any[],
+    barData: any[],
+    conditionGroupTranslation: any,
+    zoom: boolean,
+    tooltipDomID: string) {
+
+
+    // ??
+    if (elementRef.nativeElement.offsetWidth === 0 && elementRef.nativeElement.offsetHeight === 0) {
+      return;
+    }
+
+    if (chartType === WaterfallD3Chart.chartType.PERCAPITA) {
       this.yScaleFormat = d3.format('.3s');
       this.tooltipFormat = d3.format('.1f');
     } else {
@@ -41,52 +72,25 @@ export class WaterfallD3Chart {
       this.tooltipFormat = d3.format('.4f');
     }
 
+    const domID = '#' + elementRef.nativeElement.id;
+    this.margin = margin;
 
+    this.width = elementRef.nativeElement.offsetWidth - this.margin.left - this.margin.right;
+    this.height = elementRef.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
 
-    this.stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
+    this.svg = d3.select(domID).select('svg');
 
-    const htmlElement = chartConfig.chartContainer.nativeElement;
-    this.margin = chartConfig.margin;
-    this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
-    this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
-
-
-
-
-
-    this.svg = d3.select(chartConfig.domID).append('svg')
-      .attr('width', htmlElement.offsetWidth)
-      .attr('height', htmlElement.offsetHeight);
-
-
-
-
-    // adding legend area
-
-    // charting area
-
-    this.chart = this.svg
-      .append('g')
-      .classed('bars', true)
+    this.chart = this.svg.select('.bars')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
-
-    // adding graph title
-    this.graphTitle = this.chart.append('text')
-      .classed('graphTitle', true)
-      .attr('x', (this.width / 2))
-      .attr('y', 0 - (this.margin.top / 1.5))
-      .attr('text-anchor', 'middle')
-      .style('font-size', '16px')
-      .text(chartConfig.title);
 
     // adding scales
     this.xScale = d3.scaleBand()
-      .domain(chartConfig.xScaleDomain)
+      .domain(xScaleDomain)
       .rangeRound([0, this.width])
       .padding(0.2);
 
     this.yScale = d3.scaleLinear()
-      .domain(chartConfig.yScaleDomain)
+      .domain(yScaleDomain)
       .range([this.height, 0]);
 
     // x & y axis
@@ -97,75 +101,22 @@ export class WaterfallD3Chart {
       .tickSizeOuter(0)
       .tickFormat(this.yScaleFormat);
 
-    this.xAxis = this.chart.append('g')
-      .attr('class', 'x axis')
+
+    this.xAxis = this.chart.select('.x.axis')
       .attr('transform', `translate(0, ${this.height})`)
+      .transition()
       .call(xaxis);
 
-    this.yAxis = this.chart.append('g')
-      .attr('class', 'y axis')
+    this.yAxis = this.chart.select('.y.axis')
+      .transition()
       .call(yaxis);
 
-    d3.select(chartConfig.domID + ' .x.axis').selectAll('text')
+
+    this.chart.select('.x.axis').selectAll('text')
       .style('text-anchor', 'end')
       .attr('dx', '-.8em')
       .attr('dy', '.15em')
-      .attr('transform', 'rotate(-45)')
-      ;
-
-
-  }
-
-  updateChart(chartConfig: WaterfallChartConfig) {
-
-    if (chartConfig.chartContainer.nativeElement.offsetWidth === 0 && chartConfig.chartContainer.nativeElement.offsetHeight === 0) {
-      return;
-    }
-
-    const htmlElement = chartConfig.chartContainer.nativeElement;
-    this.width = htmlElement.offsetWidth - this.margin.left - this.margin.right;
-    this.height = htmlElement.offsetHeight - this.margin.top - this.margin.bottom;
-
-
-    // this.width = 585;
-
-    this.svg
-      .attr('width', htmlElement.offsetWidth)
-      .attr('height', htmlElement.offsetHeight)
-      // .attr('viewBox', '0 0 ' + `${htmlElement.offsetWidth}` + ' ' + `${htmlElement.offsetHeight}`)
-      ;
-
-    // update graphtitle
-    this.graphTitle
-      .attr('x', (this.width / 2))
-      .attr('y', 0 - (this.margin.top / 1.5));
-
-    // update scales
-    this.xScale.rangeRound([0, this.width]);
-    this.yScale.range([this.height, 0]);
-
-
-    // update scale domain
-    this.xScale.domain(chartConfig.xScaleDomain);
-    this.yScale.domain(chartConfig.yScaleDomain);
-
-    // update axis
-    const xaxis = d3.axisBottom(this.xScale)
-      .tickSizeOuter(0)
-      ;
-
-    const yaxis = d3.axisLeft(this.yScale)
-      .tickSizeOuter(0)
-      .tickFormat(this.yScaleFormat);
-
-    this.xAxis
-      .transition()
-      .attr('transform', `translate(0, ${this.height})`)
-      .call(xaxis);
-    this.yAxis.transition().call(yaxis);
-
-
-
+      .attr('transform', 'rotate(-45)');
 
 
     // updating grouops and charts
@@ -173,8 +124,6 @@ export class WaterfallD3Chart {
       .data(['Fall', 'Rise']);
 
     groups.exit().remove();
-
-
 
     // adding new groups
     groups
@@ -184,21 +133,24 @@ export class WaterfallD3Chart {
     groups = this.chart.selectAll('.group')
       .data(['Fall', 'Rise']);
 
+
+    // revisit
     const bars = groups.selectAll('.bar')
-      .data((d) => chartConfig.barData.filter((item) => item.key === d)[0]);
+      .data((d) => barData.filter((item) => item.key === d)[0]);
 
     bars.exit().remove();
 
+
     bars
       .transition()
-      .attr('x', d => this.xScale(chartConfig.conditionGroupTranslation[d.data.key]))
+      .attr('x', d => this.xScale(conditionGroupTranslation[d.data.key]))
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
 
-        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && chartConfig.zoom) {
+        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && zoom) {
           // min
-          return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
+          return this.yScale(d[0]) - this.yScale(d[1] - yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
         }
@@ -214,21 +166,22 @@ export class WaterfallD3Chart {
         }
       });
 
+
     // adding new bars
     bars
       .enter()
       .append('rect')
       .classed('bar', true)
-      .attr('x', d => this.xScale(chartConfig.conditionGroupTranslation[d.data.key]))
+      .attr('x', d => this.xScale(conditionGroupTranslation[d.data.key]))
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
 
         // console.log(d);
 
-        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && chartConfig.zoom) {
+        if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && zoom) {
           // min
-          return this.yScale(d[0]) - this.yScale(d[1] - chartConfig.yScaleDomain[0]);
+          return this.yScale(d[0]) - this.yScale(d[1] - yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
         }
@@ -242,29 +195,24 @@ export class WaterfallD3Chart {
           return this.stackColor.rise;
         }
       })
-      .on('mouseover', this.handleMouseOver(chartConfig))
-      .on('mousemove', this.handleMouseMove(chartConfig.toolTipParent, chartConfig.tooltipDomID))
-      .on('mouseout', this.handleMouseOut(chartConfig.tooltipDomID));
-
-
-
+      .on('mouseover', this.handleMouseOver(tooltipDomID, conditionGroupTranslation))
+      .on('mousemove', this.handleMouseMove(chartParent, tooltipDomID))
+      .on('mouseout', this.handleMouseOut(tooltipDomID));
   }
 
 
-
   // i is the index of the data, d is the actual data
-  handleMouseOver(chartConfig: WaterfallChartConfig): (d, i) => void {
+  handleMouseOver(tooltipDomID: string, conditionGroupTranslation: any): (d, i) => void {
     return (d, i) => {
       // console.log('in mouseOver');
 
       d3.select(d3.event.currentTarget)
         .attr('opacity', 0.5);
 
-      d3.select(chartConfig.tooltipDomID)
+      d3.select(tooltipDomID)
         .style('opacity', 1)
         .html(
-          // f(d.data.Per_Capita)
-          chartConfig.conditionGroupTranslation[d.data.key] + ': ' +
+          conditionGroupTranslation[d.data.key] + ': ' +
           this.tooltipFormat(d.data.value)
         );
     };
@@ -291,7 +239,5 @@ export class WaterfallD3Chart {
         .style('top', d3.event.clientY - bounds.top + 10 + 'px');
     };
   }
-
-
 
 }

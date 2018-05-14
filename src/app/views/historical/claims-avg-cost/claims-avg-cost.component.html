@@ -1,76 +1,85 @@
-<div class="row">
-  <div class="col">
-    <div class="float-right">
-      <div class="btn-group">
-        <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
+  <div class="row">
+    <div class="col">
+      <div class="float-right">
+        <div class="btn-group">
+          <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<div [hidden]='grid' class="row" style="position: relative;" id="claimsAvgCostContainer" #claimsAvgCostContainer>
-  <div class="col">
-    <div class="avgCostChart" id="claimsAvgCostGraph" #claimsAvgCostGraph></div>
+  <div [hidden]='grid' class="row" style="position: relative;" id="claimsAvgCostContainer" #claimsAvgCostContainer>
+    <div class="col">
+      <div id="claimsAvgCostGraph" #claimsAvgCostGraph>
+        <svg class="avgCostChart" width="100%">
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div id="avgCostTooltip">Tooltip</div>
   </div>
-  <div id="avgCostTooltip">Tooltip</div>
-</div>
 
 
 
-<!-- grid -->
-<div [hidden]='!grid' class="row">
-  <div class="col">
-    <div class="waterfallGrid" id="avgCostGrid">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>
-              Condition Group &nbsp;
-              <i (click)="sortByHeader('conditionGroup','default')" [ngClass]="{headerSelected:gridSorting.conditionGroup.default,headerUnSelected: !gridSorting.conditionGroup.default}"
-                class=" fa fa-sort-alpha-asc" aria-hidden="true"></i>
-            </th>
-            <th>
-              Prevvious Year &nbsp;
-              <i (click)="sortByHeader('prev','asc')" [ngClass]="{headerSelected:gridSorting.prev.asc,headerUnSelected: !gridSorting.prev.asc}"
-                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
-              &nbsp;
-              <i (click)="sortByHeader('prev','desc')" [ngClass]="{headerSelected:gridSorting.prev.desc,headerUnSelected: !gridSorting.prev.desc}"
-                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
-            </th>
-            <th>
-              Current Year &nbsp;
-              <i (click)="sortByHeader('curr','asc')" [ngClass]="{headerSelected:gridSorting.curr.asc,headerUnSelected: !gridSorting.curr.asc}"
-                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
-              &nbsp;
-              <i (click)="sortByHeader('curr','desc')" [ngClass]="{headerSelected:gridSorting.curr.desc,headerUnSelected: !gridSorting.curr.desc}"
-                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
-            </th>
-            <th>
-              Benchmark &nbsp;
-              <i (click)="sortByHeader('benchmark','asc')" [ngClass]="{headerSelected:gridSorting.benchmark.asc,headerUnSelected: !gridSorting.benchmark.asc}"
-                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
-              &nbsp;
-              <i (click)="sortByHeader('benchmark','desc')" [ngClass]="{headerSelected:gridSorting.benchmark.desc,headerUnSelected: !gridSorting.benchmark.desc}"
-                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="conditionGroupElement" *ngFor="let row of waterfallGridData">
-            <td>{{ row.key | ConditionGroupPipe: countryCode }}</td>
-            <td>{{ row.prev | FixedNumberFormatPipe }}</td>
-            <td>{{ row.curr | FixedNumberFormatPipe }}</td>
-            <td>{{ row.benchmark | FixedNumberFormatPipe}}</td>
-          </tr>
-          <tr class="conditionGroupTotal">
-            <td>{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
-            <td>{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
-            <td>{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
-            <td>{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- grid -->
+  <div [hidden]='!grid' class="row">
+    <div class="col">
+      <div class="waterfallGrid" id="avgCostGrid">
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>
+                Condition Group &nbsp;
+                <i (click)="sortByHeader('conditionGroup','default')" [ngClass]="{headerSelected:gridSorting.conditionGroup.default,headerUnSelected: !gridSorting.conditionGroup.default}"
+                  class=" fa fa-sort-alpha-asc" aria-hidden="true"></i>
+              </th>
+              <th>
+                Prevvious Year &nbsp;
+                <i (click)="sortByHeader('prev','asc')" [ngClass]="{headerSelected:gridSorting.prev.asc,headerUnSelected: !gridSorting.prev.asc}"
+                  class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+                &nbsp;
+                <i (click)="sortByHeader('prev','desc')" [ngClass]="{headerSelected:gridSorting.prev.desc,headerUnSelected: !gridSorting.prev.desc}"
+                  class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+              </th>
+              <th>
+                Current Year &nbsp;
+                <i (click)="sortByHeader('curr','asc')" [ngClass]="{headerSelected:gridSorting.curr.asc,headerUnSelected: !gridSorting.curr.asc}"
+                  class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+                &nbsp;
+                <i (click)="sortByHeader('curr','desc')" [ngClass]="{headerSelected:gridSorting.curr.desc,headerUnSelected: !gridSorting.curr.desc}"
+                  class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+              </th>
+              <th>
+                Benchmark &nbsp;
+                <i (click)="sortByHeader('benchmark','asc')" [ngClass]="{headerSelected:gridSorting.benchmark.asc,headerUnSelected: !gridSorting.benchmark.asc}"
+                  class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+                &nbsp;
+                <i (click)="sortByHeader('benchmark','desc')" [ngClass]="{headerSelected:gridSorting.benchmark.desc,headerUnSelected: !gridSorting.benchmark.desc}"
+                  class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="conditionGroupElement" *ngFor="let row of waterfallGridData">
+              <td>{{ row.key | ConditionGroupPipe: countryCode }}</td>
+              <td>{{ row.prev | FixedNumberFormatPipe }}</td>
+              <td>{{ row.curr | FixedNumberFormatPipe }}</td>
+              <td>{{ row.benchmark | FixedNumberFormatPipe}}</td>
+            </tr>
+            <tr class="conditionGroupTotal">
+              <td>{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
+              <td>{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
+              <td>{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
+              <td>{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
-</div>
+
+

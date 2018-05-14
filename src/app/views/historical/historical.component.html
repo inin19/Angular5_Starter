@@ -1,10 +1,9 @@
-<div class="card-body">
+<div class="card-body h-100">
 
 
-  <div [ngSwitch]="countryCode">
+  <div class="h-100" [ngSwitch]="countryCode">
     <app-historical-uk *ngSwitchCase="'ISO2_GB'"></app-historical-uk>
     <app-historical-it *ngSwitchCase="'ISO2_IT'"></app-historical-it>
-
   </div>
 
 </div>

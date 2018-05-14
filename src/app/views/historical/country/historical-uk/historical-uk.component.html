@@ -1,4 +1,4 @@
-<div class="row">
+<div>
   <div class="col">
     <div class="float-right">
 
@@ -130,6 +130,7 @@
   </div>
 </div>
 
+
 <tabset type="pills" #staticTabs>
   <tab id="historicalDemographic" (select)="onSelect($event)">
     <ng-template tabHeading>Demographic</ng-template>
@@ -140,22 +141,22 @@
   <tab id="claimsPerCapita" (select)="onSelect($event)">
     <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
-      #claimsPerCapita></app-claims-percapita>
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
   </tab>
 
   <tab id="claimsFrequency" (select)="onSelect($event)">
     <ng-template tabHeading>Claims Frequency</ng-template>
     <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
-      #claimsFrequency></app-claims-frequency>
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [countryCode]="countryCode" #claimsFrequency></app-claims-frequency>
   </tab>
 
   <tab id="claimsAvgCost" (select)="onSelect($event)">
     <ng-template tabHeading>Claims AvgCost</ng-template>
     <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()" [countryCode]="countryCode"
-      #claimsAvgCost></app-claims-avg-cost>
+      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+      [countryCode]="countryCode" #claimsAvgCost></app-claims-avg-cost>
   </tab>
 
 </tabset>
