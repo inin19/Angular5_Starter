@@ -1,6 +1,5 @@
-import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef } from '@angular/core';
-import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart.model';
-import { WaterfallChartConfig } from './../../../model/utils/chart-config';
+import { Component, OnInit, OnDestroy, OnChanges, ViewEncapsulation, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart-new.model';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
 import { Selector } from './../../../model/utils/selector.model';
@@ -11,7 +10,7 @@ import { Selector } from './../../../model/utils/selector.model';
   templateUrl: './claims-percapita.component.html',
   styleUrls: ['./claims-percapita.component.scss']
 })
-export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
+export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // temp
   private static stackColor = {
@@ -55,15 +54,10 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   private proposalD3Chart: WaterfallD3Chart;
 
 
-  zoom = false;
 
   private claimPerCapitaXDomain: string[];
 
 
-  sorting = 'Default';
-
-  // [claim, settled]
-  amountType: string;
 
 
 
@@ -86,8 +80,13 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   private currentGridSorting = { column: 'conditionGroup', order: 'default' };
 
   grid: false;
-
   gridDispaly = 'Grid';
+  sorting = 'Default';
+
+  // [claim, settled]
+  amountType = 'claim';
+  zoom = false;
+
 
 
   constructor() { }
@@ -96,15 +95,15 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   ngOnInit() {
     console.log('claim PerCapita init');
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
-    this.amountType = 'claim';
-    this.createGridGraphData();
+    this.createOrUpdateGridGraphData();
+  }
+
+
+  ngAfterViewInit() {
     this.creatOrUpdateChart();
+
   }
 
-
-  ngOnChanges() {
-    console.log('claim Per Capita on changes');
-  }
 
   ngOnDestroy() {
     console.log('claim PerCapita component destroy');
@@ -117,12 +116,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     if (this.proposalClaimPerCapita) {
       this.proposalClaimPerCapita.sortConditionGroupData(this.sorting, Object.keys(this.conditionGroupTranslation));
       this.proposalGraphData = this.proposalClaimPerCapita.getGraphData();
-      this.updateChart_proposal();
+      this.createUpdateChart_proposal();
     }
 
     this.benchmarkClaimPerCapita.sortConditionGroupData(this.sorting, Object.keys(this.conditionGroupTranslation));
     this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
-    this.updateChart_benchmark();
+    this.createUpdateChart_benchmark();
 
   }
 
@@ -130,23 +129,20 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   listenToDivResize() {
     if (this.proposalClaimPerCapita) {
       this.resizeDetector.listenTo(this.proposalClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-        this.updateChart_proposal();
+        // this.updateChart_proposal();
       });
     }
     this.resizeDetector.listenTo(this.benchmarkClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-      this.updateChart_benchmark();
+      // this.updateChart_benchmark();
     });
     console.log('listen to claims per capita divs');
   }
 
 
   creatOrUpdateChart() {
-    this.createChart_benchmark();
-    this.updateChart_benchmark();
-
+    this.createUpdateChart_benchmark();
     if (this.proposalClaimPerCapita) {
-      this.createChart_proposal();
-      this.updateChart_proposal();
+      this.createUpdateChart_proposal();
     }
   }
 
@@ -156,13 +152,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
       this.resizeDetector.removeAllListeners(this.proposalClaimsPerCapita.nativeElement);
     }
     this.resizeDetector.removeAllListeners(this.benchmarkClaimsPerCapita.nativeElement);
-
     console.log('unlistenclaims per capita divs');
   }
 
   changeAmountType() {
     console.log('Amount Type : ', this.amountType);
-    this.updateChartData(this.conditionGroups, this.claimSelectors);
+    this.createOrUpdateData(this.conditionGroups, this.claimSelectors);
     this.creatOrUpdateChart();
   }
 
@@ -207,14 +202,23 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   updateGridGraphData(conditionGroup: string[], selectors: Selector[]) {
-    this.updateChartData(conditionGroup, selectors);
+    this.createOrUpdateData(conditionGroup, selectors);
     this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
   }
 
 
 
-  private createChartData() {
-    this.waterfallGridData = [];
+  private createOrUpdateData(conditionGroup?: string[], selectors?: Selector[]) {
+    if (conditionGroup && selectors) {
+      this.benchmarkClaimPerCapita.updateData(conditionGroup, selectors);
+      this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
+
+      if (this.proposalClaimPerCapita) {
+        this.proposalClaimPerCapita.updateData(conditionGroup, selectors);
+        this.proposalClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
+      }
+    }
+
     this.benchmarkConditionGroupData = this.benchmarkClaimPerCapita.getConditionGroupDataCombined();
     this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
 
@@ -224,8 +228,11 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
     }
   }
 
-  private createGridGraphData() {
-    this.createChartData();
+
+
+
+  private createOrUpdateGridGraphData() {
+    this.createOrUpdateData();
     this.populateGridData(this.currentGridSorting.column, this.currentGridSorting.order);
 
   }
@@ -311,114 +318,79 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, OnChanges {
   }
 
 
-  //
-  private updateChartData(conditionGroup: string[], selectors: Selector[]) {
-
-    this.benchmarkClaimPerCapita.updateData(conditionGroup, selectors);
-    this.benchmarkClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
-
-    this.benchmarkConditionGroupData = this.benchmarkClaimPerCapita.getConditionGroupDataCombined();
-    this.benchmarkGraphData = this.benchmarkClaimPerCapita.getGraphData();
-
-    if (this.proposalClaimPerCapita) {
-      this.proposalClaimPerCapita.updateData(conditionGroup, selectors);
-      this.proposalClaimPerCapita.createWaterfallData(this.sorting, WaterfallData.type.PERCAPITA, this.amountType);
-      this.proposalConditionGroupData = this.proposalClaimPerCapita.getConditionGroupDataCombined();
-      this.proposalGraphData = this.proposalClaimPerCapita.getGraphData();
-    }
-  }
-
-
-
-
-  private createChart_benchmark() {
-
-    if (this.benchmarkClaimsPerCapita.nativeElement.offsetWidth === 0 && this.benchmarkClaimsPerCapita.nativeElement.offsetHeight === 0) {
-      console.log('createChart_Benchmark: container size is zero, chart is not created');
-    } else {
-      if (!this.benchmarkD3Chart) {
-        const config: WaterfallChartConfig = {
-          title: 'benchmark Cost Per Capita',
-          margin: this.claimMargin,
-          chartContainer: this.benchmarkClaimsPerCapita,
-          domID: '#' + this.benchmarkClaimsPerCapita.nativeElement.id,
-          xScaleDomain: this.claimPerCapitaXDomain,
-          yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaimPerCapita.getGraphMaxValue()] : [this.benchmarkClaimPerCapita.getWaterfallMinBaseValue(), this.benchmarkClaimPerCapita.getGraphMaxValue()],
-          conditionGroupTranslation: this.conditionGroupTranslation,
-          chartType: WaterfallD3Chart.chartType.PERCAPITA
-        };
-        this.benchmarkD3Chart = new WaterfallD3Chart(config);
-      }
-    }
-
-  }
-
-
-  private createChart_proposal() {
-    if (this.proposalClaimsPerCapita.nativeElement.offsetWidth === 0 && this.proposalClaimsPerCapita.nativeElement.offsetHeight === 0) {
-      console.log('create Chart Proposal: container size is zero, chart is not created');
-    } else {
-      if (!this.proposalD3Chart) {
-        const config: WaterfallChartConfig = {
-          title: 'proposal Cost Per Capita',
-          margin: this.claimMargin,
-          chartContainer: this.proposalClaimsPerCapita,
-          domID: '#' + this.proposalClaimsPerCapita.nativeElement.id,
-          xScaleDomain: this.claimPerCapitaXDomain,
-          yScaleDomain: (this.zoom === false) ? [0, this.proposalClaimPerCapita.getGraphMaxValue()] : [this.proposalClaimPerCapita.getWaterfallMinBaseValue(), this.proposalClaimPerCapita.getGraphMaxValue()],
-          conditionGroupTranslation: this.conditionGroupTranslation,
-          chartType: WaterfallD3Chart.chartType.PERCAPITA
-        };
-        this.proposalD3Chart = new WaterfallD3Chart(config);
-      }
-    }
-  }
-
-
-
-
-  private updateChart_benchmark() {
+  private createUpdateChart_benchmark() {
     if (this.benchmarkD3Chart) {
-      const config: WaterfallChartConfig = {
-        chartContainer: this.benchmarkClaimsPerCapita,
-        domID: '#' + this.benchmarkClaimsPerCapita.nativeElement.id,
-        tooltipDomID: '#' + 'waterfallTooltip',
-        xScaleDomain: this.benchmarkClaimPerCapita.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
-        yScaleDomain: (this.zoom === false) ? [0, this.benchmarkClaimPerCapita.getGraphMaxValue()] : [this.benchmarkClaimPerCapita.getWaterfallMinBaseValue(), this.benchmarkClaimPerCapita.getGraphMaxValue()],
-        zoom: this.zoom,
-        barData: this.benchmarkGraphData,
-        previousYearKey: this.conditionGroupTranslation.PREVYEAR,
-        currentYearKey: this.conditionGroupTranslation.CURRYEAR,
-        toolTipParent: this.claimsPerCapitaContainer,
-        conditionGroupTranslation: this.conditionGroupTranslation,
-        chartType: WaterfallD3Chart.chartType.PERCAPITA
-      };
+      this.benchmarkD3Chart.updateChart(
+        this.claimsPerCapitaContainer,
+        this.benchmarkClaimsPerCapita,
+        this.claimMargin,
+        'PERCAPITA',
+        this.benchmarkClaimPerCapita.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
+        (this.zoom === false) ? [0, this.benchmarkClaimPerCapita.getGraphMaxValue()] : [this.benchmarkClaimPerCapita.getWaterfallMinBaseValue(), this.benchmarkClaimPerCapita.getGraphMaxValue()],
+        this.benchmarkGraphData,
+        this.conditionGroupTranslation,
+        this.zoom,
+        '#waterfallTooltip',
+      );
 
-      this.benchmarkD3Chart.updateChart(config);
+    } else {
+      if (this.benchmarkClaimsPerCapita.nativeElement.offsetWidth === 0 && this.benchmarkClaimsPerCapita.nativeElement.offsetHeight === 0) {
+        console.log('Claims PerCapita createChart_Benchmark: container size is zero, chart is not created');
+        return;
+      } else {
+        this.benchmarkD3Chart = new WaterfallD3Chart(
+          this.claimsPerCapitaContainer,
+          this.benchmarkClaimsPerCapita,
+          this.claimMargin,
+          'PERCAPITA',
+          this.claimPerCapitaXDomain,
+          (this.zoom === false) ? [0, this.benchmarkClaimPerCapita.getGraphMaxValue()] : [this.benchmarkClaimPerCapita.getWaterfallMinBaseValue(), this.benchmarkClaimPerCapita.getGraphMaxValue()],
+          this.benchmarkGraphData,
+          this.conditionGroupTranslation,
+          this.zoom,
+          '#waterfallTooltip',
+        );
+      }
     }
   }
 
-  private updateChart_proposal() {
+
+
+  private createUpdateChart_proposal() {
     if (this.proposalD3Chart) {
-      const config: WaterfallChartConfig = {
-        chartContainer: this.proposalClaimsPerCapita,
-        domID: '#' + this.proposalClaimsPerCapita.nativeElement.id,
-        tooltipDomID: '#' + 'waterfallTooltip',
-        xScaleDomain: this.proposalClaimPerCapita.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
-        yScaleDomain: (this.zoom === false) ? [0, this.proposalClaimPerCapita.getGraphMaxValue()] : [this.proposalClaimPerCapita.getWaterfallMinBaseValue(), this.proposalClaimPerCapita.getGraphMaxValue()],
-        zoom: this.zoom,
-        barData: this.proposalGraphData,
-        previousYearKey: this.conditionGroupTranslation.PREVYEAR,
-        currentYearKey: this.conditionGroupTranslation.CURRYEAR,
-        toolTipParent: this.claimsPerCapitaContainer,
-        conditionGroupTranslation: this.conditionGroupTranslation,
-        chartType: WaterfallD3Chart.chartType.PERCAPITA
-      };
-      this.proposalD3Chart.updateChart(config);
+      this.proposalD3Chart.updateChart(
+        this.claimsPerCapitaContainer,
+        this.proposalClaimsPerCapita,
+        this.claimMargin,
+        'PERCAPITA',
+        this.proposalClaimPerCapita.getGraphData()[0].map(val => (val.data.key)).map(key => this.conditionGroupTranslation[key]),
+        (this.zoom === false) ? [0, this.proposalClaimPerCapita.getGraphMaxValue()] : [this.proposalClaimPerCapita.getWaterfallMinBaseValue(), this.proposalClaimPerCapita.getGraphMaxValue()],
+        this.proposalGraphData,
+        this.conditionGroupTranslation,
+        this.zoom,
+        '#waterfallTooltip'
+      );
+
+    } else {
+      if (this.proposalClaimsPerCapita.nativeElement.offsetWidth === 0 && this.proposalClaimsPerCapita.nativeElement.offsetHeight === 0) {
+        console.log('Claims Per Capita createChart_proposal: container size is zero, chart is not created');
+        return;
+      }
+
+      this.proposalD3Chart = new WaterfallD3Chart(
+        this.claimsPerCapitaContainer,
+        this.proposalClaimsPerCapita,
+        this.claimMargin,
+        'PERCAPITA',
+        this.claimPerCapitaXDomain,
+        (this.zoom === false) ? [0, this.proposalClaimPerCapita.getGraphMaxValue()] : [this.proposalClaimPerCapita.getWaterfallMinBaseValue(), this.proposalClaimPerCapita.getGraphMaxValue()],
+        this.proposalGraphData,
+        this.conditionGroupTranslation,
+        this.zoom,
+        '#waterfallTooltip'
+      );
     }
   }
-
-
 
 
 }

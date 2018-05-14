@@ -37,13 +37,22 @@ export class ClaimsService {
 
 
   // if proposal has no claim data
+  // getBenchmarkClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
+  //   const l: number = new Date().getMilliseconds();
+  //   return Observable.forkJoin(
+  //     this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
+  //     this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions)
+  //   );
+  // }
+
   getBenchmarkClaimsDataTotalMemberCount(countryCode: string, proposalId: string, ageGroup: string[]) {
     const l: number = new Date().getMilliseconds();
     return Observable.forkJoin(
-      this.http.get<Array<any>>(this.benchmarkClaimsUrl + countryCode + '/' + proposalId + '/' + ageGroup.join(',') + '?' + l, httpOptions),
-      this.http.get<Array<any>>(this.benchmarkTotalMemberDataUrl + countryCode + '/' + proposalId + '?' + l, httpOptions)
+      this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
+      this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions)
     );
   }
+
 
 
 

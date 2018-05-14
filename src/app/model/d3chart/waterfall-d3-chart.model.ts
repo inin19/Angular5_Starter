@@ -29,9 +29,6 @@ export class WaterfallD3Chart {
   private stackColor: { firstLastBar: string, fall: string, rise: string };
 
 
-  // private chartType: string;
-  // get dom id by nativeElement.id
-
   private yScaleFormat: any;
   private tooltipFormat: any;
 

@@ -47,7 +47,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     'relation'
   ];
 
-  private static claimMargin: any = { top: 60, right: 20, bottom: 80, left: 50 };
+  private static claimMargin: any = { top: 60, right: 20, bottom: 100, left: 50 };
 
   private static demographicMargin: any = { top: 50, right: 20, bottom: 50, left: 50 };
 
@@ -204,10 +204,10 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
     if (this.hasClaimData === true) {
       this.fetchBenchmarkProposalDemograpic();
-      // this.fetchBenchmarkProposalClaimAndMemberCount();
+      this.fetchBenchmarkProposalClaimAndMemberCount();
     } else {
       this.fetchBenchmarkDemograpic();
-      // this.fetchBenchmarkClaimAndMemberCount();
+      this.fetchBenchmarkClaimAndMemberCount();
     }
 
   }

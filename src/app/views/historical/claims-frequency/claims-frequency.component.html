@@ -29,10 +29,24 @@
 
 <div [hidden]='grid' class="row" style="position: relative;" id="claimsFrequencyContainer" #claimsFrequencyContainer>
   <div class="col-6">
-    <div class="waterfallChart" id="proposalClaimsFrequency" #proposalClaimsFrequency></div>
+    <div id="proposalClaimsFrequency" #proposalClaimsFrequency>
+      <svg class="waterfallChart" width="100%">
+        <g class="bars">
+          <g class="x axis"></g>
+          <g class="y axis"></g>
+        </g>
+      </svg>
+    </div>
   </div>
   <div class="col-6">
-    <div class="waterfallChart" id="benchmarkClaimsFrequency" #benchmarkClaimsFrequency></div>
+    <div id="benchmarkClaimsFrequency" #benchmarkClaimsFrequency>
+      <svg class="waterfallChart" width="100%">
+        <g class="bars">
+          <g class="x axis"></g>
+          <g class="y axis"></g>
+        </g>
+      </svg>
+    </div>
   </div>
   <div id="claimsFrequencyTooltip">Tooltip</div>
 </div>
