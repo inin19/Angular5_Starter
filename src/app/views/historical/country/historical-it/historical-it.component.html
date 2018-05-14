@@ -167,21 +167,22 @@
     <ng-template tabHeading>Claims PerCapita</ng-template>
     <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
       [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      [claimSelectors]="claimsSelectors" [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
+      [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
   </tab>
+
 
   <tab id="claimsFrequency" (select)="onSelect($event)">
     <ng-template tabHeading>Claims Frequency</ng-template>
     <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
       [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      #claimsFrequency></app-claims-frequency>
+      [countryCode]="countryCode" #claimsFrequency></app-claims-frequency>
   </tab>
 
   <tab id="claimsAvgCost" (select)="onSelect($event)">
     <ng-template tabHeading>Claims AvgCost</ng-template>
     <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
       [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      #claimsAvgCost></app-claims-avg-cost>
+      [countryCode]="countryCode" #claimsAvgCost></app-claims-avg-cost>
   </tab>
 
 </tabset>
