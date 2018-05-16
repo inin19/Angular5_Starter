@@ -1,12 +1,19 @@
-<div class="row">
-  <div class="col">
-    <div class="card">
-      <div class="card-header bg-primary text-white">
-        <b>Cost Projection</b>
-      </div>
-      <div class="card-body">
-        <app-projection #projection *ngIf="projectionData" [projectionJSON]="projectionData"></app-projection>
-      </div>
+<div class="dashboard card">
+  <!-- <div class="card-header bg-primary text-white">
+    <b>Cost Projection</b>
+
+    <div style="display: inline;">
+      <i [hidden]="!source" (click)="fetchProjection()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="source" (click)="fetchProjection()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
     </div>
+  </div> -->
+  <div id='projectionCardBody' class="card-body">
+    <app-projection #projection *ngIf="projectionData" [projectionJSON]="projectionData"></app-projection>
   </div>
 </div>
+
+
+
+<!-- <div class="card-body h-100">
+      <app-projection #projection *ngIf="projectionData" [projectionJSON]="projectionData"></app-projection>
+    </div> -->

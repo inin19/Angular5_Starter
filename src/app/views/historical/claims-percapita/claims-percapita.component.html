@@ -1,20 +1,20 @@
 <div class="row">
   <div class="col">
     <div class="float-right">
-      <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="btn-group" style="display: inline-block;">
+      <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="btn-group" style="display: inline;">
         Claim/Settled Amount
         <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="claim" tabindex="0" role="button" (click)="changeAmountType()">Claim</label>
         <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="settled" tabindex="0" role="button" (click)="changeAmountType()">Settled</label>
       </div>
 
-      <div [hidden]='grid' class="btn-group" style="display: inline-block;">
+      <div [hidden]='grid' class="btn-group" style="display: inline;">
         Sorting
         <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Asc" tabindex="0" role="button" (click)="changeSorting()">Asc</label>
         <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Desc" tabindex="0" role="button" (click)="changeSorting()">Desc</label>
         <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Default" tabindex="0" role="button" (click)="changeSorting()">Default</label>
       </div>
 
-      <div [hidden]='grid' style="display: inline-block;">
+      <div [hidden]='grid' style="display: inline;">
         Zoom
         <label class="switch switch-3d switch-primary" title="Zoom">
           <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="creatOrUpdateChart()">
@@ -23,10 +23,12 @@
         </label>
       </div>
 
-      <div class="btn-group" style="display: inline-block;">
-        <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
-      </div>
 
+
+      <div style="display: inline;">
+        <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+      </div>
 
     </div>
   </div>

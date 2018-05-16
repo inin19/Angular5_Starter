@@ -5,18 +5,20 @@ import { Router } from '@angular/router';
 
 
 @Component({
-  templateUrl: 'dashboard.component.html'
+  templateUrl: 'dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss']
 })
 export class DashboardComponent implements OnInit {
 
 
   private proposalId = 187;
-  private country = 'ISO2_GB';
+  private countryCode = 'ISO2_GB';
   private trendType = 'BENCHMARK';
 
   projectionData: any[];
 
 
+  source = true;
 
   constructor(private projectionService: ProjectionService) { }
 
@@ -27,11 +29,15 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchProjection(): void {
-    this.projectionService.getProjectionData(this.country, this.proposalId.toString(), this.trendType)
+    this.source = !this.source;
+
+    this.projectionService.getProjectionData(this.countryCode, this.proposalId.toString(), this.trendType, this.source)
       .subscribe(
         data => { this.projectionData = data; }
       );
   }
+
+
 
 
 

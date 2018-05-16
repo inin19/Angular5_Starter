@@ -27,6 +27,9 @@ export class ProjectionService extends ErrorHandler {
 
   private projectionLocal = 'http://localhost:3000/projection';
 
+  private projectionLocal2 = 'http://localhost:3000/projection2';
+
+
   constructor(private http: HttpClient, injector: Injector) {
     super(injector);
   }
@@ -40,9 +43,20 @@ export class ProjectionService extends ErrorHandler {
 
   // local
 
-  getProjectionData(country: string, proposalId: string, trendType: string): Observable<any> {
+  // getProjectionData(country: string, proposalId: string, trendType: string): Observable<any> {
+  //   const l: number = new Date().getMilliseconds();
+  //   return this.http.get<any>(this.projectionLocal + '?' + l, httpOptions);
+  // }
+
+
+  getProjectionData(country: string, proposalId: string, trendType: string, source: boolean): Observable<any> {
     const l: number = new Date().getMilliseconds();
-    return this.http.get<any>(this.projectionLocal + '?' + l, httpOptions);
+    if (source === true) {
+      return this.http.get<any>(this.projectionLocal + '?' + l, httpOptions);
+    } else {
+      return this.http.get<any>(this.projectionLocal2 + '?' + l, httpOptions);
+
+    }
   }
 
 }

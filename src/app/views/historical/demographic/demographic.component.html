@@ -1,13 +1,16 @@
 <div class="row">
   <div class="col">
-    <div class="float-right">
+    <div class="float-left">
 
-      <div class="btn-group" style="display: inline-block;">
+      <!-- <div class="btn-group" style="display: inline-block;">
         <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
-      </div>
+      </div> -->
 
 
-      <div *ngIf="proposalDemographic" style="display: inline-block;">
+
+
+
+      <div *ngIf="proposalDemographic" style="display: inline;">
         &nbsp;Combined Graph &nbsp;
         <label class="switch switch-3d switch-primary" title="Zoom">
           <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
@@ -16,6 +19,12 @@
         </label>
       </div>
 
+    </div>
+    <div class="float-right">
+      <div style="display: inline;">
+        <i [hidden]="!grid" (click)="toggleGridGraph()"  class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph" ></i>
+        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid" ></i>
+      </div>
     </div>
   </div>
 </div>

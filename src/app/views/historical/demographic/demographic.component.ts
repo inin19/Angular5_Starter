@@ -67,7 +67,7 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
   // UI specific
   zoom = false;
-  grid: false;
+  grid = false;
   gridDispaly = 'Grid';
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
@@ -199,6 +199,8 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.gridDispaly = 'Grid';
     }
+
+    this.grid = !this.grid;
 
     setTimeout(() => {
       if (this.proposalDemographic) {

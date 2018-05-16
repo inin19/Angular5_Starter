@@ -1,13 +1,36 @@
-#projectionChart{
-    height: 500px;
+// #projectionChart{
+//     height: 500px;
+// }
+
+
+.fiveYearProjection{
+  height: 500px;
 }
+
+
 
 .tick text {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 12px;
+    font-size: 14px;
     fill: #666;
 }
-  
+
+
+.fiveYearProjection .x.axis .tick line {
+  stroke: darkgrey;
+  stroke-dasharray: 5, 1;
+  stroke-width: 0.5px;
+}
+
+.fiveYearProjection .x.axis path {
+  visibility: hidden;
+}
+
+
+.fiveYearProjection .y.axis path {
+  visibility: hidden;
+}
+
   
 #projectionToolip{
     opacity: 0;
@@ -189,4 +212,9 @@
   border: solid 1px black;
 
   height: 150px;
+}
+
+
+.grid-graph{
+  cursor: pointer;
 }

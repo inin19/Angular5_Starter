@@ -1,5 +1,4 @@
 import { Selector } from './../../../model/utils/selector.model';
-import { AvgClaimCostChartConfig } from './../../../model/utils/chart-config';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
 import { WaterfallData, ClaimsAggregateData } from './../../../model/D3chartData/waterfall-data.model';
 import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
@@ -65,9 +64,9 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
 
   private currentGridSorting = { column: 'conditionGroup', order: 'default' };
 
-  grid: false;
+  grid = false;
 
-  gridDispaly = 'Grid';
+  // gridDispaly = 'Grid';
 
   constructor() { }
 
@@ -322,14 +321,7 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   toggleGridGraph() {
-    console.log('toggle Grid Graph');
-    if (this.gridDispaly === 'Grid') {
-      this.gridDispaly = 'Graph';
-    } else {
-      this.gridDispaly = 'Grid';
-    }
-
-    // needed?
+    this.grid = !this.grid;
     setTimeout(() => {
       this.createOrUpdateChart();
     });

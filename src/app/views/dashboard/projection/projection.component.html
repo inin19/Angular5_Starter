@@ -106,11 +106,10 @@
 <div class="row">
   <div class="col">
     <div class="float-right">
-      <label class="switch switch-3d switch-primary" title="Zoom">
-        <input type="checkbox" class="switch-input" [(ngModel)]="grid" (change)="toggleGridGraph()">
-        <span class="switch-label"></span>
-        <span class="switch-handle"></span>
-      </label>
+      <div style="display: inline;">
+        <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+      </div>
     </div>
   </div>
 </div>
@@ -118,16 +117,21 @@
 
 <div class="row">
 
-  <div class="col-2">
+  <div class="col-3">
 
-    <p>Plans</p>
-    <img src="http://hypsypops.com/wp-content/uploads/2016/12/pie-chart.png" alt="Smiley face" height="150" width="150">
 
-    <!-- <ul class="list-group">
-      <li class="list-group-item active">Plans</li>
-      <li class="list-group-item">Plan1</li>
-      <li class="list-group-item">Plan2</li>
-    </ul> -->
+    <!-- viewBox="0 0 100 100"  -->
+
+    <div id='projectionPie' #projectionPie>
+      <svg class="piechart">
+        <g class="piechartContainer">
+        </g>
+      </svg>
+
+
+    </div>
+
+
 
     <hr>
     <ul class="list-group">
@@ -139,7 +143,7 @@
   </div>
 
 
-  <div class="col-10">
+  <div class="col-9">
 
     <div [hidden]='grid' class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
       <div class="col">
@@ -150,32 +154,37 @@
         <div id="projectionLegend">
           <ul>
             <li class="list-inline-item" (click)="resetCategory()" [ngStyle]="{opacity: categorySelector.all ? 0.5:1 }">
-              <i class="fas fa-redo"></i>Reset
+              <i class="fa fa-refresh" aria-hidden="true"></i>
             </li>
             <li *ngFor="let category of getGraphCategories(); let i = index" class="list-inline-item" (click)="category !== 'FUNDING_GAP' &&  toggleCategory(category)">
 
               <ng-container *ngIf="category === 'FUNDING_GAP'; else otherCategory ">
                 <span>
                   <span class="legendRect"> </span>
-                  {{ category | UKProjectionCategory}}
+                  {{ category | ProjectionCategory : countryCode }}
                 </span>
               </ng-container>
 
               <ng-template #otherCategory>
                 <span [ngClass]="{ 'li-wrapper-unselected': graphCategoriesStatus[category], 'li-wrapper-selected': !graphCategoriesStatus[category]  }">
                   <span class="legendRect"> </span>
-                  {{ category | UKProjectionCategory}}
+                  {{ category | ProjectionCategory : countryCode }}
                 </span>
               </ng-template>
 
-              <!-- <span [ngClass]="{ 'li-wrapper': category==='FUNDING_GAP'? false: true }">
-            <span class="legendRect"> </span>
-            {{ category | UKProjectionCategory}}
-          </span> -->
+
             </li>
           </ul>
         </div>
-        <div id='projectionChart' #projectionChart></div>
+        <div id='projectionChart' #projectionChart>
+          <svg class="fiveYearProjection" width="100%">
+            <g class="bars">
+              <g class="x axis"></g>
+              <g class="y axis"></g>
+            </g>
+          </svg>
+        </div>
+
       </div>
       <div id="projectionToolip">Tooltip</div>
     </div>
@@ -184,7 +193,7 @@
 
     <div [hidden]='!grid' class="row">
       <div class="col">
-        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-align-middle mb-0 table-responsive-sm table-striped table-sm">
+        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-align-middle table-striped ">
           <thead>
             <tr class="bg-primary">
               <th>Attribute</th>
@@ -205,7 +214,7 @@
                 </ng-container>
 
                 <ng-container *ngSwitchDefault>
-                  <td>{{record.attribute | UKProjectionCategory }}</td>
+                  <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
                   <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
                 </ng-container>
 

@@ -1,4 +1,3 @@
-import { AvgClaimCostChartConfig } from './../utils/chart-config';
 import { ElementRef } from '@angular/core';
 import * as d3 from 'd3';
 

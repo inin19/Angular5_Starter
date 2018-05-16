@@ -79,8 +79,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
 
   private currentGridSorting = { column: 'conditionGroup', order: 'default' };
 
-  grid: false;
-  gridDispaly = 'Grid';
+  grid = false;
   sorting = 'Default';
 
   // [claim, settled]
@@ -188,14 +187,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   toggleGridGraph() {
-    console.log('toggle Grid Graph');
-    if (this.gridDispaly === 'Grid') {
-      this.gridDispaly = 'Graph';
-    } else {
-      this.gridDispaly = 'Grid';
-    }
-
-    // needed?
+    this.grid = !this.grid;
     setTimeout(() => {
       this.creatOrUpdateChart();
     });
