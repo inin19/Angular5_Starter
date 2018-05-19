@@ -7,6 +7,11 @@ import { Selector } from '../../../model/utils/selector.model';
 import { ProjectionGridData } from './../../../model/D3chartData/projection-data.model';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 
+import { ProjectionPlanSelectionService } from './../../../services/projection-plan-selection.service';
+import { Subscription } from 'rxjs/Subscription';
+
+import { SelectionItem } from './../../../model/utils/selector.model';
+
 
 @Component({
   selector: 'app-projection',
@@ -20,31 +25,34 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   static graphCategories = ['EMPLOYER_PREMIUM', 'FUNDING_GAP', 'MEMBER_PREMIUM', 'TAX', 'FEES'];
   static gridCategories = ['TOTAL_LIVES', 'TOTAL_COST', 'MEMBER_PREMIUM', 'EMPLOYER_PREMIUM', 'FUNDING_GAP', 'ESTIMATED_MEMBER_OOP_COST', 'TAX', 'FEES'];
 
+  static colors = {
+    EMPLOYER_PREMIUM: '#5cbae6',
+    FUNDING_GAP: '#fac364',
+    MEMBER_PREMIUM: '#b6d957',
+    TAX: '#d998cb',
+    FEES: '#93b9c6'
+  };
+
 
 
   @Input() private projectionJSON: any[];
   @ViewChild('projectionChartContainer') private projectionChartContainer: ElementRef;
   @ViewChild('projectionChart') private projectionChart: ElementRef;
   @ViewChild('projectionPie') private projectionPieChartDiv: ElementRef;
+  @ViewChild('projectionPieChartContainer') private projectionPieChartContainer: ElementRef;
+
 
   countryCode = 'ISO2_GB';
 
-  // without Finding Gap
-  graphCategoriesStatus = {
-    EMPLOYER_PREMIUM: true,
-    MEMBER_PREMIUM: true,
-    TAX: true,
-    FEES: true
-  };
+
 
   private projectionData: ProjectionData;
   private projectionGraphData: ProjectionOutput[];
   private projectionD3Chart: ProjectionD3Chart;
   private projectionPieChart: ProjectionPieChart;
+  private subscription: Subscription;
 
   projectionGridData: ProjectionGridData[];
-
-
   pieData: any[];
 
   categorySelector: Selector;
@@ -52,26 +60,34 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   periodSelector: Selector;
   projectionSelector: Selector;
 
-  grid = false;
+  periodSelectorPie: Selector;
+  projectionSelectorPie: Selector;
 
+  grid = false;
+  currentProjection = true;
   private margin: any = { top: 20, right: 20, bottom: 40, left: 40 };
 
-  private pieChartMargin: any = { top: 5, right: 5, bottom: 5, left: 5 };
-
-  dropdownStatus = {
-    planDropdown: false,
-    periodDropdown: false,
-    projectionDropdown: false,
-    categoryDropdown: false
-  };
 
   // Resize
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
-  constructor() { }
+  constructor(private planSelectorService: ProjectionPlanSelectionService) { }
 
   getGraphCategories(): string[] {
     return ProjectionComponent.graphCategories;
+  }
+
+  getGraphCategoriesReverse(): string[] {
+    const tmp = ProjectionComponent.graphCategories.slice().reverse();
+    return tmp;
+  }
+
+  getGraphCategoriesColor(category: string): any {
+    return ProjectionComponent.colors[category];
+  }
+
+  getGraphColors() {
+    return ProjectionComponent.colors;
   }
 
   private getGridCategories(): string[] {
@@ -80,28 +96,38 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {
     console.log('projection init');
+    this.subscription = this.planSelectorService.plans$.subscribe(
+      (plans) => {
+        (plans.length === 0) ? this.planSelector.resetSelector() : this.planSelector.setSelectionNEW(plans);
+        this.updateProjectionDataGraph();
+      }
+    );
+
     this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
-      this.updateChart();
+      this.updateAllChart();
     });
     this.createChartData();
     this.createSelector();
     this.createChart();
-
-    console.log(this.pieData);
-
   }
 
   createSelector() {
-    this.categorySelector = new Selector(this.getGraphCategories());
-    this.planSelector = new Selector(this.projectionData.getAllPlan());
-    this.periodSelector = new Selector(this.projectionData.getAllPeriod());
-    this.projectionSelector = new Selector(this.projectionData.getAllProjection());
+    this.categorySelector = new Selector(this.getGraphCategories(), 'category');
+    this.planSelector = new Selector(this.projectionData.getAllPlan(), 'plan');
+    this.periodSelector = new Selector(this.projectionData.getAllPeriod(), 'period');
+    this.projectionSelector = new Selector(this.projectionData.getAllProjection(), 'projection');
+
+    // new for pie chart
+    this.periodSelectorPie = new Selector([1, 2, 3, 4, 5], 'periodForPie');
+    this.projectionSelectorPie = new Selector(this.projectionData.getAllProjection(), 'projectionForPie');
+
+
+    this.projectionSelectorPie.toggleElementStatus('PROPOSED');
   }
 
   ngOnChanges() {
     console.log('projection on changes');
     if (this.projectionD3Chart) {
-      console.log('ngchanges data updated');
       this.createChartData();
       this.createSelector();
       this.createChart();
@@ -110,24 +136,23 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnDestroy() {
     this.resizeDetector.removeAllListeners(this.projectionChartContainer.nativeElement);
+    this.subscription.unsubscribe();
     console.log('projection ondestroy');
   }
-
-
 
 
   createChartData() {
     this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories(), this.getGridCategories());
     this.projectionGraphData = this.projectionData.getGraphData();
     this.projectionGridData = this.projectionData.getFinalGrid();
-    this.pieData = this.projectionData.getFundingGapByPlan();
+    this.pieData = this.projectionData.getPieData();
   }
 
-  updateChartData(plans: number[], periods: number[], categories: string[], currentProposed: string[]) {
-    this.projectionData.updateGraphData(plans, periods, categories, currentProposed);
+  updateChartData(plans: number[], periods: number[], categories: string[], projection: string[]) {
+    this.projectionData.updateProjectionData(plans, periods, categories, projection);
     this.projectionGraphData = this.projectionData.getGraphData();
-    this.projectionGridData = this.projectionData.getFinalGrid(currentProposed);
-    this.pieData = this.projectionData.getFundingGapByPlan();
+    this.projectionGridData = this.projectionData.getFinalGrid(projection);
+    this.pieData = this.projectionData.getPieData();
   }
 
 
@@ -141,22 +166,26 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       [0, this.projectionData.getMaxStackValue()],
       this.projectionGraphData,
       Translations.categoryTranslate,
-      '#projectionToolip'
+      '#projectionToolip',
+      this.getGraphColors()
     );
 
     // #NEW
-
     this.projectionPieChart = new ProjectionPieChart(
+      this.projectionPieChartContainer,
       this.projectionPieChartDiv,
-      this.pieChartMargin,
-      this.pieData
+      this.pieData,
+      '#fundingGapPieToolip',
+      this.planSelectorService
     );
-
-
   }
 
-  updateChart() {
+  updateAllChart() {
+    this.updateProjectionChart();
+    this.updatePieChart();
+  }
 
+  private updateProjectionChart() {
     this.projectionD3Chart.updateChart(
       this.projectionChartContainer,
       this.projectionChart,
@@ -166,131 +195,79 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       [0, this.projectionData.getMaxStackValue()],
       this.projectionGraphData,
       Translations.categoryTranslate,
-      '#projectionToolip'
+      '#projectionToolip',
+      this.getGraphColors()
     );
   }
 
-
-  toggleDropdown(value: boolean, dropdownID: string) {
-    this.dropdownStatus[dropdownID] = value;
+  private updatePieChart() {
+    this.projectionPieChart.updateChart(
+      this.projectionPieChartContainer,
+      this.projectionPieChartDiv,
+      this.pieData,
+      '#fundingGapPieToolip',
+      this.planSelectorService
+    );
   }
-
-  onClickedOutside(e: Event, dropdownID: string) {
-    this.dropdownStatus[dropdownID] = false;
-  }
-
-  toggleMultiSelectAll(dropdownID: string) {
-    switch (dropdownID) {
-      case 'categoryDropdown': {
-        for (const item of this.categorySelector.selectionItems) {
-          item.checked = this.categorySelector.all;
-        }
-        break;
-      }
-      case 'projectionDropdown': {
-        for (const item of this.projectionSelector.selectionItems) {
-          item.checked = this.projectionSelector.all;
-        }
-        break;
-      }
-      case 'periodDropdown': {
-        for (const item of this.periodSelector.selectionItems) {
-          item.checked = this.periodSelector.all;
-        }
-        break;
-      }
-      case 'planDropdown': {
-        for (const item of this.planSelector.selectionItems) {
-          item.checked = this.planSelector.all;
-        }
-        break;
-      }
-      default: {
-
-        break;
-      }
-    }
-
-    const plans: number[] = this.planSelector.getCurrentSelction().map(d => Number(d));
-    const periods: number[] = this.periodSelector.getCurrentSelction().map(d => Number(d));
-
-
-    this.updateChartData(plans, periods,
-      this.categorySelector.getCurrentSelction(), this.projectionSelector.getCurrentSelction());
-
-    this.updateChart();
-  }
-
-  checkIfAllElementSelected(dropdownID: string) {
-    switch (dropdownID) {
-      case 'categoryDropdown': {
-        if (this.categorySelector.checkIfAllChecked()) {
-          this.categorySelector.all = true;
-        } else {
-          this.categorySelector.all = false;
-        }
-        break;
-      }
-      case 'projectionDropdown': {
-        if (this.projectionSelector.checkIfAllChecked()) {
-          this.projectionSelector.all = true;
-        } else {
-          this.projectionSelector.all = false;
-        }
-        break;
-      }
-      case 'periodDropdown': {
-        if (this.periodSelector.checkIfAllChecked()) {
-          this.periodSelector.all = true;
-        } else {
-          this.periodSelector.all = false;
-        }
-        break;
-      }
-      case 'planDropdown': {
-        if (this.planSelector.checkIfAllChecked()) {
-          this.planSelector.all = true;
-        } else {
-          this.planSelector.all = false;
-        }
-        break;
-      }
-      default: {
-
-        break;
-      }
-    }
-
-    const plans: number[] = this.planSelector.getCurrentSelction().map(d => Number(d));
-    const periods: number[] = this.periodSelector.getCurrentSelction().map(d => Number(d));
-
-
-    this.updateChartData(plans, periods,
-      this.categorySelector.getCurrentSelction(), this.projectionSelector.getCurrentSelction());
-
-    this.updateChart();
-
-  }
-
-
-  toggleCategory(input: string) {
-    this.graphCategoriesStatus[input] = !this.graphCategoriesStatus[input];
-    this.categorySelector.toggleElementStatus(input);
-  }
-
-  resetCategory() {
-    this.categorySelector.resetSelector();
-  }
-
 
   toggleGridGraph() {
     this.grid = !this.grid;
     setTimeout(() => {
-      this.updateChart();
+      this.updateAllChart();
     });
   }
 
 
+  resetCategory() {
+    this.categorySelector.resetSelector();
+    this.updateProjectionDataGraph();
+  }
+
+  resetPeriod() {
+    this.periodSelectorPie.resetSelector();
+    this.updatePieGridGraph();
+  }
+
+
+  private updateProjectionDataGraph() {
+    this.updateChartData(
+      this.planSelector.getCurrentSelction(),
+      this.periodSelector.getCurrentSelction(),
+      this.categorySelector.getCurrentSelction(),
+      this.projectionSelector.getCurrentSelction()
+    );
+    this.updateProjectionChart();
+  }
+
+  toggleCategory(categoryItem: SelectionItem) {
+    this.categorySelector.toggleSelectionItem(categoryItem);
+    this.updateProjectionDataGraph();
+  }
+
+  togglePeriod(periodItem: SelectionItem) {
+    this.periodSelectorPie.toggleSelectionItem(periodItem);
+    this.updatePieGridGraph();
+  }
+
+  toggleProjection() {
+    this.currentProjection = !this.currentProjection;
+    this.projectionSelectorPie.selectionItems.forEach(element => {
+      element.checked = !element.checked;
+    });
+    this.updatePieGridGraph();
+  }
+
+  private updatePieGridGraph() {
+    this.projectionData.createOrUpdatePieData(this.periodSelectorPie.getCurrentSelction(), this.projectionSelectorPie.getCurrentSelction());
+    this.pieData = this.projectionData.getPieData();
+    this.projectionPieChart.updateChart(
+      this.projectionPieChartContainer,
+      this.projectionPieChartDiv,
+      this.pieData,
+      '#fundingGapPieToolip',
+      this.planSelectorService
+    );
+  }
 }
 
 

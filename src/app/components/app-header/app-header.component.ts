@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { MinimizeService } from '../../services/minimize.service';
 
 @Component({
   selector: 'app-header',
@@ -7,12 +6,7 @@ import { MinimizeService } from '../../services/minimize.service';
 })
 export class AppHeaderComponent {
 
-  constructor(private minimizeService: MinimizeService) { }
+  constructor() { }
 
-  scratch() {
-    console.log('AppHeaderComponent: scrach');
-    this.minimizeService.newEvent('clicked!');
-
-  }
 
 }

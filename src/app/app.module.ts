@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MinimizeService } from './services/minimize.service';
 
 
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
@@ -92,7 +91,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
   providers: [{
     provide: LocationStrategy,
     useClass: HashLocationStrategy
-  }, MinimizeService],
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

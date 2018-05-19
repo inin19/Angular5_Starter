@@ -7,7 +7,8 @@ export class ProjectionD3Chart {
     FUNDING_GAP: '#fac364',
     MEMBER_PREMIUM: '#b6d957',
     TAX: '#d998cb',
-    FEES: '#93b9c6'
+    FEES: '#93b9c6',
+    ESTIMATED_MEMBER_OOP_COST: '#93b9c6'
   };
 
   private width: number;
@@ -22,6 +23,7 @@ export class ProjectionD3Chart {
   private yAxis: any;
 
   private margin: { top: number, right: number, bottom: number, left: number };
+  private color: any;
 
   constructor(
     chartParent: ElementRef,
@@ -32,9 +34,10 @@ export class ProjectionD3Chart {
     yScaleDomain: any[],
     barData: any[],
     categoryTranslation: any,
-    tooltipDomID: string
+    tooltipDomID: string,
+    color: any
   ) {
-    this.updateChart(chartParent, elementRef, margin, xScaleDomain, x1ScaleDomain, yScaleDomain, barData, categoryTranslation, tooltipDomID);
+    this.updateChart(chartParent, elementRef, margin, xScaleDomain, x1ScaleDomain, yScaleDomain, barData, categoryTranslation, tooltipDomID, color);
   }
 
 
@@ -47,8 +50,11 @@ export class ProjectionD3Chart {
     yScaleDomain: any[],
     barData: any[],
     categoryTranslation: any,
-    tooltipDomID: string
+    tooltipDomID: string,
+    color: any
   ) {
+
+
     const domID = '#' + elementRef.nativeElement.id;
     this.margin = margin;
 
@@ -65,8 +71,7 @@ export class ProjectionD3Chart {
       .rangeRound([0, this.width])
       .paddingInner(0.3)
       .paddingOuter(0.3);
-    // .paddingInner(0.3);
-    // .padding(0.3);
+
 
     this.x1Scale = d3.scaleBand().domain(x1ScaleDomain)
       .range([0, this.x0Scale.bandwidth()])

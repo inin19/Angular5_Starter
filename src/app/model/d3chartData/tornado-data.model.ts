@@ -37,7 +37,7 @@ export class TornadoData {
 
 
 
-  constructor(demographicJsonData: any[], ageGroup: string[], selectorNames: string[]) {
+  constructor(data: any[], ageGroup: string[], selectorNames: string[]) {
 
     this.gridDetail = new Array<GridDetail>();
     // revisit null or 0
@@ -56,7 +56,7 @@ export class TornadoData {
 
     ////////////////////////////////////////////////////////////////////
 
-    this.createDimensionGroup(demographicJsonData, selectorNames);
+    this.createDimensionGroup(data, selectorNames);
     this.updateData();
 
   }

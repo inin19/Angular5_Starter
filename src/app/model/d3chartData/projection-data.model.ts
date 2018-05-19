@@ -7,7 +7,6 @@ export class ProjectionData {
   private otherDimension: crossfilter.Dimension<any, any>;
 
 
-
   // groups
   private otherDimensionGroup: crossfilter.Group<any, any, any>;
 
@@ -32,26 +31,19 @@ export class ProjectionData {
 
   // new for plans pie chart ------------------------------------------------------------------------------------------------------
   //
+
+  private ndx2: crossfilter.Crossfilter<ProjectionJSONInput>;
   private periodDimension: crossfilter.Dimension<any, any>;
-  private currentProposedDimension: crossfilter.Dimension<any, any>;
+  private projectionDimension: crossfilter.Dimension<any, any>;
 
   private planCategoryDimension: crossfilter.Dimension<any, any>;
   private planCategoryDimensionGroup: crossfilter.Group<any, any, any>;
 
-  private planAggregateData: any[];
+  private pieChartData: any[];
 
 
 
   constructor(data: ProjectionJSONInput[], graphCategories: string[], gridCategories: string[]) {
-
-    // NEW -----------------------------------
-    // data.forEach(element => {
-    //   element.fundingGapCurrent = (element.category === 'FUNDING_GAP' && element.currentProposed === 'CURRENT') ? element.value : 0;
-    //   element.fundingGapProposed = (element.category === 'FUNDING_GAP' && element.currentProposed === 'PROPOSED') ? element.value : 0;
-    // });
-    // NEW -----------------------------------
-
-
 
     this.graphCategories = graphCategories;
     this.gridCategories = gridCategories;
@@ -86,9 +78,12 @@ export class ProjectionData {
     this.allCurrentProposed = data.map(item => item.currentProposed).filter((value, index, self) => self.indexOf(value) === index);
 
     // NEW 5/15
-    this.planCategoryDimension = this.ndx.dimension((d) => JSON.stringify({
+
+    const data2 = data.filter(d => d.period !== 0 && d.category === 'FUNDING_GAP');
+    this.ndx2 = crossfilter(data2);
+
+    this.planCategoryDimension = this.ndx2.dimension((d) => JSON.stringify({
       planId: d.planId,
-      // currentProposed: d.currentProposed,
       category: d.category
     }));
 
@@ -97,35 +92,31 @@ export class ProjectionData {
       d.key = JSON.parse(d.key);
     });
 
-    this.periodDimension = this.ndx.dimension(d => d.period);
-    this.currentProposedDimension = this.ndx.dimension(d => d.currentProposed);
-  }
-
-
-
-
-
-  private groupbyPlan = (data: any[], item: number) => {
-    return data.filter(d => d.key === item).reduce((accumulator, currVal) => {
-      return {
-        key: item,
-        fundingGapCurrent: accumulator.fundingGapCurrent + currVal.fundingGapCurrent,
-        fundingGapProposed: accumulator.fundingGapProposed + currVal.fundingGapProposed,
-      };
-    }, {
-        key: item,
-        fundingGapCurrent: 0,
-        fundingGapProposed: 0,
-      });
+    this.periodDimension = this.ndx2.dimension(d => d.period);
+    this.projectionDimension = this.ndx2.dimension(d => d.currentProposed);
   }
 
 
   // categories is country specific
   createGraphData(data: ProjectionJSONInput[]) {
     // NEW ----------------------------------------------------------------------------------------
-    let aggregateData = this.planCategoryDimensionGroup.reduceSum((d) => (d.value)).all();
-    aggregateData = aggregateData.filter(d => d.key.category === 'FUNDING_GAP');
-    this.planAggregateData = aggregateData;
+
+    // this.projectionDimension.filter('CURRENT');
+    // const aggregateData = this.planCategoryDimensionGroup.reduceSum((d) => (d.value)).all();
+
+    // const total = aggregateData.reduce((accumulator, currentValue) => {
+    //   return accumulator = accumulator + Number(currentValue.value);
+    // }, 0);
+
+    // aggregateData.forEach(element => {
+    //   element.total = total;
+    // });
+
+    // this.pieChartData = aggregateData;
+
+    this.createOrUpdatePieData();
+
+
     // NEW ----------------------------------------------------------------------------------------
 
     // projection main chart
@@ -233,7 +224,7 @@ export class ProjectionData {
 
 
 
-  updateGraphData(plans: number[], periods: number[], selectedGraphCategories: string[], currentProposed: string[]) {
+  updateProjectionData(plans: number[], periods: number[], selectedGraphCategories: string[], currentProposed: string[]) {
 
 
     this.gridCurrent = [];
@@ -242,16 +233,17 @@ export class ProjectionData {
     const removed = this.graphCategories.filter((item) => selectedGraphCategories.indexOf(item) < 0);
     const adjustedGridCategories = this.gridCategories.filter((item) => removed.indexOf(item) < 0);
 
-    // console.log(adjustedGridCategories);
 
     // reset filter
     this.planDimension.filterAll();
     this.planDimension.filter((d) => plans.indexOf(Number(d)) !== -1);
 
 
-    let aggregateData = this.planCategoryDimensionGroup.reduceSum((d) => (d.value)).all();
-    aggregateData = aggregateData.filter(d => d.key.category === 'FUNDING_GAP');
-    this.planAggregateData = aggregateData;
+    // NEW -------------------------------------------------
+    this.createOrUpdatePieData();
+    // NEW -------------------------------------------------
+
+
 
     this.proposalAggregateData = this.otherDimensionGroup.reduceSum((d) => (d.value)).all();
     this.graphData = [];
@@ -425,9 +417,31 @@ export class ProjectionData {
   }
 
 
-  getFundingGapByPlan(): any[] {
-    return this.planAggregateData;
+  getPieData(): any[] {
+    return this.pieChartData;
   }
+
+
+  createOrUpdatePieData(periods?: number[], projection?: string[]): void {
+    if (periods && projection) {
+      this.periodDimension.filterAll();
+      this.periodDimension.filter((d) => periods.indexOf(d) !== -1);
+      this.projectionDimension.filterAll();
+      this.projectionDimension.filter((d) => projection.indexOf(d) !== -1);
+    }
+    // reset filter
+
+    const aggregateData = this.planCategoryDimensionGroup.reduceSum((d) => (d.value)).all();
+    const total = aggregateData.reduce((accumulator, currentValue) => {
+      return accumulator = accumulator + Number(currentValue.value);
+    }, 0);
+
+    aggregateData.forEach(element => {
+      element.total = total;
+    });
+    this.pieChartData = aggregateData;
+  }
+
 
 }
 

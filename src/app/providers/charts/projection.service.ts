@@ -27,7 +27,7 @@ export class ProjectionService extends ErrorHandler {
 
   private projectionLocal = 'http://localhost:3000/projection';
 
-  private projectionLocal2 = 'http://localhost:3000/projection2';
+  private projectionLocal2 = 'http://localhost:3000/projection3';
 
 
   constructor(private http: HttpClient, injector: Injector) {

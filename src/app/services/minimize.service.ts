@@ -15,4 +15,8 @@ export class MinimizeService {
     return this._subject.asObservable();
   }
 
+
+
+
+
 }

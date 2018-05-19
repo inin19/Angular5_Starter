@@ -16,7 +16,12 @@ export class Selector {
     this.selectorName = name;
   }
 
-  getCurrentSelction(): string[] {
+  // getCurrentSelction(): string[] {
+  //   return this.selectionItems.filter(item => item.checked === true).map(d => d.elementName);
+  // }
+
+
+  getCurrentSelction(): any[] {
     return this.selectionItems.filter(item => item.checked === true).map(d => d.elementName);
   }
 
@@ -25,21 +30,29 @@ export class Selector {
     return this.selectionItems.filter(d => d.elementName === item)[0].checked;
   }
 
-  // new
+
   toggleElementStatus(item: string) {
-    const status = this.selectionItems.filter(d => d.elementName === item)[0].checked;
-    this.selectionItems.filter(d => d.elementName === item)[0].checked = !status;
-    this.setAll();
+    const tmp = this.selectionItems.find(el => el.elementName.toString() === item.toString());
+    if (tmp) {
+      tmp.checked = !tmp.checked;
+      this.syncAll();
+    }
+  }
+
+
+  toggleSelectionItem(item: SelectionItem) {
+    item.checked = !item.checked;
+    this.syncAll();
   }
 
   // new
-  setAll() {
-    if (this.checkIfAllChecked() === true) {
-      this.all = true;
-    } else {
-      this.all = false;
-    }
-  }
+  // setAll() {
+  //   if (this.checkIfAllChecked() === true) {
+  //     this.all = true;
+  //   } else {
+  //     this.all = false;
+  //   }
+  // }
 
 
   checkIfAllChecked() {
@@ -77,15 +90,46 @@ export class Selector {
   }
 
 
+  setSelectionNEW(selection: any[]) {
+
+    this.unSelectAll();
+    for (const item of selection) {
+      const tmp = this.selectionItems.find(el => item === el.elementName);
+      if (tmp) {
+        tmp.checked = true;
+      }
+    }
+
+    this.syncAll();
+  }
+
+
+  changeSelection(selection: any, status: boolean) {
+
+    const tmp = this.selectionItems.find(el => selection === el.elementName);
+
+    if (tmp) {
+      tmp.checked = status;
+    }
+
+    this.syncAll();
+
+  }
+
+
+
   syncAll() {
     if (this.selectionItems.length === this.getCurrentSelction().length) {
       this.all = true;
+    } else {
+      this.all = false;
     }
   }
 
 }
 
+
 export interface SelectionItem {
-  elementName: string;
+  elementName: any;
   checked: boolean;
 }
