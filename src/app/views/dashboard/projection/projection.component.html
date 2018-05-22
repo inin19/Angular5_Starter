@@ -83,11 +83,9 @@
 
   </div>
 
-
   <div class="col">
-
-    <div [hidden]='grid' class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
-      <div class="col">
+    <div id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
+      <div [ngStyle]="{'opacity': (grid === false)? 1:0 }">
         <ul class="list-inline">
           <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !lossRatio}" (click)="lossRatio && toggleLossRatioRenewalRate()">
             <span [ngClass]="{ 'li-wrapper-unselected': lossRatio }">Loss Ratio</span>
@@ -96,35 +94,35 @@
             <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio }">Renewal Rate</span>
           </li>
         </ul>
-        <div id="lossRatioChart" #lossRatioChart>
-          <svg class="scatterplot" heigh="500" width="100%">
-            <g class="scatterplotGroup">
-              <path class="line currentPath"></path>
-              <path class="line proposedPath"></path>
-              <g class="x axis"></g>
-              <g class="y axis"></g>
-            </g>
-          </svg>
-        </div>
+      </div>
 
-        <div id='projectionChart' #projectionChart>
-          <svg class="fiveYearProjection" width="100%">
-            <g class="bars">
-              <g class="x axis"></g>
-              <g class="y axis"></g>
-            </g>
-          </svg>
-        </div>
+
+
+      <div [hidden]='grid' id="lossRatioChart" #lossRatioChart>
+        <svg class="scatterplot" width="100%">
+          <g class="scatterplotGroup">
+            <path class="line currentPath"></path>
+            <path class="line proposedPath"></path>
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
+      </div>
+
+
+      <div [hidden]='grid' id='projectionChart' #projectionChart>
+        <svg class="fiveYearProjection" width="100%">
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
 
       </div>
-      <div id="projectionToolip">Tooltip</div>
-    </div>
 
 
-
-    <div [hidden]='!grid' class="row">
-      <div class="col">
-        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-align-middle table-striped ">
+      <div [hidden]='!grid' class="tableContainer">
+        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
           <thead>
             <tr class="bg-primary">
               <th>Attribute</th>
@@ -153,8 +151,54 @@
             </tr>
           </tbody>
         </table>
+
+
       </div>
+
+
+
+
+      <div id="projectionToolip">Tooltip</div>
+
+
     </div>
+
+
+
+    <!-- <div class="row">
+      <div class="tableContainer">
+        <table [hidden]='grid' *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
+          <thead>
+            <tr class="bg-primary">
+              <th>Attribute</th>
+              <th *ngFor="let n of periodSelector.getCurrentSelction()">
+                <b>Period {{ n }}</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of projectionGridData">
+              <ng-container [ngSwitch]="record.attribute">
+                <ng-container *ngSwitchCase="'CURRENT'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'PROPOSED'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
+                  <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
+                </ng-container>
+
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div> -->
 
   </div>
 

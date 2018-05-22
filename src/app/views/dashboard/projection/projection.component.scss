@@ -66,30 +66,6 @@
 
 
 
-#projectionGrid  {
-  font-size: 10px;
-}
-
-
-
-#projectionGrid tbody td {
-  padding-right: 30px;
-  text-align: right;
-}
-
-#projectionGrid tbody td:nth-child(1) {
-  text-align: left;
-}
-
-
-#projectionGrid thead th {
-  padding-right: 30px;
-  text-align: right;
-}
-
-#projectionGrid thead th:nth-child(1) {
-  text-align: left;
-}
 
 
 #projectionLegend {
@@ -117,10 +93,6 @@
 }
 
 
-
-#projectionGrid {
-  margin-left: 20px;
-}
 
 #projectionLeft{
   padding-left: 5px;
@@ -265,4 +237,31 @@
 #lossRatioChart circle{
   cursor: pointer;
 }
+
+
+
+
+
+
+
+#projectionGrid tbody td {
+  padding-right: 30px;
+  text-align: right;
+}
+
+#projectionGrid tbody td:nth-child(1) {
+  text-align: left;
+}
+
+
+#projectionGrid thead th {
+  padding-right: 30px;
+  text-align: right;
+}
+
+#projectionGrid thead th:nth-child(1) {
+  text-align: left;
+}
+
+
 
