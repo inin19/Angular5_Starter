@@ -47,6 +47,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     'relation'
   ];
 
+
+
   private static claimMargin: any = { top: 60, right: 20, bottom: 100, left: 50 };
 
   private static demographicMargin: any = { top: 50, right: 20, bottom: 50, left: 50 };
@@ -81,6 +83,13 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   selectors: Selector[];
   demographicSelectors: Selector[];
   claimsSelectors: Selector[];
+
+
+
+
+
+
+
 
   // -----------------------------HOLD JSON INPUT----------------------
   // demographic
@@ -187,6 +196,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   ngOnInit() {
 
 
+
+
     this.conditionGroupTranslation.PREVYEAR = '2015';
     this.conditionGroupTranslation.CURRYEAR = '2016';
 
@@ -215,6 +226,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     console.log('historical destroyed');
   }
+
 
 
 
@@ -383,6 +395,8 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
     });
 
   }
+
+
 
 
   switchToClaimsSelector() {

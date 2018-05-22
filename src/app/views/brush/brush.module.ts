@@ -6,7 +6,7 @@ import { BrushRoutingModule } from './brush-routing.module';
 import { TimeseriesComponent } from './timeseries/timeseries.component';
 import { BrushComponent } from './brush.component';
 import { TimeSeriesService } from './../../providers/test/time-series.service';
-
+import { ProjectionService } from './../../providers/charts/projection.service';
 
 @NgModule({
   imports: [
@@ -15,7 +15,7 @@ import { TimeSeriesService } from './../../providers/test/time-series.service';
     HttpClientModule
   ],
   declarations: [TimeseriesComponent, BrushComponent],
-  providers: [TimeSeriesService]
+  providers: [TimeSeriesService, ProjectionService]
 
 })
 export class BrushModule { }

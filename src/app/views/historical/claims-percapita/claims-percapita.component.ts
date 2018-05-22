@@ -3,12 +3,16 @@ import { WaterfallD3Chart } from './../../../model/D3chart/waterfall-d3-chart.mo
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import { WaterfallData, WaterfallBar } from './../../../model/D3chartData/waterfall-data.model';
 import { Selector } from './../../../model/utils/selector.model';
+import { showHideTrigger } from './../../../model/animations/animations';
 
 @Component({
   selector: 'app-claims-percapita',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './claims-percapita.component.html',
-  styleUrls: ['./claims-percapita.component.scss']
+  styleUrls: ['./claims-percapita.component.scss'],
+  animations: [
+    showHideTrigger
+  ]
 })
 export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewInit {
 

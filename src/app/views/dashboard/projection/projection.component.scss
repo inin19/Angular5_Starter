@@ -195,15 +195,6 @@
 }
 
 
-#lossRatioChart{
-  margin: 5px, 20px,40px,5px; 
-  // border: solid 1px black;
-
-  background-color: azure;
-
-  height: 150px;
-}
-
 
 .grid-graph{
   cursor: pointer;
@@ -223,3 +214,55 @@
   padding-right: 5px;
   transition: background-color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
 }
+
+
+
+.scatterplot{
+  // background-color: lightgreen;
+  height: 200px;
+}
+
+
+
+.scatterplot .x.axis {
+  path {
+    visibility: hidden;
+  }
+  .tick text {
+    visibility: hidden;
+  }
+
+  .tick line {
+    stroke: darkgrey;
+    stroke-dasharray: 5, 1;
+    stroke-width: 0.5px;
+  }
+}
+
+
+
+.scatterplot .y.axis path {
+  visibility: hidden;
+}
+
+
+.scatterplot .line {
+  fill: none;
+  stroke-dasharray: 5, 1;
+  stroke-width: 2px;
+}
+
+
+
+#lossRatioChart .line.currentPath {
+  opacity: 0;
+}
+
+#lossRatioChart .line.proposedPath {
+  opacity: 0;
+}
+
+#lossRatioChart circle{
+  cursor: pointer;
+}
+

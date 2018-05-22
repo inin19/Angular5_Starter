@@ -36,7 +36,7 @@
 
 
 
-<div [hidden]='grid' class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
+<div @showHide [hidden]='grid' class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
   <div class="col-6">
     <div id="proposalClaimsPerCapita" #proposalClaimsPerCapita>
       <svg class="waterfallChart" width="100%">

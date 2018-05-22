@@ -62,21 +62,6 @@
           <i class="fa fa-refresh fa-lg" title="reset" aria-hidden="true"></i>
         </li>
 
-        <!-- <li class="list-group-item" *ngFor="let category of getGraphCategoriesReverse(); let i = index" (click)="category !== 'FUNDING_GAP' &&  toggleCategory(category)"
-          [ngClass]="{'li-wrapper-selected': category !== 'FUNDING_GAP' && !graphCategoriesStatus[category]}">
-          <ng-container *ngIf="category === 'FUNDING_GAP'; else otherCategory ">
-            <span>
-              <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(category)"> </span> &nbsp; {{ category | ProjectionCategory : countryCode }}
-            </span>
-          </ng-container>
-
-          <ng-template #otherCategory>
-            <span [ngClass]="{ 'li-wrapper-unselected': graphCategoriesStatus[category] }">
-              <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(category)"></span> &nbsp; {{ category | ProjectionCategory : countryCode }}
-            </span>
-          </ng-template>
-        </li> -->
-
         <li class="list-group-item" *ngFor="let categoryItem of categorySelector.selectionItems" (click)="categoryItem.elementName !== 'FUNDING_GAP' &&  toggleCategory(categoryItem)"
           [ngClass]="{'li-wrapper-selected': categoryItem.elementName !== 'FUNDING_GAP' &&  !categoryItem.checked }">
           <ng-container *ngIf="categoryItem.elementName === 'FUNDING_GAP'; else otherCategory ">
@@ -103,9 +88,23 @@
 
     <div [hidden]='grid' class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
       <div class="col">
-        <div>
-          <h5> Loss Ratio and Renewal Rate</h5>
-          <div id="lossRatioChart"> coming soon </div>
+        <ul class="list-inline">
+          <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !lossRatio}" (click)="lossRatio && toggleLossRatioRenewalRate()">
+            <span [ngClass]="{ 'li-wrapper-unselected': lossRatio }">Loss Ratio</span>
+          </li>
+          <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': lossRatio}" (click)="!lossRatio && toggleLossRatioRenewalRate()">
+            <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio }">Renewal Rate</span>
+          </li>
+        </ul>
+        <div id="lossRatioChart" #lossRatioChart>
+          <svg class="scatterplot" heigh="500" width="100%">
+            <g class="scatterplotGroup">
+              <path class="line currentPath"></path>
+              <path class="line proposedPath"></path>
+              <g class="x axis"></g>
+              <g class="y axis"></g>
+            </g>
+          </svg>
         </div>
 
         <div id='projectionChart' #projectionChart>

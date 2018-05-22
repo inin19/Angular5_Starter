@@ -2,14 +2,6 @@
   <div class="col">
     <div class="float-left">
 
-      <!-- <div class="btn-group" style="display: inline-block;">
-        <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
-      </div> -->
-
-
-
-
-
       <div *ngIf="proposalDemographic" style="display: inline;">
         &nbsp;Combined Graph &nbsp;
         <label class="switch switch-3d switch-primary" title="Zoom">
@@ -30,8 +22,8 @@
 </div>
 
 
-<div [hidden]='zoom'>
-  <div [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+<div @showHide [hidden]='zoom'>
+  <div @showHide [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
     <div class="col-6">
 
       <!--  (appResize)="onResized($event, 'proposal')" -->
@@ -103,7 +95,7 @@
     <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
   </div>
 
-  <div [hidden]='!grid' class="row">
+  <div @showHide [hidden]='!grid' class="row">
     <div class="col-6">
       <div *ngIf="proposalDemographic" class="tornadoGrid">
         <table class="table table-hover">

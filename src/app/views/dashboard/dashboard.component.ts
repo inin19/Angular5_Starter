@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   private trendType = 'BENCHMARK';
 
   projectionData: any[];
-
+  lossRatioData: any[];
 
   source = true;
 
@@ -26,6 +26,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.fetchProjection();
+    this.fetchLossRatioData();
   }
 
   fetchProjection(): void {
@@ -34,6 +35,15 @@ export class DashboardComponent implements OnInit {
     this.projectionService.getProjectionData(this.countryCode, this.proposalId.toString(), this.trendType, this.source)
       .subscribe(
         data => { this.projectionData = data; }
+      );
+  }
+
+
+  fetchLossRatioData(): void {
+
+    this.projectionService.getLossRatio()
+      .subscribe(
+        data => { this.lossRatioData = data; }
       );
   }
 

@@ -3,6 +3,8 @@ import { Component, OnInit, OnDestroy, Input, Output, ViewEncapsulation, ViewChi
 import { TornadoData } from './../../../model/D3chartData/tornado-data.model';
 import { Selector } from './../../../model/utils/selector.model';
 
+import { showHideTrigger } from './../../../model/animations/animations';
+
 import * as d3 from 'd3';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 
@@ -12,7 +14,10 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
   selector: 'app-demographic',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './demographic.component.html',
-  styleUrls: ['./demographic.component.scss']
+  styleUrls: ['./demographic.component.scss'],
+  animations: [
+    showHideTrigger
+  ]
 })
 
 

@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ClickOutsideModule } from 'ng4-click-outside';
 
 
+
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -29,7 +30,7 @@ import { ClaimsAvgCostComponent } from './claims-avg-cost/claims-avg-cost.compon
 
 import { ResizeDirective } from './../../directives/custom/resize.directive';
 
-
+import { showHideTrigger } from './../../model/animations/animations';
 
 @NgModule({
   imports: [
@@ -57,6 +58,7 @@ import { ResizeDirective } from './../../directives/custom/resize.directive';
     FixedNumberFormatPipe,
     ConditionGroupPipe,
     ResizeDirective
+
   ],
   providers: [
     DemographicService,

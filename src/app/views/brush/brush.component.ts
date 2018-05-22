@@ -1,6 +1,8 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 // import { TimeSeriesService } from './../../providers/test/time-series.service';
 
+import { ProjectionService } from './../../providers/charts/projection.service';
+
 import * as d3 from 'd3';
 
 @Component({
@@ -10,7 +12,7 @@ import * as d3 from 'd3';
 })
 export class BrushComponent implements OnInit {
 
-  // data: any[];
+  data: any[];
 
   @ViewChild('donut') private piechartContainer: ElementRef;
 
@@ -22,11 +24,24 @@ export class BrushComponent implements OnInit {
 
   private charts: any;
 
-  constructor() { }
+  constructor(private projectionService: ProjectionService) { }
 
   ngOnInit() {
 
-    this.create(this.genData());
+    // this.create(this.genData());
+    this.fetchData();
+
+  }
+
+
+
+
+  fetchData(): void {
+
+    this.projectionService.getScatterPlotData()
+      .subscribe(
+        data => { this.data = data; }
+      );
   }
 
 

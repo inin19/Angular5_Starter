@@ -11,6 +11,7 @@ import { ProjectionPlanSelectionService } from './../../../services/projection-p
 import { Subscription } from 'rxjs/Subscription';
 
 import { SelectionItem } from './../../../model/utils/selector.model';
+import { Scatterplot } from './../../../model/D3chart/scatterplot.model';
 
 
 @Component({
@@ -36,11 +37,12 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
 
   @Input() private projectionJSON: any[];
+  @Input() private lossRatioData: any[];
   @ViewChild('projectionChartContainer') private projectionChartContainer: ElementRef;
   @ViewChild('projectionChart') private projectionChart: ElementRef;
   @ViewChild('projectionPie') private projectionPieChartDiv: ElementRef;
   @ViewChild('projectionPieChartContainer') private projectionPieChartContainer: ElementRef;
-
+  @ViewChild('lossRatioChart') private lossRatioChart: ElementRef;
 
   countryCode = 'ISO2_GB';
 
@@ -51,6 +53,8 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   private projectionD3Chart: ProjectionD3Chart;
   private projectionPieChart: ProjectionPieChart;
   private subscription: Subscription;
+
+  private lossRatioD3Chart: Scatterplot;
 
   projectionGridData: ProjectionGridData[];
   pieData: any[];
@@ -65,7 +69,10 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   grid = false;
   currentProjection = true;
-  private margin: any = { top: 20, right: 20, bottom: 40, left: 40 };
+  lossRatio = true;
+  private margin: any = { top: 20, right: 30, bottom: 40, left: 50 };
+  private lossRatioMargin: any = { top: 20, right: 30, bottom: 20, left: 50 };
+
 
 
   // Resize
@@ -106,9 +113,33 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
     this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
       this.updateAllChart();
     });
-    this.createChartData();
+    this.createProjectionChartData();
     this.createSelector();
-    this.createChart();
+    this.createProjectionChart();
+    this.createLossRatioChart();
+  }
+
+
+
+
+  createLossRatioChart() {
+    this.lossRatioD3Chart = new Scatterplot(
+      this.projectionChartContainer,
+      this.lossRatioChart,
+      this.lossRatioMargin,
+      this.lossRatioData,
+      this.lossRatio
+    );
+  }
+
+  updateLossRatioChart() {
+    this.lossRatioD3Chart.updateChart(
+      this.projectionChartContainer,
+      this.lossRatioChart,
+      this.lossRatioMargin,
+      this.lossRatioData,
+      this.lossRatio
+    );
   }
 
   createSelector() {
@@ -128,9 +159,9 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   ngOnChanges() {
     console.log('projection on changes');
     if (this.projectionD3Chart) {
-      this.createChartData();
+      this.createProjectionChartData();
       this.createSelector();
-      this.createChart();
+      this.createProjectionChart();
     }
   }
 
@@ -141,7 +172,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  createChartData() {
+  createProjectionChartData() {
     this.projectionData = new ProjectionData(this.projectionJSON, this.getGraphCategories(), this.getGridCategories());
     this.projectionGraphData = this.projectionData.getGraphData();
     this.projectionGridData = this.projectionData.getFinalGrid();
@@ -156,7 +187,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
 
-  createChart() {
+  createProjectionChart() {
     this.projectionD3Chart = new ProjectionD3Chart(
       this.projectionChartContainer,
       this.projectionChart,
@@ -183,6 +214,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   updateAllChart() {
     this.updateProjectionChart();
     this.updatePieChart();
+    this.updateLossRatioChart();
   }
 
   private updateProjectionChart() {
@@ -267,6 +299,11 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
       '#fundingGapPieToolip',
       this.planSelectorService
     );
+  }
+
+  toggleLossRatioRenewalRate() {
+    this.lossRatio = !this.lossRatio;
+    this.updateLossRatioChart();
   }
 }
 
