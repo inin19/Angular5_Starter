@@ -12,7 +12,7 @@
 
 <div class="row">
 
-  <div id="projectionLeft" class="col-2" style="position: relative;" #projectionPieChartContainer>
+  <div id="projectionLeft" style="position: relative; width: 280px" #projectionPieChartContainer>
 
     <ul class="list-inline">
       <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !currentProjection}" (click)="currentProjection && toggleProjection()">
@@ -84,7 +84,7 @@
   </div>
 
 
-  <div class="col-10">
+  <div class="col">
 
     <div [hidden]='grid' class="row" id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
       <div class="col">

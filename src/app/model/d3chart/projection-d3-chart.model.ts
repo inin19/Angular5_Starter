@@ -174,7 +174,7 @@ export class ProjectionD3Chart {
   handleMouseOver(translation: any, tooltipDomID: string): (d, i) => void {
     return (d, i) => {
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 0.5);
+        .style('opacity', 0.5);
       const f = d3.format('.2s');
       d3.select(tooltipDomID)
         .style('opacity', 1)
@@ -187,7 +187,7 @@ export class ProjectionD3Chart {
   handleMouseOut(tooltipDomID: string): (d, i) => void {
     return (d, i) => {
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 1);
+        .style('opacity', 1);
       d3.select(tooltipDomID)
         .style('opacity', 0);
     };
