@@ -26,7 +26,8 @@ export class TimeseriesComponent implements OnInit, AfterViewInit {
       this.scatterplotContainer,
       this.scatterplotContainer,
       TimeseriesComponent.margin,
-      this.data
+      this.data,
+      true
     );
 
 

@@ -73,7 +73,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   private margin: any = { top: 20, right: 30, bottom: 40, left: 50 };
   private lossRatioMargin: any = { top: 20, right: 30, bottom: 20, left: 50 };
 
-
+  collapse = false;
 
   // Resize
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
@@ -304,6 +304,11 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   toggleLossRatioRenewalRate() {
     this.lossRatio = !this.lossRatio;
     this.updateLossRatioChart();
+  }
+
+
+  toggleCollapse() {
+    this.collapse = !this.collapse;
   }
 }
 

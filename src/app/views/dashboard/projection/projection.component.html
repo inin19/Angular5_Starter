@@ -12,7 +12,7 @@
 
 <div class="row">
 
-  <div id="projectionLeft" style="position: relative; width: 280px" #projectionPieChartContainer>
+  <div id="projectionLeft" [ngClass]="{'expandFilter': !collapse,'collapseFilter': collapse }" #projectionPieChartContainer>
 
     <ul class="list-inline">
       <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !currentProjection}" (click)="currentProjection && toggleProjection()">
@@ -82,6 +82,12 @@
 
 
   </div>
+
+  <div id="collapseLeft" (click)="toggleCollapse()">
+    <i [ngClass]="{'fa-arrow-left': !collapse,'fa-arrow-right':collapse }" class="fa fa-lg" aria-hidden="true" [title]="collapse?'Expand':'Collapse'"></i>
+  </div>
+
+
 
   <div class="col">
     <div id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
@@ -163,42 +169,6 @@
 
     </div>
 
-
-
-    <!-- <div class="row">
-      <div class="tableContainer">
-        <table [hidden]='grid' *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
-          <thead>
-            <tr class="bg-primary">
-              <th>Attribute</th>
-              <th *ngFor="let n of periodSelector.getCurrentSelction()">
-                <b>Period {{ n }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let record of projectionGridData">
-              <ng-container [ngSwitch]="record.attribute">
-                <ng-container *ngSwitchCase="'CURRENT'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'PROPOSED'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                </ng-container>
-
-                <ng-container *ngSwitchDefault>
-                  <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
-                  <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
-                </ng-container>
-
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
-
-      </div>
-    </div> -->
 
   </div>
 

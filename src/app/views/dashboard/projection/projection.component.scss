@@ -265,3 +265,15 @@
 
 
 
+#projectionLeft {
+  position: relative;
+  width: 280px;
+  transition: all .5s  ease-out;
+}
+
+#projectionLeft.collapseFilter{
+  margin-left: -280px;
+  visibility: hidden;
+}
+
+

@@ -71,8 +71,6 @@ export class ProjectionService extends ErrorHandler {
   getLossRatio(): Observable<any> {
     const l: number = new Date().getMilliseconds();
     return this.http.get<any>(this.lossratio + '?' + l, httpOptions);
-
-
   }
 
 }
