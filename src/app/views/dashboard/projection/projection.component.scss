@@ -1,12 +1,6 @@
-.fiveYearProjection{
-  height: 500px;
+.projection__bar-chart {
+    height: 500px;
 }
-
-
-#projectionPie{
-  height: 250px;
-}
-
 
 .tick text {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
@@ -14,24 +8,25 @@
     fill: #666;
 }
 
-
 .fiveYearProjection .x.axis .tick line {
-  stroke: darkgrey;
-  stroke-dasharray: 5, 1;
-  stroke-width: 0.5px;
+    stroke: darkgrey;
+    stroke-dasharray: 5, 1;
+    stroke-width: 0.5px;
 }
 
 .fiveYearProjection .x.axis path {
-  visibility: hidden;
+    visibility: hidden;
 }
-
 
 .fiveYearProjection .y.axis path {
-  visibility: hidden;
+    visibility: hidden;
 }
 
-  
-#projectionToolip{
+#projectionPie {
+    height: 250px;
+}
+
+#projectionToolip {
     opacity: 0;
     pointer-events: none;
     position: absolute;
@@ -46,236 +41,186 @@
     box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
 }
 
-
-#fundingGapPieToolip{
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  min-width: 50px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  padding: 6px 14px 6px 14px;
-  border-radius: 4px;
-  text-align: left;
-  line-height: 1.3;
-  color: #5B6770;
-  box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
+#fundingGapPieToolip {
+    opacity: 0;
+    pointer-events: none;
+    position: absolute;
+    min-width: 50px;
+    height: auto;
+    background: none repeat scroll 0 0 #ffffff;
+    padding: 6px 14px 6px 14px;
+    border-radius: 4px;
+    text-align: left;
+    line-height: 1.3;
+    color: #5B6770;
+    box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
 }
 
-
-
-
-
-
-
 #projectionLegend {
-  display: table;   /* Allow the centering to work */
+    display: table;
+    /* Allow the centering to work */
     margin: 0 auto;
 }
 
 .legendRect {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
 }
-
-
 
 #projectionLegend li {
-  cursor: auto;
+    cursor: auto;
 }
 
-
-#projectionLegend .list-group-item{
-  border: 0;
-  padding-left: 5px;
-  transition: all 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
+#projectionLegend .list-group-item {
+    border: 0;
+    padding-left: 5px;
+    transition: all 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
 }
 
-
-
-#projectionLeft{
-  padding-left: 20px;
-  padding-right: 5px;
+#projectionLeft {
+    padding-left: 20px;
+    padding-right: 5px;
 }
 
 .li-wrapper-unselected {
-  position: relative;
-  display: block;
-  cursor: pointer;
-  // padding: 5px;;
+    position: relative;
+    display: block;
+    cursor: pointer; // padding: 5px;;
 }
 
-.li-wrapper-unselected:before, .li-wrapper-unselected:after {
-  content: '';
-  position: absolute;
-  width: 0%;
-  height: 2px;
-  top: 50%;
-  margin-top: -0.5px;
-  background:darkgray;
+.li-wrapper-unselected:before,
+.li-wrapper-unselected:after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    top: 50%;
+    margin-top: -0.5px;
+    background: darkgray;
 }
-
-
 
 .li-wrapper-unselected:before {
-  left: -2.5px;
+    left: -2.5px;
 }
 
 .li-wrapper-unselected:after {
-  right: 2.5px;
-  background: darkgray;
-  transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+    right: 2.5px;
+    background: darkgray;
+    transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
-
-
-
 .li-wrapper-unselected:hover:before {
-  background : darkgray;
-  width: 100%;
-  transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    background: darkgray;
+    width: 100%;
+    transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
 .li-wrapper-unselected:hover:after {
-  background: transparent;
-  width: 100%;
-  transition: 0s;
+    background: transparent;
+    width: 100%;
+    transition: 0s;
 }
-
 
 .li-wrapper-unselected:hover {
-//  background-color: yellow;
- transition: all 800ms ease-out;
+    //  background-color: yellow;
+    transition: all 800ms ease-out;
 }
-
 
 .li-wrapper-selected {
-  text-decoration: line-through;
-  color: lightgray;
-  cursor: pointer;
+    text-decoration: line-through;
+    color: lightgray;
+    cursor: pointer;
 }
-
-
-
-
-
 
 #projectionChartsArea h5 {
-  text-align: center;
+    text-align: center;
 }
 
-
-
-.grid-graph{
-  cursor: pointer;
+.grid-graph {
+    cursor: pointer;
 }
 
 .piechartContainer circle {
-  cursor: pointer;
+    cursor: pointer;
 }
 
-
 #projectionReset {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 #projectionPeriod li {
-  padding-left: 5px;
-  padding-right: 5px;
-  transition: background-color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: background-color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
 }
 
-
-
-.scatterplot{
-  // background-color: lightgreen;
-  height: 200px;
+.scatterplot {
+    // background-color: lightgreen;
+    height: 200px;
 }
-
-
 
 .scatterplot .x.axis {
-  path {
-    visibility: hidden;
-  }
-  .tick text {
-    visibility: hidden;
-  }
-
-  .tick line {
-    stroke: darkgrey;
-    stroke-dasharray: 5, 1;
-    stroke-width: 0.5px;
-  }
+    path {
+        visibility: hidden;
+    }
+    .tick text {
+        visibility: hidden;
+    }
+    .tick line {
+        stroke: darkgrey;
+        stroke-dasharray: 5, 1;
+        stroke-width: 0.5px;
+    }
 }
-
-
 
 .scatterplot .y.axis path {
-  visibility: hidden;
+    visibility: hidden;
 }
-
 
 .scatterplot .line {
-  fill: none;
-  stroke-dasharray: 5, 1;
-  stroke-width: 2px;
+    fill: none;
+    stroke-dasharray: 5, 1;
+    stroke-width: 2px;
 }
 
-
-
 #lossRatioChart .line.currentPath {
-  opacity: 0;
+    opacity: 0;
 }
 
 #lossRatioChart .line.proposedPath {
-  opacity: 0;
+    opacity: 0;
 }
 
-#lossRatioChart circle{
-  cursor: pointer;
+#lossRatioChart circle {
+    cursor: pointer;
 }
-
-
-
-
-
-
 
 #projectionGrid tbody td {
-  padding-right: 30px;
-  text-align: right;
+    padding-right: 30px;
+    text-align: right;
 }
 
 #projectionGrid tbody td:nth-child(1) {
-  text-align: left;
+    text-align: left;
 }
 
-
 #projectionGrid thead th {
-  padding-right: 30px;
-  text-align: right;
+    padding-right: 30px;
+    text-align: right;
 }
 
 #projectionGrid thead th:nth-child(1) {
-  text-align: left;
+    text-align: left;
 }
-
-
-
-
-
-
 
 #projectionLeft {
-  position: relative;
-  width: 280px;
-  transition: all .5s  ease-out;
+    position: relative;
+    width: 280px;
+    transition: all .5s ease-out;
 }
 
-#projectionLeft.collapseFilter{
-  margin-left: -280px;
-  visibility: hidden;
+#projectionLeft.collapseFilter {
+    margin-left: -280px;
+    visibility: hidden;
 }
-
