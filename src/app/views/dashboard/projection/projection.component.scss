@@ -1,26 +1,22 @@
+$primary-font-color: #666;
+$axis-line-dark-grey: darkgrey;
 .projection__bar-chart {
     height: 500px;
+    .axis .tick text {
+        font-family: inherit;
+        font-size: 0.875rem;
+        fill: $primary-font-color;
+    }
+    .axis path {
+        visibility: hidden;
+    }
+    .x.axis .tick line {
+        stroke: $axis-line-dark-grey;
+        stroke-dasharray: 5, 1;
+        stroke-width: 0.5px;
+    }
 }
 
-.tick text {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    fill: #666;
-}
-
-.fiveYearProjection .x.axis .tick line {
-    stroke: darkgrey;
-    stroke-dasharray: 5, 1;
-    stroke-width: 0.5px;
-}
-
-.fiveYearProjection .x.axis path {
-    visibility: hidden;
-}
-
-.fiveYearProjection .y.axis path {
-    visibility: hidden;
-}
 
 #projectionPie {
     height: 250px;
