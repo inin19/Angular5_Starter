@@ -70,7 +70,7 @@
 
 #projectionLegend {
   display: table;   /* Allow the centering to work */
-	margin: 0 auto;
+    margin: 0 auto;
 }
 
 .legendRect {
@@ -95,7 +95,7 @@
 
 
 #projectionLeft{
-  padding-left: 5px;
+  padding-left: 20px;
   padding-right: 5px;
 }
 
@@ -151,12 +151,11 @@
 
 
 .li-wrapper-selected {
-  // position: relative;
-  // display: block;
+  text-decoration: line-through;
+  color: lightgray;
   cursor: pointer;
-  background-color: lightgray;
-  color: darkgray;
 }
+
 
 
 
@@ -265,6 +264,10 @@
 
 
 
+
+
+
+
 #projectionLeft {
   position: relative;
   width: 280px;
@@ -275,5 +278,4 @@
   margin-left: -280px;
   visibility: hidden;
 }
-
 

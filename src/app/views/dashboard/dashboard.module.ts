@@ -1,5 +1,6 @@
 import { ProjectionService } from './../../providers/charts/projection.service';
 import { ProjectionPlanSelectionService } from './../../services/projection-plan-selection.service';
+import { ProjectionTrendTypeService } from './../../providers/charts/projection-trend-type.service';
 
 import { NgModule } from '@angular/core';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
@@ -29,7 +30,7 @@ import { ProjectionCategoryPipes } from './../pipes/charts/projectionCategory-pi
     ClickOutsideModule
   ],
   declarations: [DashboardComponent, ProjectionComponent, BigNumberFormatPipe, ProjectionCategoryPipes],
-  providers: [ProjectionService, ProjectionPlanSelectionService]
+  providers: [ProjectionService, ProjectionPlanSelectionService, ProjectionTrendTypeService]
 
 })
 export class DashboardModule { }

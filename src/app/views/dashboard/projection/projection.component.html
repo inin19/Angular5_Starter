@@ -1,18 +1,17 @@
 <div class="row">
-  <div class="col">
-    <div class="float-right">
-      <div style="display: inline;">
-        <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
-        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-<div class="row">
 
   <div id="projectionLeft" [ngClass]="{'expandFilter': !collapse,'collapseFilter': collapse }" #projectionPieChartContainer>
+
+    <div>
+      <label class="switch switch-default switch-secondary">
+        <input type="checkbox" class="switch-input" [(ngModel)]="trendTypeIndicator" name="trendTypeIndicator" (change)="changeTrendType(trendTypeIndicator)">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+      {{ trendType }}
+    </div>
+
+
 
     <ul class="list-inline">
       <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !currentProjection}" (click)="currentProjection && toggleProjection()">
@@ -25,7 +24,7 @@
 
     <hr>
 
-    <ul id="projectionPeriod" class="list-inline">
+    <!-- <ul id="projectionPeriod" class="list-inline">
 
       <li id="periodReset" class="list-inline-item" (click)="!periodSelectorPie.all && resetPeriod()" [ngStyle]="{opacity: periodSelectorPie.all ? 0.5:1 }">
         <i class="fa fa-refresh fa-lg" title="reset" aria-hidden="true"></i>
@@ -40,7 +39,7 @@
 
     </ul>
 
-    <hr>
+    <hr> -->
 
     <div id='projectionPie' #projectionPie>
       <svg class="piechart" width="100%">
@@ -90,7 +89,8 @@
 
 
   <div class="col">
-    <div id="projectionChartsArea" style="position: relative;" #projectionChartContainer>
+
+    <div class="float-left">
       <div [ngStyle]="{'opacity': (grid === false)? 1:0 }">
         <ul class="list-inline">
           <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !lossRatio}" (click)="lossRatio && toggleLossRatioRenewalRate()">
@@ -99,9 +99,21 @@
           <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': lossRatio}" (click)="!lossRatio && toggleLossRatioRenewalRate()">
             <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio }">Renewal Rate</span>
           </li>
+
+
+
         </ul>
       </div>
+    </div>
 
+    <div class="float-right">
+      <!-- <div style="display: inline;"> -->
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+      <!-- </div> -->
+    </div>
+
+    <div id="projectionChartsArea" style="position: relative; clear: both;" #projectionChartContainer>
 
 
       <div [hidden]='grid' id="lossRatioChart" #lossRatioChart>
@@ -131,9 +143,11 @@
         <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
           <thead>
             <tr class="bg-primary">
-              <th>Attribute</th>
+              <th style="position: relative;">Attribute
+                <span style="position: absolute; right: 0; ">Period &rarr;</span>
+              </th>
               <th *ngFor="let n of periodSelector.getCurrentSelction()">
-                <b>Period {{ n }}</b>
+                <b>{{ n }}</b>
               </th>
             </tr>
           </thead>

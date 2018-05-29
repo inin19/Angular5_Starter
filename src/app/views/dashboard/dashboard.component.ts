@@ -1,6 +1,8 @@
 import { ProjectionService } from './../../providers/charts/projection.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { ProjectionTrendTypeService } from './../../providers/charts/projection-trend-type.service';
+import { Subscription } from 'rxjs/Subscription';
 
 
 
@@ -8,25 +10,44 @@ import { Router } from '@angular/router';
   templateUrl: 'dashboard.component.html',
   styleUrls: ['./dashboard.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
 
   private proposalId = 187;
   private countryCode = 'ISO2_GB';
-  private trendType = 'BENCHMARK';
+  trendType = 'BENCHMARK';
 
   projectionData: any[];
   lossRatioData: any[];
 
   source = true;
 
-  constructor(private projectionService: ProjectionService) { }
+  private trendTypeSubcription: Subscription;
+
+
+  constructor(private projectionService: ProjectionService, private projectionTrendTypeService: ProjectionTrendTypeService) { }
 
 
 
   ngOnInit() {
     this.fetchProjection();
     this.fetchLossRatioData();
+
+
+    this.trendTypeSubcription = this.projectionTrendTypeService.trendType$.subscribe(
+      (trendType) => {
+        console.log('new trend: ', trendType);
+        this.trendType = trendType;
+        this.fetchProjection();
+        // this.fetchLossRatioData();
+
+      }
+    );
+
+  }
+
+  ngOnDestroy() {
+    this.trendTypeSubcription.unsubscribe();
   }
 
   fetchProjection(): void {

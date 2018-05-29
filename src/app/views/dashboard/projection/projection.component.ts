@@ -8,6 +8,7 @@ import { ProjectionGridData } from './../../../model/D3chartData/projection-data
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 
 import { ProjectionPlanSelectionService } from './../../../services/projection-plan-selection.service';
+import { ProjectionTrendTypeService } from './../../../providers/charts/projection-trend-type.service';
 import { Subscription } from 'rxjs/Subscription';
 
 import { SelectionItem } from './../../../model/utils/selector.model';
@@ -38,6 +39,11 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() private projectionJSON: any[];
   @Input() private lossRatioData: any[];
+  // @Input() trendType: string;
+  trendType = 'BENCHMARK';
+
+
+
   @ViewChild('projectionChartContainer') private projectionChartContainer: ElementRef;
   @ViewChild('projectionChart') private projectionChart: ElementRef;
   @ViewChild('projectionPie') private projectionPieChartDiv: ElementRef;
@@ -45,6 +51,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   @ViewChild('lossRatioChart') private lossRatioChart: ElementRef;
 
   countryCode = 'ISO2_GB';
+  trendTypeIndicator = true;
 
 
 
@@ -78,7 +85,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   // Resize
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
-  constructor(private planSelectorService: ProjectionPlanSelectionService) { }
+  constructor(private planSelectorService: ProjectionPlanSelectionService, private projectionTrendTypeService: ProjectionTrendTypeService) { }
 
   getGraphCategories(): string[] {
     return ProjectionComponent.graphCategories;
@@ -102,7 +109,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('projection init');
+    console.log('projection init, trend tpe : ', this.trendType);
     this.subscription = this.planSelectorService.plans$.subscribe(
       (plans) => {
         (plans.length === 0) ? this.planSelector.resetSelector() : this.planSelector.setSelectionNEW(plans);
@@ -161,7 +168,9 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
     if (this.projectionD3Chart) {
       this.createProjectionChartData();
       this.createSelector();
-      this.createProjectionChart();
+      // this.createProjectionChart();
+      this.updateProjectionChart();
+      this.updatePieChart();
     }
   }
 
@@ -310,6 +319,12 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   toggleCollapse() {
     this.collapse = !this.collapse;
   }
+
+  changeTrendType(type: boolean) {
+    this.trendType = type ? 'BENCHMARK' : 'PROPOSAL';
+    this.projectionTrendTypeService.sendPlanType(type ? 'BENCHMARK' : 'PROPOSAL');
+  }
+
 }
 
 
