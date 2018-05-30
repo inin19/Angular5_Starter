@@ -8,19 +8,13 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 })
 export class BrushComponent implements OnInit {
 
-  hidden = false;
+
 
 
   constructor() { }
 
   ngOnInit() {
 
-  }
-
-
-  toggle() {
-    console.log('toggle!');
-    this.hidden = !this.hidden;
   }
 
 

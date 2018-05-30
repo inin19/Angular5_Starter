@@ -1,0 +1,15 @@
+<div class="projection">
+  <div class="projection__filter" [ngClass]="{'removed':hidden }">
+    <div [ngStyle]="{'visibility': hidden? 'collapse':'visible' }">
+      <div class="projection__filter-toggle">toggle</div>
+      <div class="projection__fitler-period">period</div>
+      <div class="projection__fitler-projection">projection</div>
+      <div class="projection__filter-pie">pie chart</div>
+      <div class="projection__filter-category">category</div>
+    </div>
+  </div>
+
+  <div class="projection__content">
+    <div class="projection__content-shrink-logo " (click)="toggle()">shrink</div>
+  </div>
+</div>

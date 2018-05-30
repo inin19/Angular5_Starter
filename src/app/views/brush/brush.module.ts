@@ -7,6 +7,7 @@ import { TimeseriesComponent } from './timeseries/timeseries.component';
 import { BrushComponent } from './brush.component';
 import { TimeSeriesService } from './../../providers/test/time-series.service';
 import { ProjectionService } from './../../providers/charts/projection.service';
+import { ProjectionChartUkComponent } from './projection-chart-uk/projection-chart-uk.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { ProjectionService } from './../../providers/charts/projection.service';
     BrushRoutingModule,
     HttpClientModule
   ],
-  declarations: [TimeseriesComponent, BrushComponent],
+  declarations: [TimeseriesComponent, BrushComponent, ProjectionChartUkComponent],
   providers: [TimeSeriesService, ProjectionService]
 
 })
