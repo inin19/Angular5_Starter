@@ -69,8 +69,8 @@ export class ProjectionD3Chart {
     // create scales
     this.x0Scale = d3.scaleBand().domain(xScaleDomain)
       .rangeRound([0, this.width])
-      .paddingInner(0.3)
-      .paddingOuter(0.3);
+      .paddingInner(0.2)
+      .paddingOuter(0.2);
 
 
     this.x1Scale = d3.scaleBand().domain(x1ScaleDomain)

@@ -73,8 +73,8 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
 
 
   // todo
-  private margin: any = { top: 20, right: 30, bottom: 40, left: 50 };
-  private lossRatioMargin: any = { top: 20, right: 30, bottom: 20, left: 50 };
+  private margin: any = { top: 20, right: 50, bottom: 40, left: 50 };
+  private lossRatioMargin: any = { top: 20, right: 50, bottom: 30, left: 50 };
 
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
 
@@ -115,12 +115,12 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
     this.planSubscription = this.planSelectorService.plans$.subscribe(
       (plans) => {
         (plans.length === 0) ? this.planSelector.resetSelector() : this.planSelector.setSelectionNEW(plans);
-        // this.updateProjectionDataGraph();
+        this.updateProjectionDataGraph();
       }
     );
 
     this.resizeDetector.listenTo(this.projectionChartContainer.nativeElement, (elem: HTMLElement) => {
-      // this.updateAllChart();
+      this.updateAllChart();
     });
 
     this.createProjectionChartData();

@@ -1,5 +1,9 @@
 $primary-font-color: #666;
 $axis-line-dark-grey: darkgrey;
+.projection__fitler-projection {
+    height: 200px;
+}
+
 .projection {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
@@ -13,15 +17,39 @@ $axis-line-dark-grey: darkgrey;
         width: 20%;
         background-color: aqua; // flex: 1 1 20%;
         transition: all .4s ease-out;
-        &-toggle {
-            text-align: center;
-        } // &-projection {}
-        &-pie-svg {
-            width: 100%;
+        display: flex;
+        flex-direction: column;
+        &-projection {
+            .list-inline-item {}
         }
-    }
-    .projection__filter-projection-list {
-        list-style: none;
+        &-period {
+            .list-inline {
+                display: flex;
+                justify-content: space-evenly;
+            }
+
+            .list-inline-item  {
+                width: 1rem;
+                background-color: yellow;
+                text-align: center;
+                // transition: all .2s;
+
+                span {
+                    transition: all .2s;
+
+                }
+            }
+
+        }
+        &-pie {
+            // &-wrapper {
+            //     height: 12.5rem;
+            // }
+            &-svg {
+                width: 100%;
+                height: 12.5rem;
+            }
+        }
     }
     &__content {
         width: 80%; // background-color: yellowgreen;
@@ -30,23 +58,62 @@ $axis-line-dark-grey: darkgrey;
         transition: all .4s ease-out;
         display: flex;
         flex-direction: column;
+        overflow: hidden;
         &-shrink-logo {
             position: absolute;
             top: 0;
             left: 0;
             width: 3rem;
             height: 3rem;
-            background-color: beige;
             cursor: pointer;
+            text-align: center;
+            transition: all .2s;
+            z-index: 8000;
+            &:hover {
+                i {
+                    transform: translate(-50%, -50%) scale(1.5);
+                }
+            }
+            i {
+                font-size: 2rem;
+                vertical-align: middle;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                transition: all .2s;
+            }
         }
         &-loss-ratio {
-            background-color: orange;
+            flex-shrink: 0;
+            background-color: #F0F8FF;
             height: 35%;
-
+            position: relative;
+            &-header {
+                // background-color: orange;
+                position: absolute;
+                top: 4rem;
+                left: 1rem;
+                .list-group-item {
+                    border: 0;
+                    background: transparent;
+                    padding: 0.5rem 1rem;
+                    font-weight: 600;
+                    color: $primary-font-color;
+                } // transform: translateX(-50%);
+                // display: flex;
+                // span {
+                //     width: 6rem;
+                //     line-height: 3rem;
+                //     text-align: center;
+                //     &:not(:last-child) {
+                //         margin-right: 0.5rem;
+                //     }
+                // }
+            }
             &-wrapper {
                 height: 100%;
             }
-
             &-svg {
                 width: 100%;
                 height: 100%;
@@ -106,3 +173,61 @@ $axis-line-dark-grey: darkgrey;
 .removed {
     width: 0;
 }
+
+.li-wrapper-unselected {
+    position: relative;
+    display: block;
+    cursor: pointer; // padding: 5px;;
+    transform: scale(1.1);
+    transition: all 0.2s;
+}
+
+.li-wrapper-unselected:before,
+.li-wrapper-unselected:after {
+    content: '';
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    top: 50%;
+    margin-top: -0.5px;
+    background: darkgray;
+}
+
+.li-wrapper-unselected:before {
+    left: -2.5px;
+}
+
+.li-wrapper-unselected:after {
+    right: 2.5px;
+    background: darkgray;
+    transition: width 0.8s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.li-wrapper-unselected:hover:before {
+    background: darkgray;
+    width: 100%;
+    transition: width 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.li-wrapper-unselected:hover:after {
+    background: transparent;
+    width: 100%;
+    transition: 0s;
+}
+
+.li-wrapper-unselected:hover {
+    //  background-color: yellow;
+    transition: all 800ms ease-out;
+}
+
+.li-wrapper-selected {
+    text-decoration: line-through;
+    color: lightgray;
+    cursor: pointer;
+    transform: scale(1);
+    transition: all 0.2s;
+}
+
+// .projection__fitler-currrent-proposed {
+//     background-color: red;
+// }

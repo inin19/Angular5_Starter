@@ -78,7 +78,7 @@ export class ProjectionComponent implements OnInit, OnChanges, OnDestroy {
   currentProjection = true;
   lossRatio = true;
   private margin: any = { top: 20, right: 30, bottom: 40, left: 50 };
-  private lossRatioMargin: any = { top: 20, right: 30, bottom: 20, left: 50 };
+  private lossRatioMargin: any = { top: 25, right: 30, bottom: 20, left: 50 };
 
   collapse = false;
 

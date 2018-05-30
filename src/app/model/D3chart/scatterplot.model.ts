@@ -65,8 +65,8 @@ export class Scatterplot {
     this.xScale = d3.scaleBand()
       .domain(['0', '1', '2', '3', '4', '5'])
       .rangeRound([0, this.width])
-      .paddingInner(0.3)
-      .paddingOuter(0.3);
+      .paddingInner(0.2)
+      .paddingOuter(0.2);
 
 
     this.x1Scale = d3.scaleBand()
@@ -110,7 +110,7 @@ export class Scatterplot {
 
 
     const xaxis = d3.axisBottom(this.xScale).tickSize(-this.height);
-    const yaxis = d3.axisLeft(this.yScale)
+    const yaxis = d3.axisRight(this.yScale)
       .ticks(4)
       .tickFormat(d3.format('.0%'));
 
@@ -122,7 +122,7 @@ export class Scatterplot {
 
 
     this.yAxis = this.chart.select('.y.axis')
-      // .attr('transform', `translate(${this.width}, 0)`)
+      .attr('transform', `translate(${this.width}, 0)`)
       .transition()
       .call(yaxis);
 
@@ -217,7 +217,7 @@ export class Scatterplot {
       .attr('cy', d => this.yScale(d[this.type]))
       .style('fill', (d) => d.currentProposed === 'CURRENT' ? 'green' : 'blue')
       .style('opacity', 0.5)
-      .on('mouseover', this.handleMouseOver())
+      .on('mouseover', this.handleMouseOver(chartParent))
       .on('mouseout', this.handleMouseOut())
       ;
 
@@ -228,13 +228,28 @@ export class Scatterplot {
   }
 
 
-  handleMouseOver(): (d, i) => void {
+
+  handleMouseOver(chartParent: ElementRef): (d, i) => void {
     return (d, i) => {
+
+      const bounds = chartParent.nativeElement.getBoundingClientRect();
+
       d3.select(d3.event.currentTarget)
         .transition()
         .style('opacity', 0.8)
         .attr('r', 10);
+
+
       if (d.currentProposed === 'CURRENT') {
+        d3.select('#projectionToolip')
+          .style('opacity', 1)
+          .style('left', d3.event.clientX - bounds.left + 10 + 'px')
+          .style('top', d3.event.clientY - bounds.top + 10 + 'px')
+          .html(
+            'CURRENT'
+          );
+
+
         this.pathCurrent
           .transition()
           .style('opacity', 0.5);
@@ -251,6 +266,17 @@ export class Scatterplot {
           .transition()
           .style('opacity', 0.8);
       } else {
+
+
+
+        d3.select('#projectionToolip')
+          .style('opacity', 1)
+          .style('left', d3.event.clientX - bounds.left + 10 + 'px')
+          .style('top', d3.event.clientY - bounds.top + 10 + 'px')
+          .html(
+            'PROPOSED'
+          );
+
         this.pathProposed
           .transition()
           .style('opacity', 0.5);
@@ -273,8 +299,12 @@ export class Scatterplot {
   }
 
 
+
   handleMouseOut(): (d, i) => void {
     return (d, i) => {
+
+      d3.select('#projectionToolip')
+        .style('opacity', 0);
 
       d3.select(d3.event.currentTarget)
         .transition()
@@ -302,7 +332,6 @@ export class Scatterplot {
       }
     };
   }
-
 
 
 }
