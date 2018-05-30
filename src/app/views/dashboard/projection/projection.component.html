@@ -1,30 +1,28 @@
-<div class="row">
+<div id="projectionLeft" [ngClass]="{'expandFilter': !collapse,'collapseFilter': collapse }" #projectionPieChartContainer>
 
-  <div id="projectionLeft" [ngClass]="{'expandFilter': !collapse,'collapseFilter': collapse }" #projectionPieChartContainer>
-
-    <div>
-      <label class="switch switch-default switch-secondary">
-        <input type="checkbox" class="switch-input" [(ngModel)]="trendTypeIndicator" name="trendTypeIndicator" (change)="changeTrendType(trendTypeIndicator)">
-        <span class="switch-label"></span>
-        <span class="switch-handle"></span>
-      </label>
-      {{ trendType }}
-    </div>
+  <div>
+    <label class="switch switch-default switch-secondary">
+      <input type="checkbox" class="switch-input" [(ngModel)]="trendTypeIndicator" name="trendTypeIndicator" (change)="changeTrendType(trendTypeIndicator)">
+      <span class="switch-label"></span>
+      <span class="switch-handle"></span>
+    </label>
+    {{ trendType }}
+  </div>
 
 
 
-    <ul class="list-inline">
-      <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !currentProjection}" (click)="currentProjection && toggleProjection()">
-        <span [ngClass]="{ 'li-wrapper-unselected': currentProjection }">Current</span>
-      </li>
-      <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': currentProjection }" (click)="!currentProjection && toggleProjection()">
-        <span [ngClass]="{ 'li-wrapper-unselected': !currentProjection }">Proposed</span>
-      </li>
-    </ul>
+  <ul class="list-inline">
+    <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !currentProjection}" (click)="currentProjection && toggleProjection()">
+      <span [ngClass]="{ 'li-wrapper-unselected': currentProjection }">Current</span>
+    </li>
+    <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': currentProjection }" (click)="!currentProjection && toggleProjection()">
+      <span [ngClass]="{ 'li-wrapper-unselected': !currentProjection }">Proposed</span>
+    </li>
+  </ul>
 
-    <hr>
+  <hr>
 
-    <!-- <ul id="projectionPeriod" class="list-inline">
+  <!-- <ul id="projectionPeriod" class="list-inline">
 
       <li id="periodReset" class="list-inline-item" (click)="!periodSelectorPie.all && resetPeriod()" [ngStyle]="{opacity: periodSelectorPie.all ? 0.5:1 }">
         <i class="fa fa-refresh fa-lg" title="reset" aria-hidden="true"></i>
@@ -41,149 +39,145 @@
 
     <hr> -->
 
-    <div id='projectionPie' #projectionPie>
-      <svg class="piechart" width="100%">
-        <g class="piechartContainer">
-          <circle></circle>
-          <text class="center-txt type">Funding Gap</text>
-          <text class="center-txt value">1</text>
-          <text class="center-txt percentage">25%</text>
+  <div id='projectionPie' class="projection__pie-chart" #projectionPie>
+    <svg class="piechart" width="100%">
+      <g class="piechartContainer">
+        <circle></circle>
+        <text class="center-txt type">Funding Gap</text>
+        <text class="center-txt value">1</text>
+        <text class="center-txt percentage">25%</text>
+      </g>
+    </svg>
+  </div>
+
+  <div id="fundingGapPieToolip" class="chart__tooltip">Tooltip</div>
+  <hr>
+
+  <div id="projectionLegend">
+    <ul class="list-group">
+      <li id="projectionReset" class="list-group-item" (click)="resetCategory()" [ngStyle]="{opacity: categorySelector.all ? 0.5:1 }">
+        <i class="fa fa-refresh fa-lg" title="reset" aria-hidden="true"></i>
+      </li>
+
+      <li class="list-group-item" *ngFor="let categoryItem of categorySelector.selectionItems" (click)="categoryItem.elementName !== 'FUNDING_GAP' &&  toggleCategory(categoryItem)"
+        [ngClass]="{'li-wrapper-selected': categoryItem.elementName !== 'FUNDING_GAP' &&  !categoryItem.checked }">
+        <ng-container *ngIf="categoryItem.elementName === 'FUNDING_GAP'; else otherCategory ">
+          <span>
+            <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(categoryItem.elementName)"> </span> &nbsp; {{ categoryItem.elementName | ProjectionCategory : countryCode }}
+          </span>
+        </ng-container>
+
+        <ng-template #otherCategory>
+          <span [ngClass]="{ 'li-wrapper-unselected': categoryItem.checked }">
+            <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(categoryItem.elementName)"></span> &nbsp; {{ categoryItem.elementName | ProjectionCategory : countryCode }}
+          </span>
+        </ng-template>
+      </li>
+
+    </ul>
+  </div>
+
+
+</div>
+
+<div id="collapseLeft" (click)="toggleCollapse()">
+  <i [ngClass]="{'fa-arrow-left': !collapse,'fa-arrow-right':collapse }" class="fa fa-lg" aria-hidden="true" [title]="collapse?'Expand':'Collapse'"></i>
+</div>
+
+
+
+<div class="col">
+
+  <div class="float-left">
+    <div [ngStyle]="{'opacity': (grid === false)? 1:0 }">
+      <ul class="list-inline">
+        <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !lossRatio}" (click)="lossRatio && toggleLossRatioRenewalRate()">
+          <span [ngClass]="{ 'li-wrapper-unselected': lossRatio }">Loss Ratio</span>
+        </li>
+        <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': lossRatio}" (click)="!lossRatio && toggleLossRatioRenewalRate()">
+          <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio }">Renewal Rate</span>
+        </li>
+
+
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="float-right">
+    <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+    <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+  </div>
+
+  <div class="projection" id="projectionChartsArea" style="position: relative; clear: both;" #projectionChartContainer>
+
+
+    <div class="projection__loss-ratio" [hidden]='grid' id="lossRatioChart" #lossRatioChart>
+      <svg class="projection__loss-ratio-chart scatterplot" width="100%">
+        <g class="scatterplotGroup">
+          <path class="line currentPath"></path>
+          <path class="line proposedPath"></path>
+          <g class="x axis"></g>
+          <g class="y axis"></g>
         </g>
       </svg>
     </div>
 
-    <div id="fundingGapPieToolip">Tooltip</div>
-    <hr>
 
-    <div id="projectionLegend">
-      <ul class="list-group">
-        <li id="projectionReset" class="list-group-item" (click)="resetCategory()" [ngStyle]="{opacity: categorySelector.all ? 0.5:1 }">
-          <i class="fa fa-refresh fa-lg" title="reset" aria-hidden="true"></i>
-        </li>
+    <div [hidden]='grid' id='projectionChart' #projectionChart>
+      <svg class="projection__bar-chart" width="100%">
+        <g class="bars">
+          <g class="x axis"></g>
+          <g class="y axis"></g>
+        </g>
+      </svg>
 
-        <li class="list-group-item" *ngFor="let categoryItem of categorySelector.selectionItems" (click)="categoryItem.elementName !== 'FUNDING_GAP' &&  toggleCategory(categoryItem)"
-          [ngClass]="{'li-wrapper-selected': categoryItem.elementName !== 'FUNDING_GAP' &&  !categoryItem.checked }">
-          <ng-container *ngIf="categoryItem.elementName === 'FUNDING_GAP'; else otherCategory ">
-            <span>
-              <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(categoryItem.elementName)"> </span> &nbsp; {{ categoryItem.elementName | ProjectionCategory : countryCode }}
-            </span>
-          </ng-container>
-
-          <ng-template #otherCategory>
-            <span [ngClass]="{ 'li-wrapper-unselected': categoryItem.checked }">
-              <span class="legendRect" [style.backgroundColor]="getGraphCategoriesColor(categoryItem.elementName)"></span> &nbsp; {{ categoryItem.elementName | ProjectionCategory : countryCode }}
-            </span>
-          </ng-template>
-        </li>
-
-      </ul>
     </div>
 
 
-  </div>
-
-  <div id="collapseLeft" (click)="toggleCollapse()">
-    <i [ngClass]="{'fa-arrow-left': !collapse,'fa-arrow-right':collapse }" class="fa fa-lg" aria-hidden="true" [title]="collapse?'Expand':'Collapse'"></i>
-  </div>
-
-
-
-  <div class="col">
-
-    <div class="float-left">
-      <div [ngStyle]="{'opacity': (grid === false)? 1:0 }">
-        <ul class="list-inline">
-          <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': !lossRatio}" (click)="lossRatio && toggleLossRatioRenewalRate()">
-            <span [ngClass]="{ 'li-wrapper-unselected': lossRatio }">Loss Ratio</span>
-          </li>
-          <li class="list-inline-item" [ngClass]="{'li-wrapper-selected': lossRatio}" (click)="!lossRatio && toggleLossRatioRenewalRate()">
-            <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio }">Renewal Rate</span>
-          </li>
-
-
-
-        </ul>
-      </div>
-    </div>
-
-    <div class="float-right">
-      <!-- <div style="display: inline;"> -->
-      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
-      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
-      <!-- </div> -->
-    </div>
-
-    <div id="projectionChartsArea" style="position: relative; clear: both;" #projectionChartContainer>
-
-
-      <div [hidden]='grid' id="lossRatioChart" #lossRatioChart>
-        <svg class="scatterplot" width="100%">
-          <g class="scatterplotGroup">
-            <path class="line currentPath"></path>
-            <path class="line proposedPath"></path>
-            <g class="x axis"></g>
-            <g class="y axis"></g>
-          </g>
-        </svg>
-      </div>
-
-
-      <div [hidden]='grid' id='projectionChart' #projectionChart>
-        <svg class="projection__bar-chart" width="100%">
-          <g class="bars">
-            <g class="x axis"></g>
-            <g class="y axis"></g>
-          </g>
-        </svg>
-
-      </div>
-
-
-      <div [hidden]='!grid' class="tableContainer">
-        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
-          <thead>
-            <tr class="bg-primary">
-              <th style="position: relative;">Attribute
-                <span style="position: absolute; right: 0; ">Period &rarr;</span>
-              </th>
-              <th *ngFor="let n of periodSelector.getCurrentSelction()">
-                <b>{{ n }}</b>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let record of projectionGridData">
-              <ng-container [ngSwitch]="record.attribute">
-                <ng-container *ngSwitchCase="'CURRENT'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                </ng-container>
-
-                <ng-container *ngSwitchCase="'PROPOSED'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                </ng-container>
-
-                <ng-container *ngSwitchDefault>
-                  <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
-                  <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
-                </ng-container>
-
+    <div [hidden]='!grid' class="tableContainer">
+      <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
+        <thead>
+          <tr class="bg-primary">
+            <th style="position: relative;">Attribute
+              <span style="position: absolute; right: 0; ">Period &rarr;</span>
+            </th>
+            <th *ngFor="let n of periodSelector.getCurrentSelction()">
+              <b>{{ n }}</b>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of projectionGridData">
+            <ng-container [ngSwitch]="record.attribute">
+              <ng-container *ngSwitchCase="'CURRENT'">
+                <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
               </ng-container>
-            </tr>
-          </tbody>
-        </table>
 
+              <ng-container *ngSwitchCase="'PROPOSED'">
+                <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+              </ng-container>
 
-      </div>
+              <ng-container *ngSwitchDefault>
+                <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
+                <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
+              </ng-container>
 
-
-
-
-      <div id="projectionToolip">Tooltip</div>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
 
 
     </div>
 
 
+
+
+    <div id="projectionToolip" class="chart__tooltip">Tooltip</div>
+
+
   </div>
+
 
 </div>

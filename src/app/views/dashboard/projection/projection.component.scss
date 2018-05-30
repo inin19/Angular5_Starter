@@ -1,55 +1,23 @@
 $primary-font-color: #666;
 $axis-line-dark-grey: darkgrey;
-.projection__bar-chart {
-    height: 500px;
-    .axis .tick text {
-        font-family: inherit;
-        font-size: 0.875rem;
-        fill: $primary-font-color;
-    }
-    .axis path {
-        visibility: hidden;
-    }
-    .x.axis .tick line {
-        stroke: $axis-line-dark-grey;
-        stroke-dasharray: 5, 1;
-        stroke-width: 0.5px;
-    }
-}
-
-
-#projectionPie {
+// .projection__bar-chart {
+//     height: 500px;
+//     .axis .tick text {
+//         font-family: inherit;
+//         font-size: 0.875rem;
+//         fill: $primary-font-color;
+//     }
+//     .axis path {
+//         visibility: hidden;
+//     }
+//     .x.axis .tick line {
+//         stroke: $axis-line-dark-grey;
+//         stroke-dasharray: 5, 1;
+//         stroke-width: 0.5px;
+//     }
+// }
+.projection__pie-chart {
     height: 250px;
-}
-
-#projectionToolip {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    min-width: 50px;
-    height: auto;
-    background: none repeat scroll 0 0 #ffffff;
-    padding: 6px 14px 6px 14px;
-    border-radius: 4px;
-    text-align: left;
-    line-height: 1.3;
-    color: #5B6770;
-    box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
-}
-
-#fundingGapPieToolip {
-    opacity: 0;
-    pointer-events: none;
-    position: absolute;
-    min-width: 50px;
-    height: auto;
-    background: none repeat scroll 0 0 #ffffff;
-    padding: 6px 14px 6px 14px;
-    border-radius: 4px;
-    text-align: left;
-    line-height: 1.3;
-    color: #5B6770;
-    box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
 }
 
 #projectionLegend {
@@ -151,46 +119,44 @@ $axis-line-dark-grey: darkgrey;
     transition: background-color 0.8s cubic-bezier(0.22, 0.61, 0.36, 1)
 }
 
-.scatterplot {
-    // background-color: lightgreen;
-    height: 200px;
-}
-
-.scatterplot .x.axis {
-    path {
+.projection {
+    .axis .tick text {
+        font-family: inherit;
+        font-size: 0.875rem;
+        fill: $primary-font-color;
+    }
+    .axis path {
         visibility: hidden;
     }
-    .tick text {
-        visibility: hidden;
-    }
-    .tick line {
-        stroke: darkgrey;
+    .x.axis .tick line {
+        stroke: $axis-line-dark-grey;
         stroke-dasharray: 5, 1;
         stroke-width: 0.5px;
     }
+    &__bar-chart {
+        height: 500px;
+    }
+    &__loss-ratio {
+        // chart -> svg
+        &-chart {
+            height: 200px;
+            .x.axis .tick text {
+                visibility: hidden;
+            }
+            .line {
+                fill: none;
+                stroke-dasharray: 5, 1;
+                stroke-width: 2px;
+                opacity: 0;
+            }
+            circle {
+                cursor: pointer;
+            }
+        }
+    }
 }
 
-.scatterplot .y.axis path {
-    visibility: hidden;
-}
-
-.scatterplot .line {
-    fill: none;
-    stroke-dasharray: 5, 1;
-    stroke-width: 2px;
-}
-
-#lossRatioChart .line.currentPath {
-    opacity: 0;
-}
-
-#lossRatioChart .line.proposedPath {
-    opacity: 0;
-}
-
-#lossRatioChart circle {
-    cursor: pointer;
-}
+.projectionfilter-section {}
 
 #projectionGrid tbody td {
     padding-right: 30px;
