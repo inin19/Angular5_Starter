@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 
 import { BrushRoutingModule } from './brush-routing.module';
-import { TimeseriesComponent } from './timeseries/timeseries.component';
 import { BrushComponent } from './brush.component';
-import { TimeSeriesService } from './../../providers/test/time-series.service';
 import { ProjectionService } from './../../providers/charts/projection.service';
 import { ProjectionChartUkComponent } from './projection-chart-uk/projection-chart-uk.component';
+import { ProjectionTrendTypeService } from './../../providers/charts/projection-trend-type.service';
+
 
 @NgModule({
   imports: [
@@ -15,8 +15,8 @@ import { ProjectionChartUkComponent } from './projection-chart-uk/projection-cha
     BrushRoutingModule,
     HttpClientModule
   ],
-  declarations: [TimeseriesComponent, BrushComponent, ProjectionChartUkComponent],
-  providers: [TimeSeriesService, ProjectionService]
+  declarations: [BrushComponent, ProjectionChartUkComponent],
+  providers: [ProjectionService, ProjectionTrendTypeService]
 
 })
 export class BrushModule { }

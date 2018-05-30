@@ -1,6 +1,5 @@
 import { ProjectionService } from './../../providers/charts/projection.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
 import { ProjectionTrendTypeService } from './../../providers/charts/projection-trend-type.service';
 import { Subscription } from 'rxjs/Subscription';
 
