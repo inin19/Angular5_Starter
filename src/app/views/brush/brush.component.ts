@@ -26,7 +26,6 @@ export class BrushComponent implements OnInit, OnDestroy {
   constructor(private projectionService: ProjectionService, private projectionTrendTypeService: ProjectionTrendTypeService) { }
 
   ngOnInit() {
-    console.log('projection init, trend type', this.trendType);
     this.fetchProjection();
     this.fetchLossRatioData();
 
