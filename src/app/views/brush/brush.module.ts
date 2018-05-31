@@ -10,12 +10,20 @@ import { ProjectionChartUkComponent } from './projection-chart-uk/projection-cha
 import { ProjectionTrendTypeService } from './../../providers/charts/projection-trend-type.service';
 import { ProjectionPlanSelectionService } from './../../services/projection-plan-selection.service';
 
+
+// import { BigNumberFormatPipe } from './../pipes/grid/grid-format';
+// import { ProjectionCategoryPipes } from './../pipes/charts/projectionCategory-pipe';
+
+import { DashboardModule } from './../dashboard/dashboard.module';
+
+
 @NgModule({
   imports: [
     CommonModule,
     BrushRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    DashboardModule,
   ],
   declarations: [BrushComponent, ProjectionChartUkComponent],
   providers: [ProjectionService, ProjectionTrendTypeService, ProjectionPlanSelectionService]

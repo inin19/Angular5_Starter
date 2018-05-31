@@ -30,7 +30,8 @@ import { ProjectionCategoryPipes } from './../pipes/charts/projectionCategory-pi
     ClickOutsideModule
   ],
   declarations: [DashboardComponent, ProjectionComponent, BigNumberFormatPipe, ProjectionCategoryPipes],
-  providers: [ProjectionService, ProjectionPlanSelectionService, ProjectionTrendTypeService]
+  providers: [ProjectionService, ProjectionPlanSelectionService, ProjectionTrendTypeService],
+  exports: [BigNumberFormatPipe, ProjectionCategoryPipes]
 
 })
 export class DashboardModule { }
