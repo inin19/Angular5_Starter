@@ -13,7 +13,7 @@
       <div class="projection__filter-projection">
         <ul class="list-inline">
           <li class="list-inline-item" (click)="currentProjection && toggleProjection()">
-            <span [ngClass]="{'li-wrapper-selected': !currentProjection ,'li-wrapper-unselected': currentProjection } ">Current</span>
+            <span [ngClass]="{'li-wrapper-selected': !currentProjection ,'li-wrapper-unselected': currentProjection }">Current</span>
           </li>
           <li class="list-inline-item" (click)="!currentProjection && toggleProjection()">
             <span [ngClass]="{'li-wrapper-selected': currentProjection, 'li-wrapper-unselected': !currentProjection  }">Proposed</span>
@@ -61,7 +61,7 @@
 
           <li class="list-group-item" *ngFor="let categoryItem of categorySelector.selectionItems" (click)="categoryItem.elementName !== 'FUNDING_GAP' &&  toggleCategory(categoryItem)"
             [ngClass]="{'li-wrapper-selected': categoryItem.elementName !== 'FUNDING_GAP' &&  !categoryItem.checked }">
-            <ng-container *ngIf="categoryItem.elementName === 'FUNDING_GAP'; else otherCategory ">
+            <ng-container *ngIf="categoryItem.elementName === 'FUNDING_GAP'; else otherCategory">
               <span [style.fontWeight]=600>
                 <span class="projection__filter-category-rect" [style.backgroundColor]="getGraphCategoriesColor(categoryItem.elementName)">
                 </span> &nbsp; {{ categoryItem.elementName | ProjectionCategory : countryCode }}
@@ -80,44 +80,43 @@
     </div>
   </div>
 
-  <div class="projection__content " id="projectionChartsArea " #projectionChartContainer>
+  <div class="projection__content" id="projectionChartsArea" #projectionChartContainer>
 
-    <span id="projectionToolip " class="chart__tooltip ">Tooltip</span>
+    <span id="projectionToolip" class="chart__tooltip">Tooltip</span>
 
 
-    <div class="projection__content-shrink-logo " (click)="toggleFilterPanel() ">
-      <i class="fa fa-angle-left " [ngClass]="{ 'fa-angle-left': !filterPanelHidden, 'fa-angle-right':filterPanelHidden
-                  } " aria-hidden="true "></i>
+    <div class="projection__content-shrink-logo" (click)="toggleFilterPanel()">
+      <i class="fa" [ngClass]="{ 'fa-angle-left': !filterPanelHidden, 'fa-angle-right': filterPanelHidden }" aria-hidden="true"></i>
     </div>
-    <div class="projection__content-loss-ratio " id="lossRatioChart " #lossRatioChart>
-      <div class="projection__content-loss-ratio-header ">
-        <ul class="list-group ">
-          <li class="list-group-item " (click)="lossRatio && toggleLossRatioRenewalRate() ">
-            <span [ngClass]="{ 'li-wrapper-unselected': lossRatio, 'li-wrapper-selected': !lossRatio } ">Loss Ratio</span>
+    <div class="projection__content-loss-ratio" id="lossRatioChart" #lossRatioChart>
+      <div class="projection__content-loss-ratio-header">
+        <ul class="list-group">
+          <li class="list-group-item" (click)="lossRatio && toggleLossRatioRenewalRate()">
+            <span [ngClass]="{ 'li-wrapper-unselected': lossRatio, 'li-wrapper-selected': !lossRatio }">Loss Ratio</span>
           </li>
-          <li class="list-group-item " (click)="!lossRatio && toggleLossRatioRenewalRate() ">
-            <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio, 'li-wrapper-selected': lossRatio } ">Renewal Rate</span>
+          <li class="list-group-item" (click)="!lossRatio && toggleLossRatioRenewalRate()">
+            <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio, 'li-wrapper-selected': lossRatio }">Renewal Rate</span>
           </li>
         </ul>
 
       </div>
-      <div class="projection__content-loss-ratio-wrapper ">
-        <svg class="projection__content-loss-ratio-svg scatterplot ">
-          <g class="scatterplotGroup ">
-            <path class="line currentPath "></path>
-            <path class="line proposedPath "></path>
-            <g class="x axis "></g>
-            <g class="y axis "></g>
+      <div class="projection__content-loss-ratio-wrapper">
+        <svg class="projection__content-loss-ratio-svg scatterplot">
+          <g class="scatterplotGroup">
+            <path class="line currentPath"></path>
+            <path class="line proposedPath"></path>
+            <g class="x axis"></g>
+            <g class="y axis"></g>
           </g>
         </svg>
       </div>
     </div>
-    <div class="projection__content-projection ">
-      <div class="projection__content-projection-wrapper " [hidden]='grid' id='projectionChart' #projectionChart>
-        <svg class="projection__content-projection-svg ">
-          <g class="bars ">
-            <g class="x axis "></g>
-            <g class="y axis "></g>
+    <div class="projection__content-projection">
+      <div class="projection__content-projection-wrapper" [hidden]='grid' id='projectionChart' #projectionChart>
+        <svg class="projection__content-projection-svg">
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
           </g>
         </svg>
       </div>
