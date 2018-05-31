@@ -85,7 +85,7 @@
     <span id="projectionToolip" class="chart__tooltip">Tooltip</span>
 
 
-    <div class="projection__content-shrink-logo" (click)="toggleFilterPanel()">
+    <div class="projection__content-shrink-logo" (click)="toggleFilterPanel()" [attr.title]=" filterPanelHidden? 'Expand': 'Collapse' ">
       <i class="fa" [ngClass]="{ 'fa-angle-left': !filterPanelHidden, 'fa-angle-right': filterPanelHidden }" aria-hidden="true"></i>
     </div>
     <div class="projection__content-loss-ratio" id="lossRatioChart" #lossRatioChart>
