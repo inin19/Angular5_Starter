@@ -259,28 +259,28 @@
 
 <div class="historical__content">
 
-  <tabset type="pills" #staticTabs>
-    <tab id="historicalDemographic" (select)="onSelect($event)">
+  <tabset class="historical__content-tabset" type="pills" #staticTabs>
+    <tab class="historical__content-demographic" id="historicalDemographic" (select)="onSelect($event)">
       <ng-template tabHeading>Demographic</ng-template>
       <app-demographic *ngIf="benchmarkDemographic" [proposalDemographic]="proposalDemographic" [benchmarkDemographic]="benchmarkDemographic"
         [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()" #demographic>
       </app-demographic>
     </tab>
-    <tab id="claimsPerCapita" (select)="onSelect($event)">
+    <tab class="historical__content-claims-per-capita" id="claimsPerCapita" (select)="onSelect($event)">
       <ng-template tabHeading>Claims PerCapita</ng-template>
       <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
         [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
         [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
     </tab>
 
-    <tab id="claimsFrequency" (select)="onSelect($event)">
+    <tab class="historical__content-claims-frequency" id="claimsFrequency" (select)="onSelect($event)">
       <ng-template tabHeading>Claims Frequency</ng-template>
       <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
         [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
         [countryCode]="countryCode" #claimsFrequency></app-claims-frequency>
     </tab>
 
-    <tab id="claimsAvgCost" (select)="onSelect($event)">
+    <tab class="historical__content-claims-average-cost" id="claimsAvgCost" (select)="onSelect($event)">
       <ng-template tabHeading>Claims AvgCost</ng-template>
       <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
         [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"

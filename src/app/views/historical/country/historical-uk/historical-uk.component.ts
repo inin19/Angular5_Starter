@@ -17,6 +17,7 @@ import { ToasterService, ToasterConfig } from 'angular2-toaster/angular2-toaster
   selector: 'app-historical-uk',
   templateUrl: './historical-uk.component.html',
   styleUrls: ['./historical-uk.component.scss']
+
 })
 export class HistoricalUkComponent implements OnInit, OnDestroy {
 
@@ -51,7 +52,7 @@ export class HistoricalUkComponent implements OnInit, OnDestroy {
 
   private static claimMargin: any = { top: 60, right: 20, bottom: 100, left: 50 };
 
-  private static demographicMargin: any = { top: 50, right: 20, bottom: 50, left: 50 };
+  private static demographicMargin: any = { top: 20, right: 20, bottom: 50, left: 50 };
 
 
   conditionGroupTranslation = {

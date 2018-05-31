@@ -1,0 +1,200 @@
+$primary-font-color: #666;
+$axis-line-dark-grey: darkgrey;
+.demographic {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+    &__header {
+        flex-grow: 1;
+        position: relative; // background-color: aquamarine;
+        &-combined-button {
+            display: inline-block;
+        }
+        &-gridgraph-toggle {
+            position: absolute;
+            right: 0;
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    &__content {
+        flex-grow: 99; // background-color: orangered;
+        display: flex;
+        flex-direction: column;
+        &-seperate {
+            flex: 1 1 auto; // background-color: beige;
+            display: flex;
+            &-client {
+                flex-basis: 50%;
+                display: flex;
+                flex-direction: column;
+                &-title {
+                    color: $primary-font-color;
+                    font-size: 1.15rem;
+                    font-weight: 600;
+                    text-align: center;
+                }
+                &-graph {
+                    flex: 1 0 auto;
+                }
+                &-summary {
+                    flex: 0 0 auto;
+                }
+                &-grid {
+                    flex: 1 0 auto;
+                }
+            }
+            &-benchmark {
+                flex-basis: 50%;
+                display: flex;
+                flex-direction: column;
+                &-title {
+                    color: $primary-font-color;
+                    font-size: 1.15rem;
+                    font-weight: 600;
+                    text-align: center;
+                }
+                &-graph {
+                    flex: 1 0 auto;
+                }
+                &-summary {
+                    flex: 0 0 auto;
+                }
+                &-grid {
+                    flex: 1 0 auto;
+                }
+            }
+        }
+        &-combined {
+            flex: 1 1 auto; // background-color: grey;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            &-title {
+                color: $primary-font-color;
+                font-size: 1.15rem;
+                font-weight: 600;
+                text-align: center;
+            }
+            &-graph {
+                flex: 1 0 auto;
+            }
+            &-grid {
+                flex: 1 0 auto;
+            }
+        }
+    }
+}
+
+.demographic__content-seperate-graph-svg {
+    height: 100%;
+    width: 100%;
+    .tick text {
+        font-family: inherit;
+        font-size: 0.8rem;
+        fill: $primary-font-color;
+    }
+    .y.axis path {
+        visibility: hidden;
+    }
+    .y.axis .tick line {
+        stroke: darkgrey;
+        stroke-dasharray: 5, 1;
+        stroke-width: 0.5px;
+    }
+}
+
+// d3 classes
+.bar--positive.benchmark {
+    fill: #9BCCF5;
+}
+
+.bar--negative.benchmark {
+    fill: pink;
+}
+
+.bar--positive.client {
+    fill: #6b9be2;
+}
+
+.bar--negative.client {
+    fill: #ff9eaf;
+}
+
+.tornadoSummaryGrid {
+    margin-left: 100px;
+    margin-right: 100px;
+    thead tr th {
+        text-align: center;
+    }
+    tbody tr td {
+        text-align: center;
+    }
+}
+
+.tornadoGrid {
+    margin-left: 50px;
+    margin-top: 30px;
+    margin-right: 50px;
+    thead tr th {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    thead tr th:not(:first-child) {
+        text-align: right;
+    }
+    tbody tr td {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+    tbody tr td:not(:first-child) {
+        text-align: right
+    }
+}
+
+.demographic__content-combined-grid {
+    margin-left: 100px;
+    margin-right: 100px;
+    tbody tr {
+        td {
+            text-align: right;
+        }
+        td:first-child {
+            text-align: left;
+        }
+    }
+    thead tr {
+        td {
+            text-align: right;
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        th {
+            text-align: center;
+        }
+        th:first-child {
+            text-align: left;
+        }
+    }
+}
+
+// #demographicCombinedGrid tbody tr td {
+//     text-align: right;
+// }
+// #demographicCombinedGrid tbody tr td:first-child {
+//     text-align: left;
+// }
+// #demographicCombinedGrid thead tr td {
+//     text-align: right;
+// }
+// #demographicCombinedGrid thead tr th {
+//     text-align: center;
+// }
+// #demographicCombinedGrid thead tr th:first-child {
+//     text-align: left;
+// }
+// #demographicCombinedGrid thead tr td {
+//     padding-left: 50px;
+//     padding-right: 50px;
+// }

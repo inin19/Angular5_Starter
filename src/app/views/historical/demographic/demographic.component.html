@@ -1,34 +1,148 @@
-<div class="row">
-  <div class="col">
-    <div class="float-left">
-
-      <div *ngIf="proposalDemographic" style="display: inline;">
-        &nbsp;Combined Graph &nbsp;
-        <label class="switch switch-3d switch-primary" title="Zoom">
-          <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
-          <span class="switch-label"></span>
-          <span class="switch-handle"></span>
-        </label>
-      </div>
-
+<div class="demographic">
+  <div class="demographic__header">
+    <div class="demographic__header-combined-button" *ngIf="proposalDemographic">
+      &nbsp;Combined Graph &nbsp;
+      <label class="switch switch-3d switch-primary" title="Zoom">
+        <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
     </div>
-    <div class="float-right">
-      <div style="display: inline;">
-        <i [hidden]="!grid" (click)="toggleGridGraph()"  class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph" ></i>
-        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid" ></i>
-      </div>
+    <div class="demographic__header-gridgraph-toggle">
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
     </div>
   </div>
-</div>
+
+  <!-- <div class="demographic__title">
+    <div class="demographic__title-client">
+      Client
+    </div>
+    <div class="demographic__title-benchmark">
+      Benchmark
+    </div>
+  </div> -->
+
+  <div class="demographic__content">
+
+    <div [hidden]='zoom' class="demographic__content-seperate" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+      <span id="demographicTooltip" class="chart__tooltip"> Tool </span>
+      <div class="demographic__content-seperate-client">
+        <div class="demographic__content-seperate-client-title">Client</div>
+        <div [hidden]='grid' class="demographic__content-seperate-client-graph" *ngIf="proposalDemographic" id="proposalDemographic"
+          #proposalDemographic>
+          <svg class="tornadoChart demographic__content-seperate-graph-svg">
+            <g class="bars">
+              <g class="x axis"></g>
+              <g class="y axis"></g>
+            </g>
+          </svg>
+        </div>
+        <div [hidden]='grid' *ngIf="proposalDemographic" class="demographic__content-seperate-client-summary tornadoSummaryGrid">
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="percentage">
+                <td>{{ getPercentageKey() }}</td>
+                <td>{{ proposalGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                <td>{{ proposalGridSummary.percentage.male | PercentageFormatPipe }}</td>
+              </tr>
+              <tr class="avgAge">
+                <td>{{ getAverageAgeKey() }}</td>
+                <td>{{ proposalGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                <td>{{ proposalGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div *ngIf="proposalDemographic" [hidden]='!grid' class="demographic__content-seperate-client-grid tornadoGrid">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th *ngFor="let headerName of getGridDetailColumnHeader()">{{ headerName }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of proposalGridData">
+                <td>{{row.ageGroup}}</td>
+                <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="demographic__content-seperate-benchmark">
+        <div class="demographic__content-seperate-benchmark-title">Benchmark</div>
+        <div [hidden]='grid' class="demographic__content-seperate-benchmark-graph" id='benchmarkDemographic' #benchmarkDemographic>
+          <svg class="tornadoChart demographic__content-seperate-graph-svg">
+            <g class="bars">
+              <g class="x axis"></g>
+              <g class="y axis"></g>
+            </g>
+          </svg>
+        </div>
+        <div [hidden]='grid' class="demographic__content-seperate-benchmark-summary tornadoSummaryGrid">
+          <table class="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="percentage">
+                <td>{{ getPercentageKey() }}</td>
+                <td>{{ benchmarkGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                <td>{{ benchmarkGridSummary.percentage.male | PercentageFormatPipe }}</td>
+              </tr>
+              <tr class="avgAge">
+                <td>{{ getAverageAgeKey() }}</td>
+                <td>{{ benchmarkGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                <td>{{ benchmarkGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
 
-<div @showHide [hidden]='zoom'>
-  <div @showHide [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
-    <div class="col-6">
+        <div [hidden]='!grid' class="demographic__content-seperate-benchmark-grid tornadoGrid">
+          <table class="table table-hover">
+            <thead>
+              <tr>
+                <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let row of benchmarkGridData">
+                <td>{{row.ageGroup}}</td>
+                <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
-      <!--  (appResize)="onResized($event, 'proposal')" -->
-      <div *ngIf="proposalDemographic" id="proposalDemographic" #proposalDemographic>
-        <svg class="tornadoChart" width="100%">
+      </div>
+
+
+
+
+
+    </div>
+
+
+    <div [hidden]='!zoom' class="demographic__content-combined" id="demographicCombinedChartArea" #demographicCombinedContainer>
+      <span id="demographicCombinedTooltip" class="chart__tooltip">Tooltip</span>
+      <div class="demographic__content-combined-title">Client and Benchmark Demographic</div>
+      <div [hidden]='grid' class="demographic__content-combined-graph" id="combinedDemographic" #combinedDemographic>
+        <svg class="tornadoCombinedChart demographic__content-seperate-graph-svg" width="100%">
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>
@@ -36,130 +150,7 @@
         </svg>
       </div>
 
-      <div *ngIf="proposalDemographic" class="tornadoSummaryGrid">
-        <table class="table table-hover table-sm">
-          <thead>
-            <tr>
-              <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="percentage">
-              <td>{{ getPercentageKey() }}</td>
-              <td>{{ proposalGridSummary.percentage.female | PercentageFormatPipe }}</td>
-              <td>{{ proposalGridSummary.percentage.male | PercentageFormatPipe }}</td>
-            </tr>
-            <tr class="avgAge">
-              <td>{{ getAverageAgeKey() }}</td>
-              <td>{{ proposalGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
-              <td>{{ proposalGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div id='benchmarkDemographic' #benchmarkDemographic>
-        <svg class="tornadoChart" width="100%">
-          <g class="bars">
-            <g class="x axis"></g>
-            <g class="y axis"></g>
-          </g>
-        </svg>
-      </div>
-
-      <div class="tornadoSummaryGrid">
-        <table class="table table-hover table-sm">
-          <thead>
-            <tr>
-              <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="percentage">
-              <td>{{ getPercentageKey() }}</td>
-              <td>{{ benchmarkGridSummary.percentage.female | PercentageFormatPipe }}</td>
-              <td>{{ benchmarkGridSummary.percentage.male | PercentageFormatPipe }}</td>
-            </tr>
-            <tr class="avgAge">
-              <td>{{ getAverageAgeKey() }}</td>
-              <td>{{ benchmarkGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
-              <td>{{ benchmarkGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-    </div>
-    <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
-  </div>
-
-  <div @showHide [hidden]='!grid' class="row">
-    <div class="col-6">
-      <div *ngIf="proposalDemographic" class="tornadoGrid">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th *ngFor="let headerName of getGridDetailColumnHeader()">{{ headerName }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of proposalGridData">
-              <td>{{row.ageGroup}}</td>
-              <td>{{row.percentage.female | PercentageFormatPipe }}</td>
-              <td>{{row.percentage.male | PercentageFormatPipe }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="col-6">
-      <div class="tornadoGrid">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let row of benchmarkGridData">
-              <td>{{row.ageGroup}}</td>
-              <td>{{row.percentage.female | PercentageFormatPipe }}</td>
-              <td>{{row.percentage.male | PercentageFormatPipe }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- Combined Grip -->
-
-<div [hidden]='!zoom'>
-
-  <div [hidden]='grid' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
-    <div class="col">
-      <div *ngIf="proposalDemographic" id="combinedDemographic" #combinedDemographic>
-        <svg class="tornadoCombinedChart" width="100%">
-          <g class="bars">
-            <g class="x axis"></g>
-            <g class="y axis"></g>
-          </g>
-        </svg>
-      </div>
-    </div>
-    <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
-  </div>
-
-  <div [hidden]='!grid' class="row">
-    <div class="col">
-      <div *ngIf="proposalDemographic" class="tornadoGrid" id='demographicCombinedGrid'>
+      <div *ngIf="proposalDemographic" id='demographicCombinedGrid' [hidden]='!grid' class="demographic__content-combined-grid tornadoGrid">
         <table class="table table-hover">
           <thead>
             <tr>
@@ -180,7 +171,336 @@
           </tbody>
         </table>
       </div>
+
     </div>
+
+
+    <!-- <div @showHide [hidden]='zoom'> -->
+    <!-- <div @showHide [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+        <div class="col-6">
+          <div *ngIf="proposalDemographic" id="proposalDemographic" #proposalDemographic>
+            <svg class="tornadoChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+
+          <div *ngIf="proposalDemographic" class="tornadoSummaryGrid">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="percentage">
+                  <td>{{ getPercentageKey() }}</td>
+                  <td>{{ proposalGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ proposalGridSummary.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+                <tr class="avgAge">
+                  <td>{{ getAverageAgeKey() }}</td>
+                  <td>{{ proposalGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                  <td>{{ proposalGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div id='benchmarkDemographic' #benchmarkDemographic>
+            <svg class="tornadoChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="tornadoSummaryGrid">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="percentage">
+                  <td>{{ getPercentageKey() }}</td>
+                  <td>{{ benchmarkGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ benchmarkGridSummary.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+                <tr class="avgAge">
+                  <td>{{ getAverageAgeKey() }}</td>
+                  <td>{{ benchmarkGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                  <td>{{ benchmarkGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
+      </div> -->
+
+    <!-- <div @showHide [hidden]='!grid' class="row">
+        <div class="col-6">
+          <div *ngIf="proposalDemographic" class="tornadoGrid">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader()">{{ headerName }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of proposalGridData">
+                  <td>{{row.ageGroup}}</td>
+                  <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="tornadoGrid">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of benchmarkGridData">
+                  <td>{{row.ageGroup}}</td>
+                  <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div> -->
+
+    <!-- </div> -->
+
+
+    <!-- <div [hidden]='!zoom'>
+      <div [hidden]='grid' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
+        <div class="col">
+          <div *ngIf="proposalDemographic" id="combinedDemographic" #combinedDemographic>
+            <svg class="tornadoCombinedChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
+      </div>
+
+      <div [hidden]='!grid' class="row">
+        <div class="col">
+          <div *ngIf="proposalDemographic" class="tornadoGrid" id='demographicCombinedGrid'>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader(); let i = index" [colSpan]="i === 0 ? 1:2">{{ headerName }}</th>
+                </tr>
+                <tr>
+                  <td *ngFor="let subHeaderName of getGridCombinedColumnHeader()">{{ subHeaderName }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of benchmarkGridData; let i = index">
+                  <td>{{ row.ageGroup }}</td>
+                  <td>{{ proposalGridData[i].percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ proposalGridData[i].percentage.male | PercentageFormatPipe }}</td>
+                  <td>{{ row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div> -->
+
   </div>
 
+
+
+
 </div>
+
+
+
+
+
+
+<!-- <div class="demographic__content">
+    <div @showHide [hidden]='zoom'>
+      <div @showHide [hidden]='grid' class="row" id="demographicChartsArea" style="position: relative;" #demographicContainer>
+        <div class="col-6">
+          <div *ngIf="proposalDemographic" id="proposalDemographic" #proposalDemographic>
+            <svg class="tornadoChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+
+          <div *ngIf="proposalDemographic" class="tornadoSummaryGrid">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="percentage">
+                  <td>{{ getPercentageKey() }}</td>
+                  <td>{{ proposalGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ proposalGridSummary.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+                <tr class="avgAge">
+                  <td>{{ getAverageAgeKey() }}</td>
+                  <td>{{ proposalGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                  <td>{{ proposalGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div id='benchmarkDemographic' #benchmarkDemographic>
+            <svg class="tornadoChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+
+          <div class="tornadoSummaryGrid">
+            <table class="table table-hover table-sm">
+              <thead>
+                <tr>
+                  <th *ngFor="let summaryHeader of getGridSummaryColumnHeader()">{{ summaryHeader }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="percentage">
+                  <td>{{ getPercentageKey() }}</td>
+                  <td>{{ benchmarkGridSummary.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ benchmarkGridSummary.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+                <tr class="avgAge">
+                  <td>{{ getAverageAgeKey() }}</td>
+                  <td>{{ benchmarkGridSummary.avgAge.female | FixedNumberFormatPipe }}</td>
+                  <td>{{ benchmarkGridSummary.avgAge.male | FixedNumberFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+        <div id="demographicTooltip" class="demographicTooltip">Tooltip</div>
+      </div>
+
+      <div @showHide [hidden]='!grid' class="row">
+        <div class="col-6">
+          <div *ngIf="proposalDemographic" class="tornadoGrid">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader()">{{ headerName }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of proposalGridData">
+                  <td>{{row.ageGroup}}</td>
+                  <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="tornadoGrid">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader()" class="col-4">{{ headerName }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of benchmarkGridData">
+                  <td>{{row.ageGroup}}</td>
+                  <td>{{row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div [hidden]='!zoom'>
+      <div [hidden]='grid' class="row" id="demographicCombinedChartArea" style="position: relative;" #demographicCombinedContainer>
+        <div class="col">
+          <div *ngIf="proposalDemographic" id="combinedDemographic" #combinedDemographic>
+            <svg class="tornadoCombinedChart" width="100%">
+              <g class="bars">
+                <g class="x axis"></g>
+                <g class="y axis"></g>
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div id="demographicCombinedTooltip" class="demographicTooltip">Tooltip</div>
+      </div>
+
+      <div [hidden]='!grid' class="row">
+        <div class="col">
+          <div *ngIf="proposalDemographic" class="tornadoGrid" id='demographicCombinedGrid'>
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th *ngFor="let headerName of getGridDetailColumnHeader(); let i = index" [colSpan]="i === 0 ? 1:2">{{ headerName }}</th>
+                </tr>
+                <tr>
+                  <td *ngFor="let subHeaderName of getGridCombinedColumnHeader()">{{ subHeaderName }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of benchmarkGridData; let i = index">
+                  <td>{{ row.ageGroup }}</td>
+                  <td>{{ proposalGridData[i].percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ row.percentage.female | PercentageFormatPipe }}</td>
+                  <td>{{ proposalGridData[i].percentage.male | PercentageFormatPipe }}</td>
+                  <td>{{ row.percentage.male | PercentageFormatPipe }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div> -->

@@ -1,16 +1,31 @@
 .historical__content {
-
-
-
-    background-color: aqua;
+    // background-color: aqua;
     height: calc(100vh - 2.5rem - 61px - 50px);
     margin-top: 1.25rem;
     margin-bottom: 1.25rem;
+    &-tabset {
+        .tab-content {
+            // background-color: orange;
+        }
+    }
+    &-demographic {
+        height: calc(100vh - 2.5rem - 61px - 50px - 37px);
+    }
+    &-claims-per-capita {
+        height: calc(100vh - 2.5rem - 61px - 50px - 37px);
+    }
+    &-claims-per-capita {
+        height: calc(100vh - 2.5rem - 61px - 50px - 37px);
+    }
+    &-claims-frequency {
+        height: calc(100vh - 2.5rem - 61px - 50px - 37px);
+    }
+    &-claims-average-cost {
+        height: calc(100vh - 2.5rem - 61px - 50px - 37px);
+    }
 }
-
 
 .historical__filter {
     float: right;
 }
 
-// height: calc(100vh - 3rem - 61px - 50px);

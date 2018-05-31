@@ -14,7 +14,7 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
   selector: 'app-demographic',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './demographic.component.html',
-  styleUrls: ['./demographic.component.scss'],
+  styleUrls: ['./demographic.compoenent.scss'],
   animations: [
     showHideTrigger
   ]
@@ -24,11 +24,11 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
 export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
 
-  static gridDetailColumnHeader = ['AGE_GROUP', 'FEMALE', 'MALE'];
-  static gridCombinedColumnHeader = ['', 'CLIENT', 'BENCHMARK', 'CLIENT', 'BENCHMARK'];
-  static gridSummaryColumnHeader = ['', 'FEMALE', 'MALE'];
-  static percentage = 'PERCENTAGE';
-  static averageAge = 'AVERAGE_AGE';
+  static gridDetailColumnHeader = ['Age Group', 'Female', 'Male'];
+  static gridCombinedColumnHeader = ['', 'Client', 'Benchmark', 'Client', 'Benchmark'];
+  static gridSummaryColumnHeader = ['', 'Female', 'Male'];
+  static percentage = 'Percentage';
+  static averageAge = 'Average Age';
 
   @Input() proposalDemographic: TornadoData;
   @Input() benchmarkDemographic: TornadoData;
