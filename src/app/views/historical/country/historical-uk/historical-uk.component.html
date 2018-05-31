@@ -1,4 +1,4 @@
-<div>
+<!-- <div>
   <div class="col">
     <div class="float-right">
 
@@ -128,35 +128,165 @@
 
     </div>
   </div>
+</div> -->
+
+
+<div class="historical__filter">
+  <div class="btn-group" *ngIf="selectorDisplay['region'] === true" id="region" dropdown #regionDropdown="bs-dropdown" [autoClose]="false"
+    [isOpen]="dropdownStatus['region']" (isOpenChange)="toggleDropdown($event, 'region')" (clickOutside)="onClickedOutside($event,'region')"
+    placement="top">
+    <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+      Region
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+      <li role="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="getSelector('region').all" (change)="toggleMultiSelectAll('region')" /> (All Regions)
+        </label>
+      </li>
+
+      <li *ngFor="let n of getSelector('region').selectionItems" class="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('region')"> {{n.elementName}}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+  <div class="btn-group" *ngIf="selectorDisplay['relation'] === true" id="relation" dropdown #relationDropdown="bs-dropdown"
+    [autoClose]="false" [isOpen]="dropdownStatus['relation']" (isOpenChange)="toggleDropdown($event, 'relation')" (clickOutside)="onClickedOutside($event,'relation')"
+    placement="top">
+    <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+      Relation
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+      <li role="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="getSelector('relation').all" (change)="toggleMultiSelectAll('relation')" /> (All Relation)
+        </label>
+      </li>
+
+      <li *ngFor="let n of getSelector('relation').selectionItems" class="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('relation')"> {{n.elementName}}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="btn-group" *ngIf="selectorDisplay['ageGroup'] === true" id="ageGroup" dropdown #relationDropdown="bs-dropdown"
+    [autoClose]="false" [isOpen]="dropdownStatus['ageGroup']" (isOpenChange)="toggleDropdown($event, 'ageGroup')" (clickOutside)="onClickedOutside($event,'ageGroup')"
+    placement="top">
+    <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+      Age Group
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+      <li role="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="getSelector('ageGroup').all" (change)="toggleMultiSelectAll('ageGroup')" /> (All Age Group)
+        </label>
+      </li>
+
+      <li *ngFor="let n of getSelector('ageGroup').selectionItems" class="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('ageGroup')"> {{n.elementName}}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="btn-group" *ngIf="selectorDisplay['gender'] === true" id="gender" dropdown #relationDropdown="bs-dropdown" [autoClose]="false"
+    [isOpen]="dropdownStatus['gender']" (isOpenChange)="toggleDropdown($event, 'gender')" (clickOutside)="onClickedOutside($event,'gender')"
+    placement="top">
+    <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+      Gender
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+      <li role="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="getSelector('gender').all" (change)="toggleMultiSelectAll('gender')" /> (All Gender)
+        </label>
+      </li>
+
+      <li *ngFor="let n of getSelector('gender').selectionItems" class="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('gender')"> {{n.elementName}}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+
+  <div class="btn-group" *ngIf="selectorDisplay['claimType'] === true" id="claimType" dropdown #relationDropdown="bs-dropdown"
+    [autoClose]="false" [isOpen]="dropdownStatus['claimType']" (isOpenChange)="toggleDropdown($event, 'claimType')" (clickOutside)="onClickedOutside($event,'claimType')"
+    placement="top">
+    <button dropdownToggle type="button" class="btn btn-primary btn-sm dropdown-toggle">
+      Claim Type
+      <span class="caret"></span>
+    </button>
+    <ul *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
+
+      <li role="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="getSelector('claimType').all" (change)="toggleMultiSelectAll('claimType')" /> (All Claim Type)
+        </label>
+      </li>
+
+      <li *ngFor="let n of getSelector('claimType').selectionItems" class="menuitem">
+        <label class="dropdown-item">
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('claimType')"> {{n.elementName}}
+        </label>
+      </li>
+    </ul>
+  </div>
+
+
+  <button type="button" class="btn btn-success btn-sm" [disabled]="resetDisabled" (click)="resetAllSelectors()">Reset</button>
+
+
 </div>
 
 
-<tabset type="pills" #staticTabs>
-  <tab id="historicalDemographic" (select)="onSelect($event)">
-    <ng-template tabHeading>Demographic</ng-template>
-    <app-demographic *ngIf="benchmarkDemographic" [proposalDemographic]="proposalDemographic" [benchmarkDemographic]="benchmarkDemographic"
-      [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()" #demographic>
-    </app-demographic>
-  </tab>
-  <tab id="claimsPerCapita" (select)="onSelect($event)">
-    <ng-template tabHeading>Claims PerCapita</ng-template>
-    <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
-  </tab>
+<div class="historical__content">
 
-  <tab id="claimsFrequency" (select)="onSelect($event)">
-    <ng-template tabHeading>Claims Frequency</ng-template>
-    <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      [countryCode]="countryCode" #claimsFrequency></app-claims-frequency>
-  </tab>
+  <tabset type="pills" #staticTabs>
+    <tab id="historicalDemographic" (select)="onSelect($event)">
+      <ng-template tabHeading>Demographic</ng-template>
+      <app-demographic *ngIf="benchmarkDemographic" [proposalDemographic]="proposalDemographic" [benchmarkDemographic]="benchmarkDemographic"
+        [ageGroup]="ageGroup" [demographicMargin]="getDemographicMargin()" #demographic>
+      </app-demographic>
+    </tab>
+    <tab id="claimsPerCapita" (select)="onSelect($event)">
+      <ng-template tabHeading>Claims PerCapita</ng-template>
+      <app-claims-percapita *ngIf="benchmarkClaimPerCapita" [benchmarkClaimPerCapita]="benchmarkClaimPerCapita" [proposalClaimPerCapita]="proposalClaimPerCapita"
+        [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+        [countryCode]="countryCode" #claimsPerCapita></app-claims-percapita>
+    </tab>
 
-  <tab id="claimsAvgCost" (select)="onSelect($event)">
-    <ng-template tabHeading>Claims AvgCost</ng-template>
-    <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
-      [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
-      [countryCode]="countryCode" #claimsAvgCost></app-claims-avg-cost>
-  </tab>
+    <tab id="claimsFrequency" (select)="onSelect($event)">
+      <ng-template tabHeading>Claims Frequency</ng-template>
+      <app-claims-frequency *ngIf="benchmarkClaimFrequency" [benchmarkClaimFrequency]="benchmarkClaimFrequency" [proposalClaimFrequency]="proposalClaimFrequency"
+        [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+        [countryCode]="countryCode" #claimsFrequency></app-claims-frequency>
+    </tab>
 
-</tabset>
+    <tab id="claimsAvgCost" (select)="onSelect($event)">
+      <ng-template tabHeading>Claims AvgCost</ng-template>
+      <app-claims-avg-cost *ngIf="benchmarkClaimAvgCost" [benchmarkClaimAvgCost]="benchmarkClaimAvgCost" [proposalClaimAvgCost]="proposalClaimAvgCost"
+        [conditionGroupTranslation]="conditionGroupTranslation" [claimMargin]="getClaimMargin()" [conditionGroups]="getConditionGroups()"
+        [countryCode]="countryCode" #claimsAvgCost></app-claims-avg-cost>
+    </tab>
+
+  </tabset>
+
+</div>
