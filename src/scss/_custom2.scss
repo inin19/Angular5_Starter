@@ -1,8 +1,7 @@
 $primary-font-color: #666;
 $axis-line-dark-grey: darkgrey;
 @mixin tooltip() {
-    opacity: 0;
-    // visibility: hidden;
+    opacity: 0; // visibility: hidden;
     pointer-events: none;
     position: absolute;
     min-width: 50px;
@@ -17,6 +16,17 @@ $axis-line-dark-grey: darkgrey;
     z-index: 9999;
 }
 
+@mixin chartTitle() {
+    color: $primary-font-color;
+    font-size: 1.15rem;
+    font-weight: 500;
+    text-align: center;
+}
+
 .chart__tooltip {
     @include tooltip();
+}
+
+.chart__tilte {
+    @include chartTitle();
 }

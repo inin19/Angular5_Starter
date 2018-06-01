@@ -1,89 +1,167 @@
+$primary-font-color: #666;
+$axis-line-dark-grey: darkgrey;
+.claims-per-capita {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%; // background-color: yellow;
+    &__header {
+        display: flex;
+        justify-content: flex-end;
+        &-amount-type {
+            align-self: center;
+        }
+        &-sort {
+            align-self: center;
+        }
+        &-zoom {
+            align-self: center;
+            span {
+                font-size: 0.765625rem;
+            }
+        }
+        &-gridgraph {
+            // align-self: center;
+        }
+    }
+    &__content {
+        display: flex;
+        height: 100%;
+        // background-color: beige;
+        &-client {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            &-title {
+                flex: 0 0 3rem;
+                line-height: 3rem;
+                margin: auto 0;
+            }
+            &-graph {
+                flex: 1 1 auto;
+            }
+        }
+        &-benchmark {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            &-title {
+                flex: 0 0 3rem;
+                line-height: 3rem;
+            }
+            &-graph {
+                flex: 1 1 auto;
+            }
+        }
+        &-grid {
+            flex: 1 1 auto;
+        }
+    }
+}
+
+.separator-vertical {
+    display: inline-block;
+    border-right: 1px lightgrey solid;
+    margin-left: 2rem;
+    margin-right: 2rem;
+    height: 80%;
+}
+
 .waterfallChart {
-  height: 550px;
+    height: 100%;
+    width: 100%;
+    .tick text {
+        font-family: inherit;
+        font-size: 0.75rem;
+        fill: $primary-font-color;
+    }
+    .y.axis path {
+        visibility: hidden;
+    } // .y.axis .tick line {
+    //     stroke: darkgrey;
+    //     stroke-dasharray: 5, 1;
+    //     stroke-width: 0.5px;
+    // }
 }
-
-.tick text {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  font-size: 12px;
-  fill: #666;
-}
-
-
-#waterfallTooltip{
-  opacity: 0;
-  pointer-events: none;
-  position: absolute;
-  min-width: 50px;
-  height: auto;
-  background: none repeat scroll 0 0 #ffffff;
-  padding: 6px 14px 6px 14px;
-  border-radius: 4px;
-  text-align: left;
-  line-height: 1.3;
-  color: #5B6770;
-  box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
-}
-
 
 .waterfallGrid {
-  margin-left: 150px;
-  margin-right: 150px;
-  margin-top: 50px;
+    margin-left: 150px;
+    margin-right: 150px;
+    margin-top: 50px;
+    // tbody tr td:not(:first-child) {
+    //     text-align: right;
+    // }
+    // tbody tr th:not(:first-child) {
+    //     text-align: right;
+    // }
+    // thead tr {
+    //     th {
+    //         padding-left: 30px;
+    //         padding-right: 30px;
+    //     }
+    //     td {
+    //         padding-left: 30px;
+    //         padding-right: 30px;
+    //     }
+    // }
+}
+
+// .waterfallGrid tbody tr td:nth-child(2) {
+//     text-align: right;
+// }
+// .waterfallGrid tbody tr td:nth-child(3) {
+//     text-align: right;
+// }
+// .waterfallGrid tbody tr td:nth-child(4) {
+//     text-align: right;
+// }
+
+
+.waterfallGrid tbody tr td:not(:first-child){
+    text-align: right;
+
 }
 
 
-
-.waterfallGrid tbody tr td:nth-child(2) {
-  text-align:right;
+.waterfallGrid thead tr th:not(:first-child){
+    text-align: right;
 }
 
-.waterfallGrid tbody tr td:nth-child(3) {
-  text-align:right;
-}
-
-.waterfallGrid tbody tr td:nth-child(4) {
-  text-align:right;
-}
-
-
-.waterfallGrid thead tr th:nth-child(2) {
-  text-align:right;
-}
-
-.waterfallGrid thead tr th:nth-child(3) {
-  text-align:right;
-}
-
-.waterfallGrid thead tr th:nth-child(4) {
-  text-align:right;
-}
+// .waterfallGrid thead tr th:nth-child(2) {
+//     text-align: right;
+// }
+// .waterfallGrid thead tr th:nth-child(3) {
+//     text-align: right;
+// }
+// .waterfallGrid thead tr th:nth-child(4) {
+//     text-align: right;
+// }
 
 
 .waterfallGrid thead tr th {
-  padding-left: 30px;
-  padding-right: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
-
 .waterfallGrid tbody tr td {
-  padding-left: 30px;
-  padding-right: 30px;
+    padding-left: 30px;
+    padding-right: 30px;
 }
 
-
-.waterfallGrid .conditionGroupTotal  {
-  // background-color: gainsboro;
-  font-weight: bold;
+.waterfallGrid .conditionGroupTotal {
+    background-color: gainsboro;
+    font-weight: bold;
 }
 
 .headerSelected {
-  color:gainsboro;
+    color: gainsboro;
 }
 
 .headerUnSelected {
-  cursor: pointer;
+    cursor: pointer;
+    transition: all .2s;
 }
 
-
 .headerUnSelected:hover {
-  transform: scale(1.4); /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
+    transform: scale(1.4);
+    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }

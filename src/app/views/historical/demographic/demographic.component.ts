@@ -14,7 +14,7 @@ import * as elementResizeDetectorMaker from 'element-resize-detector';
   selector: 'app-demographic',
   encapsulation: ViewEncapsulation.None,
   templateUrl: './demographic.component.html',
-  styleUrls: ['./demographic.compoenent.scss'],
+  styleUrls: ['./demographic.component.scss'],
   animations: [
     showHideTrigger
   ]

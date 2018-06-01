@@ -1,3 +1,134 @@
+<div class="claims-per-capita">
+  <div class="claims-per-capita__header">
+    <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="btn-group claims-per-capita__header-amount-type">
+      <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="claim" tabindex="0" role="button" (click)="changeAmountType()">Claim</label>
+      <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="settled" tabindex="0" role="button" (click)="changeAmountType()">Settled</label>
+    
+    </div>
+
+    
+    <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="separator-vertical"></div>
+
+
+    <div [hidden]='grid' class="btn-group claims-per-capita__header-sort">
+
+      <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Asc" tabindex="0" role="button" (click)="changeSorting()">Asc</label>
+      <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Desc" tabindex="0" role="button" (click)="changeSorting()">Desc</label>
+      <label class="btn btn-primary btn-sm" [(ngModel)]="sorting" btnRadio="Default" tabindex="0" role="button" (click)="changeSorting()">Default</label>
+    </div>
+
+    <div [hidden]='grid' class="separator-vertical"></div>
+
+
+    <div [hidden]='grid' class="claims-per-capita__header-zoom"><span>Zoom in &nbsp; </span>
+      <label class="switch switch-3d switch-primary" title="Zoom">
+        <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="creatOrUpdateChart()">
+        <span class="switch-label"></span>
+        <span class="switch-handle"></span>
+      </label>
+    </div>
+
+    <div [hidden]='grid' class="separator-vertical"></div>
+
+
+    <div class="claims-per-capita__header-gridgraph">
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+    </div>
+  </div>
+
+  <div class="claims-per-capita__content" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
+    <span id="waterfallTooltip" class="chart__tooltip">Tooltip</span>
+
+    <div [hidden]='grid' class="claims-per-capita__content-client">
+      <div class="claims-per-capita__content-client-title chart__tilte">Client Claims Per Capita</div>
+      <div class="claims-per-capita__content-client-graph" id="proposalClaimsPerCapita"  #proposalClaimsPerCapita >
+        <svg class="waterfallChart" >
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
+      </div>
+    </div>
+
+    <div [hidden]='grid' class="claims-per-capita__content-benchmark">
+      <div class="claims-per-capita__content-benchmark-title chart__tilte">Benchmark Claims Per capita</div>
+      <div class="claims-per-capita__content-benchmark-graph" id="benchmarkClaimsPerCapita" #benchmarkClaimsPerCapita>
+        <svg class="waterfallChart" >
+          <g class="bars">
+            <g class="x axis"></g>
+            <g class="y axis"></g>
+          </g>
+        </svg>
+      </div>
+
+    </div>
+
+
+    <div [hidden]='!grid' class="waterfallGrid claims-per-capita__content-grid" id="claimsPerCapitaGrid" #claimsPerCapitaGrid>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>
+              Condition Group &nbsp;
+              <i (click)="sortByHeader('conditionGroup','default')" [ngClass]="{headerSelected:gridSorting.conditionGroup.default,headerUnSelected: !gridSorting.conditionGroup.default}"
+                class=" fa fa-sort-alpha-asc" aria-hidden="true"></i>
+
+            </th>
+            <th>
+              Prevvious Year &nbsp;
+              <i (click)="sortByHeader('prev','asc')" [ngClass]="{headerSelected:gridSorting.prev.asc,headerUnSelected: !gridSorting.prev.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('prev','desc')" [ngClass]="{headerSelected:gridSorting.prev.desc,headerUnSelected: !gridSorting.prev.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+            <th>
+              Current Year &nbsp;
+              <i (click)="sortByHeader('curr','asc')" [ngClass]="{headerSelected:gridSorting.curr.asc,headerUnSelected: !gridSorting.curr.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('curr','desc')" [ngClass]="{headerSelected:gridSorting.curr.desc,headerUnSelected: !gridSorting.curr.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+            <th>
+              Benchmark &nbsp;
+              <i (click)="sortByHeader('benchmark','asc')" [ngClass]="{headerSelected:gridSorting.benchmark.asc,headerUnSelected: !gridSorting.benchmark.asc}"
+                class="fa fa-sort-amount-asc" aria-hidden="true" title="Sort Ascending"></i>
+              &nbsp;
+              <i (click)="sortByHeader('benchmark','desc')" [ngClass]="{headerSelected:gridSorting.benchmark.desc,headerUnSelected: !gridSorting.benchmark.desc}"
+                class="fa fa-sort-amount-desc" aria-hidden="true" title="Sort Descending"></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="conditionGroupElement" *ngFor="let row of waterfallGridData">
+            <td>{{ row.key | ConditionGroupPipe: countryCode }}</td>
+            <td>{{ row.prev | FixedNumberFormatPipe }}</td>
+            <td>{{ row.curr | FixedNumberFormatPipe }}</td>
+            <td>{{ row.benchmark | FixedNumberFormatPipe}}</td>
+          </tr>
+
+          <tr class="conditionGroupTotal">
+            <td>{{ waterfallGridDataTotal.key | ConditionGroupPipe: countryCode }} </td>
+            <td>{{ waterfallGridDataTotal.prev | FixedNumberFormatPipe }}</td>
+            <td>{{ waterfallGridDataTotal.curr | FixedNumberFormatPipe}}</td>
+            <td>{{ waterfallGridDataTotal.benchmark | FixedNumberFormatPipe}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+
+<!-- 
 <div class="row">
   <div class="col">
     <div class="float-right">
@@ -32,11 +163,11 @@
 
     </div>
   </div>
-</div>
+</div> -->
 
 
 
-<div @showHide [hidden]='grid' class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
+<!-- <div @showHide [hidden]='grid' class="row" style="position: relative;" id="claimsPerCapitaContainer" #claimsPerCapitaContainer>
   <div class="col-6">
     <div id="proposalClaimsPerCapita" #proposalClaimsPerCapita>
       <svg class="waterfallChart" width="100%">
@@ -58,10 +189,10 @@
     </div>
   </div>
   <div id="waterfallTooltip">Tooltip</div>
-</div>
+</div> -->
 
 
-<div [hidden]='!grid' class="row">
+<!-- <div [hidden]='!grid' class="row">
   <div class="col">
     <div class="waterfallGrid" id="claimsPerCapitaGrid" #claimsPerCapitaGrid>
 
@@ -119,4 +250,4 @@
 
     </div>
   </div>
-</div>
+</div> -->

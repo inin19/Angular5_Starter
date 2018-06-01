@@ -132,11 +132,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
   listenToDivResize() {
     if (this.proposalClaimPerCapita) {
       this.resizeDetector.listenTo(this.proposalClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-        // this.updateChart_proposal();
+        this.createUpdateChart_proposal();
       });
     }
     this.resizeDetector.listenTo(this.benchmarkClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-      // this.updateChart_benchmark();
+      this.createUpdateChart_benchmark();
+
     });
     console.log('listen to claims per capita divs');
   }
