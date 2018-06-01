@@ -139,12 +139,17 @@ export class AvgCostD3Chart {
 
     // update existing bars
     bars
+      .classed('claim-avg-cost__graph-prev', d => d.series === 1)
+      .classed('claim-avg-cost__graph-curr', d => d.series === 2)
+      .classed('claim-avg-cost__graph-benchmark', d => d.series === 3)
+      .classed('red', d => (d.series === 2 && d.diff > 0 ))
+
       .transition()
       .attr('width', this.x1Scale.bandwidth())
       .attr('x', d => this.x1Scale(d.series))
       .attr('y', d => this.yScale(d.value))
       .attr('height', d => (this.yScale(0) - this.yScale(d.value)))
-      .style('fill', d => AvgCostD3Chart.colors[d.series])
+      // .style('fill', d => AvgCostD3Chart.colors[d.series])
       ;
 
 
@@ -157,7 +162,12 @@ export class AvgCostD3Chart {
       .attr('x', d => this.x1Scale(d.series))
       .attr('y', d => this.yScale(d.value))
       .attr('height', d => (this.yScale(0) - this.yScale(d.value)))
-      .style('fill', d => AvgCostD3Chart.colors[d.series])
+      // .style('fill', d => AvgCostD3Chart.colors[d.series])
+      .classed('claim-avg-cost__graph-prev', d => d.series === 1)
+      .classed('claim-avg-cost__graph-curr', d => d.series === 2)
+      .classed('claim-avg-cost__graph-benchmark', d => d.series === 3)
+      .classed('red', d => (d.series === 2 && d.diff < 0 ))
+
       .on('mouseover', this.handleMouseOver(conditionGroupTranslation, tooltipDomID))
       .on('mousemove', this.handleMouseMove(chartParent, tooltipDomID))
       .on('mouseout', this.handleMouseOut(tooltipDomID));
@@ -167,7 +177,7 @@ export class AvgCostD3Chart {
   handleMouseOver(conditionGroupTranslation: any, tooltipDomID: string): (d, i) => void {
     return (d, i) => {
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 0.5);
+        .style('opacity', 0.5);
       const format = d3.format('.2f');
       let text = '';
       if (d.series === 1) {
@@ -188,7 +198,7 @@ export class AvgCostD3Chart {
     return (d, i) => {
       // console.log('in MouseOut');
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 1);
+        .style('opacity', 0.8);
       d3.select(tooltipDomID)
         .style('opacity', 0);
     };

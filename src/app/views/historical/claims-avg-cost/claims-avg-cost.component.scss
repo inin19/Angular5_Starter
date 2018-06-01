@@ -1,4 +1,6 @@
 $primary-font-color: #666;
+$axis-line-dark-grey: darkgrey;
+
 .claims-avg-cost {
     // background-color: beige;    display: flex;
     flex-direction: column;
@@ -19,6 +21,21 @@ $primary-font-color: #666;
         } // claims-avg-cost__content-graph
         &-graph {
             flex: 1 1 auto;
+
+
+            &-prev{
+                fill: axis-line-dark-grey;
+            }
+            &-curr {
+                fill: axis-line-dark-grey;
+            }
+
+            &-benchmark {
+                fill: axis-line-dark-grey;
+            }
+
+
+
             svg {
                 height: 100%;
                 width: 100%;

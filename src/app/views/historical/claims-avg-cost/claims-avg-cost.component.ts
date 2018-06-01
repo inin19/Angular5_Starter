@@ -176,11 +176,17 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
       this.proposalAggregateTotal = this.proposalClaimAvgCost.getClaimsAggregateDataTotal();
 
       for (const item of this.proposalAggregate) {
+
+        // console.log(item);
+
         const benchmarkItem = this.benchmarkAggregate.find(d => item.key === d.key);
         const temp: AvgCostGraph = {
           key: item.key,
           series: ClaimsAvgCostComponent.series.currYear,
-          value: item.currYearAvgClaimCost
+          value: item.currYearAvgClaimCost,
+          // NEW 6/1
+
+          diff: item.currYearAvgClaimCost - item.prevYearAvgClaimCost
         };
 
         const temp1: AvgCostGraph = {
@@ -203,7 +209,9 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
       const total: AvgCostGraph = {
         key: this.proposalAggregateTotal.key,
         series: ClaimsAvgCostComponent.series.currYear,
-        value: this.proposalAggregateTotal.currYearAvgClaimCost
+        value: this.proposalAggregateTotal.currYearAvgClaimCost,
+        // NEW 6/1
+        diff: this.proposalAggregateTotal.currYearAvgClaimCost - this.proposalAggregateTotal.prevYearAvgClaimCost
       };
 
       const total1: AvgCostGraph = {
@@ -221,6 +229,10 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
       this.avgCostGraphData.push(total, total1, total2);
 
 
+
+      this.avgCostGraphData.forEach(element => {
+        console.log(element);
+      });
 
 
     } else {
@@ -336,7 +348,7 @@ export interface AvgCostGraph {
   key: string;
   series: number;
   value: number;
-  morethanLastYear?: boolean;
+  diff?: number;
 }
 
 
