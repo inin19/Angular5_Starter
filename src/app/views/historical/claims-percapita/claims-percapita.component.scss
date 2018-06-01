@@ -26,8 +26,7 @@ $axis-line-dark-grey: darkgrey;
     }
     &__content {
         display: flex;
-        height: 100%;
-        // background-color: beige;
+        height: 100%; // background-color: beige;
         &-client {
             flex: 1 1 50%;
             display: flex;
@@ -77,74 +76,29 @@ $axis-line-dark-grey: darkgrey;
     }
     .y.axis path {
         visibility: hidden;
-    } // .y.axis .tick line {
-    //     stroke: darkgrey;
-    //     stroke-dasharray: 5, 1;
-    //     stroke-width: 0.5px;
-    // }
+    } 
 }
 
 .waterfallGrid {
     margin-left: 150px;
     margin-right: 150px;
     margin-top: 50px;
-    // tbody tr td:not(:first-child) {
-    //     text-align: right;
-    // }
-    // tbody tr th:not(:first-child) {
-    //     text-align: right;
-    // }
-    // thead tr {
-    //     th {
-    //         padding-left: 30px;
-    //         padding-right: 30px;
-    //     }
-    //     td {
-    //         padding-left: 30px;
-    //         padding-right: 30px;
-    //     }
-    // }
-}
-
-// .waterfallGrid tbody tr td:nth-child(2) {
-//     text-align: right;
-// }
-// .waterfallGrid tbody tr td:nth-child(3) {
-//     text-align: right;
-// }
-// .waterfallGrid tbody tr td:nth-child(4) {
-//     text-align: right;
-// }
-
-
-.waterfallGrid tbody tr td:not(:first-child){
-    text-align: right;
-
-}
-
-
-.waterfallGrid thead tr th:not(:first-child){
-    text-align: right;
-}
-
-// .waterfallGrid thead tr th:nth-child(2) {
-//     text-align: right;
-// }
-// .waterfallGrid thead tr th:nth-child(3) {
-//     text-align: right;
-// }
-// .waterfallGrid thead tr th:nth-child(4) {
-//     text-align: right;
-// }
-
-
-.waterfallGrid thead tr th {
-    padding-left: 30px;
-    padding-right: 30px;
-}
-.waterfallGrid tbody tr td {
-    padding-left: 30px;
-    padding-right: 30px;
+    thead tr {
+        th {
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+    }
+    tbody tr td {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+    tbody tr td:not(:first-child) {
+        text-align: right;
+    }
+    thead tr th:not(:first-child) {
+        text-align: right;
+    }
 }
 
 .waterfallGrid .conditionGroupTotal {
@@ -163,5 +117,4 @@ $axis-line-dark-grey: darkgrey;
 
 .headerUnSelected:hover {
     transform: scale(1.4);
-    /* (150% zoom - Note: if the zoom is too large, it will go outside of the viewport) */
 }

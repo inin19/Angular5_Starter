@@ -23,10 +23,24 @@ $axis-line-dark-grey: darkgrey;
     text-align: center;
 }
 
+
+@mixin gridgraph() {
+    cursor: pointer;
+    transition: all .2s;
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+
 .chart__tooltip {
     @include tooltip();
 }
 
 .chart__tilte {
     @include chartTitle();
+}
+
+.grid-graph-toggle {
+    @include gridgraph();
 }
