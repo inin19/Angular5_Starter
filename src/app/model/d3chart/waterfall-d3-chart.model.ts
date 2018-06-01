@@ -78,6 +78,8 @@ export class WaterfallD3Chart {
     this.width = elementRef.nativeElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = elementRef.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
 
+    console.log('height of svg:', chartType, ' ', this.height);
+
     this.svg = d3.select(domID).select('svg');
 
     this.chart = this.svg.select('.bars')

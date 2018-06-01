@@ -16,9 +16,9 @@
 
   <div class="demographic__content">
     <div [hidden]='zoom' class="demographic__content-seperate" id="demographicChartsArea" style="position: relative;" #demographicContainer>
-      <span id="demographicTooltip" class="chart__tooltip"> Tooltil </span>
+      <span id="demographicTooltip" class="chart__tooltip"> Tooltip </span>
       <div class="demographic__content-seperate-client">
-        <div class="demographic__content-seperate-client-title">Client Demographic</div>
+        <div class="demographic__content-seperate-client-title chart__tilte">Client Demographic</div>
         <div [hidden]='grid' class="demographic__content-seperate-client-graph" *ngIf="proposalDemographic" id="proposalDemographic"
           #proposalDemographic>
           <svg class="tornadoChart demographic__content-seperate-graph-svg">
@@ -70,7 +70,7 @@
       </div>
 
       <div class="demographic__content-seperate-benchmark">
-        <div class="demographic__content-seperate-benchmark-title">Benchmark Demographic</div>
+        <div class="demographic__content-seperate-benchmark-title chart__tilte">Benchmark Demographic</div>
         <div [hidden]='grid' class="demographic__content-seperate-benchmark-graph" id='benchmarkDemographic' #benchmarkDemographic>
           <svg class="tornadoChart demographic__content-seperate-graph-svg">
             <g class="bars">

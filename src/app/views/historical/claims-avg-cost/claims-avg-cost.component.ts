@@ -1,14 +1,16 @@
 import { Selector } from './../../../model/utils/selector.model';
 import { AvgCostD3Chart } from './../../../model/D3chart/avg-cost-d3-chart.model';
 import { WaterfallData, ClaimsAggregateData } from './../../../model/D3chartData/waterfall-data.model';
-import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, AfterViewInit, OnDestroy, ViewEncapsulation } from '@angular/core';
 import * as elementResizeDetectorMaker from 'element-resize-detector';
 import * as d3 from 'd3';
 
 @Component({
   selector: 'app-claims-avg-cost',
   templateUrl: './claims-avg-cost.component.html',
-  styleUrls: ['./claims-avg-cost.component.scss']
+  styleUrls: ['./claims-avg-cost.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+
 })
 
 
@@ -334,6 +336,7 @@ export interface AvgCostGraph {
   key: string;
   series: number;
   value: number;
+  morethanLastYear?: boolean;
 }
 
 

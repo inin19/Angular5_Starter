@@ -1,39 +1,35 @@
-<div class="row">
-  <div class="col">
-    <div class="float-right">
-      <!-- <div class="btn-group">
-          <label class="btn btn-primary btn-sm" [(ngModel)]="grid" btnCheckbox tabindex="0" role="button" (click)="toggleGridGraph()">{{gridDispaly}}</label>
-        </div> -->
+<div class="claims-avg-cost">
 
-      <div style="display: inline;">
-        <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
-        <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
-      </div>
+  <div class="claims-avg-cost__header">
+    <div class="claims-avg-cost__header-gridgraph">
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph grid-graph-toggle" aria-hidden="true"
+        title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph grid-graph-toggle" aria-hidden="true"
+        title="Grid"></i>
     </div>
   </div>
-</div>
 
 
-<div [hidden]='grid' class="row" style="position: relative;" id="claimsAvgCostContainer" #claimsAvgCostContainer>
-  <div class="col">
-    <div id="claimsAvgCostGraph" #claimsAvgCostGraph>
-      <svg class="avgCostChart" width="100%">
+  <div class="claims-avg-cost__content" id="claimsAvgCostContainer" #claimsAvgCostContainer>
+
+    <span id="avgCostTooltip" class="chart__tooltip">Tooltip</span>
+
+    <div [hidden]='grid' class="claims-avg-cost__content-title chart__tilte">
+      Average Cost Comparison
+    </div>
+
+    <div [hidden]='grid' class="claims-avg-cost__content-graph" id="claimsAvgCostGraph" #claimsAvgCostGraph>
+      <svg class="avgCostChart">
         <g class="bars">
           <g class="x axis"></g>
           <g class="y axis"></g>
         </g>
       </svg>
     </div>
-  </div>
-  <div id="avgCostTooltip">Tooltip</div>
-</div>
 
 
+    <div [hidden]='!grid' class="claims-avg-cost__content-grid waterfallGrid" id="avgCostGrid">
 
-<!-- grid -->
-<div [hidden]='!grid' class="row">
-  <div class="col">
-    <div class="waterfallGrid" id="avgCostGrid">
       <table class="table table-hover">
         <thead>
           <tr>
@@ -84,5 +80,10 @@
         </tbody>
       </table>
     </div>
+
+
+
   </div>
+
 </div>
+
