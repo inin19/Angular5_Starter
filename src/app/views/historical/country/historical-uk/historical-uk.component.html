@@ -149,7 +149,7 @@
 
       <li *ngFor="let n of getSelector('region').selectionItems" class="menuitem">
         <label class="dropdown-item">
-          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('region')"> {{n.elementName}}
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('region')"> {{ n.elementName | regionPipe:countryCode }}
         </label>
       </li>
     </ul>
@@ -172,7 +172,7 @@
 
       <li *ngFor="let n of getSelector('relation').selectionItems" class="menuitem">
         <label class="dropdown-item">
-          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('relation')"> {{n.elementName}}
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('relation')"> {{ n.elementName | relationPipe:countryCode }}
         </label>
       </li>
     </ul>
@@ -220,7 +220,7 @@
 
       <li *ngFor="let n of getSelector('gender').selectionItems" class="menuitem">
         <label class="dropdown-item">
-          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('gender')"> {{n.elementName}}
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('gender')"> {{ n.elementName | genderPipe:countryCode }}
         </label>
       </li>
     </ul>
@@ -244,7 +244,7 @@
 
       <li *ngFor="let n of getSelector('claimType').selectionItems" class="menuitem">
         <label class="dropdown-item">
-          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('claimType')"> {{n.elementName}}
+          <input type="checkbox" [(ngModel)]="n.checked" (change)="checkIfAllElementSelected('claimType')"> {{ n.elementName | claimTypePipe: countryCode }}
         </label>
       </li>
     </ul>

@@ -1,5 +1,9 @@
 import { PercentageFormatPipe, FixedNumberFormatPipe } from './../pipes/grid/grid-format';
 import { ConditionGroupPipe } from './../pipes/charts/conditionGroup-pipe';
+import { RegionPipe } from './../pipes/charts/dropdown/region.pipe';
+import { RelationPipe } from './../pipes/charts/dropdown/relation.pipe';
+import { GenderPipe } from './../pipes/charts/dropdown/gender.pipe';
+import { ClaimTypePipe } from './../pipes/charts/dropdown/claim-type.pipe';
 
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -57,8 +61,11 @@ import { showHideTrigger } from './../../model/animations/animations';
     PercentageFormatPipe,
     FixedNumberFormatPipe,
     ConditionGroupPipe,
-    ResizeDirective
-
+    ResizeDirective,
+    RegionPipe,
+    RelationPipe,
+    GenderPipe,
+    ClaimTypePipe
   ],
   providers: [
     DemographicService,
