@@ -41,6 +41,7 @@
       </div>
 
       <div class="projection__filter-pie" id="projectionPie" #projectionPie>
+        <span id="fundingGapPieToolip" class="chart__tooltip">Tooltip</span>
         <div class="projection__filter-pie-wrapper">
           <svg class="projection__filter-pie-svg piechart">
             <g class="piechartContainer">
@@ -123,6 +124,9 @@
     <div class="projection__content-projection">
       <div [hidden]='grid' class="projection__content-projection-graph"  id='projectionChart' #projectionChart>
         <svg class="projection__content-projection-svg">
+          <g class="projection__content-projection-svg-currency">
+            <text> £ </text>
+          </g>
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>

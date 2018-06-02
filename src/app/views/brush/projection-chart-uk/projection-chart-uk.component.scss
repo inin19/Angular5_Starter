@@ -16,6 +16,7 @@ $axis-line-dark-grey: darkgrey;
         transition: all .4s ease-out;
         display: flex;
         flex-direction: column;
+        position: relative;
         &-projection {
             .list-inline {
                 margin-left: 0.25rem;
@@ -212,6 +213,8 @@ $axis-line-dark-grey: darkgrey;
                     stroke-dasharray: 5, 1;
                     stroke-width: 0.5px;
                 }
+
+
             }
 
 

@@ -63,8 +63,17 @@ export class ProjectionD3Chart {
 
 
     this.svg = d3.select(domID).select('svg');
+
+
+    this.svg.select('.projection__content-projection-svg-currency')
+      .attr('transform', `translate(${this.margin.left - this.margin.left / 2},${this.margin.top - this.margin.top / 2} )`);
+
     this.chart = this.svg.select('.bars')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
+
+
+
+
 
     // create scales
     this.x0Scale = d3.scaleBand().domain(xScaleDomain)
