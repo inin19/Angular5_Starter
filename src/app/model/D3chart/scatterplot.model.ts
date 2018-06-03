@@ -241,7 +241,7 @@ export class Scatterplot {
 
 
       if (d.currentProposed === 'CURRENT') {
-        d3.select('#projectionToolip')
+        d3.select('#lossRatioToolip')
           .style('opacity', 1)
           .style('left', d3.event.clientX - bounds.left + 10 + 'px')
           .style('top', d3.event.clientY - bounds.top + 10 + 'px')
@@ -269,7 +269,7 @@ export class Scatterplot {
 
 
 
-        d3.select('#projectionToolip')
+        d3.select('#lossRatioToolip')
           .style('opacity', 1)
           .style('left', d3.event.clientX - bounds.left + 10 + 'px')
           .style('top', d3.event.clientY - bounds.top + 10 + 'px')
@@ -303,7 +303,7 @@ export class Scatterplot {
   handleMouseOut(): (d, i) => void {
     return (d, i) => {
 
-      d3.select('#projectionToolip')
+      d3.select('#lossRatioToolip')
         .style('opacity', 0);
 
       d3.select(d3.event.currentTarget)

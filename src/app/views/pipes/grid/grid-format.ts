@@ -21,8 +21,15 @@ export class FixedNumberFormatPipe implements PipeTransform {
 
 @Pipe({ name: 'BigNumberFormatPipe' })
 export class BigNumberFormatPipe implements PipeTransform {
-  transform(value: number): string {
-    const format = d3.format('.2s');
+  transform(value: number, short: boolean): string {
+
+    let format ;
+    if (short === true) {
+      format = d3.format('.2s');
+    } else {
+      format = d3.format(',.0f');
+
+    }
     return format(value);
   }
 }

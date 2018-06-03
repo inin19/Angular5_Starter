@@ -73,7 +73,7 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
 
 
   // todo
-  private margin: any = { top: 40, right: 50, bottom: 40, left: 50 };
+  private margin: any = { top: 40, right: 50, bottom: 45, left: 50 };
   private lossRatioMargin: any = { top: 20, right: 50, bottom: 30, left: 50 };
 
   private resizeDetector = elementResizeDetectorMaker({ strategy: 'scroll' });
@@ -137,6 +137,13 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   ngOnChanges() {
+
+    console.log('projection on changes');
+    if (this.projectionD3Chart) {
+      this.createProjectionChartData();
+      this.createSelector();
+      this.createProjectionChart();
+    }
 
   }
 

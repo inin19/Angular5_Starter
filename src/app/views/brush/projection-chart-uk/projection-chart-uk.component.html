@@ -83,18 +83,18 @@
 
   <div class="projection__content" id="projectionChartsArea" #projectionChartContainer>
 
-    <span id="projectionToolip" class="chart__tooltip">Tooltip</span>
 
+    <span id="projectionToolip" class="projection__tooltip">Tooltip</span>
+
+    <span id="lossRatioToolip" class="chart__tooltip">Tooltip</span>
 
     <div class="projection__content-shrink-logo" (click)="toggleFilterPanel()" [attr.title]=" filterPanelHidden? 'Expand': 'Collapse' ">
       <i class="fa" [ngClass]="{ 'fa-angle-left': !filterPanelHidden, 'fa-angle-right': filterPanelHidden }" aria-hidden="true"></i>
     </div>
 
-    <div class="projection__content-gridgraph ">
-      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true"
-        title="Graph"></i>
-      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true"
-        title="Grid"></i>
+    <div class="projection__content-gridgraph">
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
     </div>
 
 
@@ -122,7 +122,7 @@
       </div>
     </div>
     <div class="projection__content-projection">
-      <div [hidden]='grid' class="projection__content-projection-graph"  id='projectionChart' #projectionChart>
+      <div [hidden]='grid' class="projection__content-projection-graph" id='projectionChart' #projectionChart>
         <svg class="projection__content-projection-svg">
           <g class="projection__content-projection-svg-currency">
             <text> £ </text>
@@ -134,42 +134,42 @@
         </svg>
       </div>
 
-
       <div [hidden]='!grid' class="projection__content-projection-grid tableContainer">
-          <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
-              <thead>
-                <tr class="bg-primary">
-                  <th style="position: relative;">Attribute
-                    <span style="position: absolute; right: 0; ">Period &rarr;</span>
-                  </th>
-                  <th *ngFor="let n of periodSelector.getCurrentSelction()">
-                    <b>{{ n }}</b>
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let record of projectionGridData">
-                  <ng-container [ngSwitch]="record.attribute">
-                    <ng-container *ngSwitchCase="'CURRENT'">
-                      <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                    </ng-container>
-      
-                    <ng-container *ngSwitchCase="'PROPOSED'">
-                      <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
-                    </ng-container>
-      
-                    <ng-container *ngSwitchDefault>
-                      <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
-                      <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
-                    </ng-container>
-      
-                  </ng-container>
-                </tr>
-              </tbody>
-            </table>
+        <table *ngIf="projectionGridData" id='projectionGrid' class="table table-hover table-sm">
+          <thead>
+            <tr class="bg-primary">
+              <th style="position: relative;">Attribute
+                <span style="position: absolute; right: 0; ">Period &rarr;</span>
+              </th>
+              <th *ngFor="let n of periodSelector.getCurrentSelction()">
+                <b>{{ n }}</b>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let record of projectionGridData">
+              <ng-container [ngSwitch]="record.attribute">
+                <ng-container *ngSwitchCase="'CURRENT'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchCase="'PROPOSED'">
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                </ng-container>
+
+                <ng-container *ngSwitchDefault>
+                  <td>{{record.attribute | ProjectionCategory : countryCode }}</td>
+                  <td *ngFor="let cell of record.value">{{cell | BigNumberFormatPipe }}</td>
+                </ng-container>
+
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
 
-      
+
     </div>
 
   </div>

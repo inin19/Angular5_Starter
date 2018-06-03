@@ -1,7 +1,5 @@
 $primary-font-color: #666;
 $axis-line-dark-grey: darkgrey;
-
-
 .projection {
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
@@ -9,7 +7,10 @@ $axis-line-dark-grey: darkgrey;
     background-color: white;
     display: flex;
     justify-content: space-between;
-    padding: 0.875rem;
+    padding: 0.875rem; // overflow: hidden; 
+    // overflow-x: hidden;
+    // overflow-y: auto;
+    // overflow: auto;
     &__filter {
         flex: 0 1 auto;
         width: 18%; // background-color: aqua; // flex: 1 1 20%;
@@ -27,7 +28,6 @@ $axis-line-dark-grey: darkgrey;
             // display: table;
             // margin: 0 auto;
             .list-inline {
-
                 color: $primary-font-color;
             }
             .list-inline-item {
@@ -55,9 +55,7 @@ $axis-line-dark-grey: darkgrey;
             // display: table;
             // /* Allow the centering to work */
             // margin: 0 auto;
-
             font-size: 0.8rem;
-
             .list-group {
                 background-color: transparent;
                 color: $primary-font-color;
@@ -79,15 +77,15 @@ $axis-line-dark-grey: darkgrey;
         flex: 1 0 auto;
         transition: all .4s ease-out;
         display: flex;
-        flex-direction: column;
-        overflow: hidden;
-        
+        flex-direction: column; // overflow: hidden;
+        // overflow-y: scroll;
+        // overflow-x: hidden;
         &-shrink-logo {
             position: absolute;
             top: 0;
             left: 0;
-            width: 3rem;
-            height: 3rem;
+            width: 2.5rem;
+            height: 2.5rem;
             cursor: pointer;
             text-align: center;
             transition: all .2s;
@@ -107,26 +105,21 @@ $axis-line-dark-grey: darkgrey;
                 transition: all .2s;
             }
         }
-
         &-gridgraph {
             position: absolute;
             top: 0;
-            left: 3.5rem;
+            left: 3rem;
             z-index: 8000;
-            width: 3rem;
-            height: 3rem;
+            width: 2.5rem;
+            height: 2.5rem;
             text-align: center;
             cursor: pointer;
             transition: all .2s;
-
-
             &:hover {
                 i {
-                    transform: translate(-50%, -50%) scale(1.2);
+                    transform: translate(-50%, -50%) scale(1.1);
                 }
             }
-
-
             i {
                 font-size: 2rem;
                 vertical-align: middle;
@@ -136,17 +129,10 @@ $axis-line-dark-grey: darkgrey;
                 transform: translate(-50%, -50%);
                 transition: all .2s;
             }
-
         }
-
-
-
         &-loss-ratio {
-            flex: 0 1 auto;
-
-            // flex-shrink: 1;
-            background-color: #F0F8FF;
-            height: 25%;
+            flex: 0 1 20%; // flex-shrink: 1;
+            background-color: #F0F8FF; // height: 20%;
             position: relative;
             &-header {
                 // background-color: orange;
@@ -191,15 +177,15 @@ $axis-line-dark-grey: darkgrey;
         }
         &-projection {
             position: relative; // background-color: green;
-            height: 75%;
-
-            flex: 0 0 auto;
+            // height: 80%;
+            flex: 1 0 80%;
+            overflow: auto;
             &-graph {
                 height: 100%;
             }
             &-svg {
                 width: 100%;
-                height: 100%;
+                height: 98%;
                 .axis .tick text {
                     font-family: inherit;
                     font-size: 0.875rem;
@@ -213,11 +199,30 @@ $axis-line-dark-grey: darkgrey;
                     stroke-dasharray: 5, 1;
                     stroke-width: 0.5px;
                 }
-
-
             }
-
-
+            &-grid {
+                // background-color: orange;
+                padding-top: 1rem;
+                // padding-left: 1.5rem;
+                // padding-right: 1.5rem;
+                .table-sm th,
+                .table-sm td {
+                    padding: 0.2rem;
+                }
+                .table-sm th:first-child {
+                    min-width: 35%;
+                }
+                table {
+                    thead th:not(:first-child) {
+                        padding-right: 1.5rem;
+                        text-align: right;
+                    }
+                    tbody td:not(:first-child) {
+                        padding-right: 1.5rem;
+                        text-align: right;
+                    }
+                }
+            }
         }
     }
 }
