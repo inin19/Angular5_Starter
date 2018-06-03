@@ -33,6 +33,7 @@ export class ProjectionService extends ErrorHandler {
   private scatterplot = 'http://localhost:3000/scatterplot';
 
   private lossratio = 'http://localhost:3000/lossratio';
+  private lossratioNew = 'http://localhost:3000/lossratioNew';
 
   constructor(private http: HttpClient, injector: Injector) {
     super(injector);
@@ -63,14 +64,28 @@ export class ProjectionService extends ErrorHandler {
     }
   }
 
-  getScatterPlotData(): Observable<any> {
-    const l: number = new Date().getMilliseconds();
-    return this.http.get<any>(this.scatterplot + '?' + l, httpOptions);
-  }
+  // getScatterPlotData(): Observable<any> {
+  //   const l: number = new Date().getMilliseconds();
+  //   return this.http.get<any>(this.scatterplot + '?' + l, httpOptions);
+  // }
 
   getLossRatio(): Observable<any> {
     const l: number = new Date().getMilliseconds();
     return this.http.get<any>(this.lossratio + '?' + l, httpOptions);
   }
+
+
+  getLossRatioNew(): Observable<any> {
+    const l: number = new Date().getMilliseconds();
+    return Observable.forkJoin(
+      this.http.get<Array<any>>(this.lossratio + '?' + l, httpOptions),
+      this.http.get<Array<any>>(this.lossratioNew + '?' + l, httpOptions),
+    );
+
+
+  }
+
+
+
 
 }

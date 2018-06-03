@@ -27,7 +27,7 @@ export class Scatterplot {
     elementRef: ElementRef,
     margin: any,
     data: any[],
-    lossRatio: boolean
+    lossRatio: boolean,
   ) {
     this.updateChart(chartParent, elementRef, margin, data, lossRatio);
   }
@@ -37,13 +37,17 @@ export class Scatterplot {
     elementRef: ElementRef,
     margin: any,
     data: any[],
-    lossRatio: boolean
+    lossRatio: boolean,
   ) {
 
     if (lossRatio === true) {
       this.type = 'lossRatio';
+      data = data.filter(d => d.category === 'lossRatio');
+
     } else {
       this.type = 'renewalRate';
+      data = data.filter(d => d.category === 'renewalRate');
+
     }
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     const domID = '#' + elementRef.nativeElement.id;
@@ -56,10 +60,6 @@ export class Scatterplot {
 
     this.chart = this.svg.select('.scatterplotGroup')
       .attr('transform', `translate(${this.margin.left},${this.margin.top})`);
-
-
-
-
 
 
     this.xScale = d3.scaleBand()
@@ -78,7 +78,7 @@ export class Scatterplot {
     // console.log(d3.extent(data, (d) => d.lossRatio));
 
     this.yScale = d3.scaleLinear()
-      .domain([d3.extent(data, (d) => d[this.type])[0], d3.extent(data, (d) => d[this.type])[1] + 0.05]).nice()
+      .domain([d3.extent(data, (d) => d['value'])[0], d3.extent(data, (d) => d['value'])[1] + 0.05]).nice()
       .range([this.height, 0]);
 
 
@@ -92,7 +92,7 @@ export class Scatterplot {
 
     const valueline = d3.line()
       .x((d) => this.xScale(d['period']))
-      .y((d) => this.yScale(d[this.type]));
+      .y((d) => this.yScale(d['value']));
 
     this.pathCurrent
       .data([data.filter(d => d.currentProposed === 'CURRENT')])
@@ -164,8 +164,8 @@ export class Scatterplot {
     labels
       .transition()
       .attr('x', d => this.x1Scale(d.currentProposed) + this.x1Scale.bandwidth() / 2)
-      .attr('y', d => this.yScale(d[this.type]) - 8 * 2)
-      .text(d => d3.format('.1%')(d[this.type]))
+      .attr('y', d => this.yScale(d['value']) - 8 * 2)
+      .text(d => d3.format('.1%')(d['value']))
       ;
 
 
@@ -175,18 +175,12 @@ export class Scatterplot {
       .classed('textLabel', true)
       .classed('current', (d) => d.currentProposed === 'CURRENT' ? true : false)
       .classed('proposed', (d) => d.currentProposed === 'PROPOSED' ? true : false)
-      .text(d => d3.format('.1%')(d[this.type]))
+      .text(d => d3.format('.1%')(d['value']))
       .attr('x', d => this.x1Scale(d.currentProposed) + this.x1Scale.bandwidth() / 2)
-      .attr('y', d => this.yScale(d[this.type] + 0.05))
+      .attr('y', d => this.yScale(d['value'] + 0.05))
       .attr('text-anchor', 'middle')
       .attr('fill', '#666')
       .style('opacity', 0);
-
-
-
-
-
-
 
 
 
@@ -204,7 +198,7 @@ export class Scatterplot {
       .transition()
       .attr('r', 8)
       .attr('cx', d => this.x1Scale(d.currentProposed) + this.x1Scale.bandwidth() / 2)
-      .attr('cy', d => this.yScale(d[this.type]));
+      .attr('cy', d => this.yScale(d['value']));
 
     dots
       .enter()
@@ -214,15 +208,12 @@ export class Scatterplot {
       .classed('proposed', (d) => d.currentProposed === 'PROPOSED' ? true : false)
       .attr('r', 8)
       .attr('cx', d => this.x1Scale(d.currentProposed) + this.x1Scale.bandwidth() / 2)
-      .attr('cy', d => this.yScale(d[this.type]))
+      .attr('cy', d => this.yScale(d['value']))
       .style('fill', (d) => d.currentProposed === 'CURRENT' ? 'green' : 'blue')
       .style('opacity', 0.5)
       .on('mouseover', this.handleMouseOver(chartParent))
       .on('mouseout', this.handleMouseOut())
       ;
-
-
-
 
 
   }

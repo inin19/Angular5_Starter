@@ -12,15 +12,18 @@ import { ProjectionTrendTypeService } from './../../providers/charts/projection-
 export class BrushComponent implements OnInit, OnDestroy {
 
   private proposalId = 187;
-  private countryCode = 'ISO2_GB';
+  countryCode = 'ISO2_GB';
   trendType = 'BENCHMARK';
 
-  projectionData: any[];
+  projectionPlanData: any[];
   lossRatioData: any[];
-
   source = true;
 
   private trendTypeSubcription: Subscription;
+
+
+
+  lossRatioRenewalRate: any[];
 
 
   constructor(private projectionService: ProjectionService, private projectionTrendTypeService: ProjectionTrendTypeService) { }
@@ -48,10 +51,12 @@ export class BrushComponent implements OnInit, OnDestroy {
 
 
   fetchLossRatioData(): void {
-
-    this.projectionService.getLossRatio()
+    this.projectionService.getLossRatioNew()
       .subscribe(
-        data => { this.lossRatioData = data; }
+        data => {
+          this.lossRatioData = data[0];
+          this.lossRatioRenewalRate = data[1];
+        }
       );
   }
 
@@ -61,7 +66,7 @@ export class BrushComponent implements OnInit, OnDestroy {
 
     this.projectionService.getProjectionData(this.countryCode, this.proposalId.toString(), this.trendType, this.source)
       .subscribe(
-        data => { this.projectionData = data; }
+        data => { this.projectionPlanData = data; }
       );
   }
 

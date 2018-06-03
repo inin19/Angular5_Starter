@@ -15,6 +15,7 @@ import { ProjectionPlanSelectionService } from './../../services/projection-plan
 // import { ProjectionCategoryPipes } from './../pipes/charts/projectionCategory-pipe';
 
 import { DashboardModule } from './../dashboard/dashboard.module';
+import { ProjectionChartItComponent } from './projection-chart-it/projection-chart-it.component';
 
 
 @NgModule({
@@ -25,7 +26,7 @@ import { DashboardModule } from './../dashboard/dashboard.module';
     FormsModule,
     DashboardModule,
   ],
-  declarations: [BrushComponent, ProjectionChartUkComponent],
+  declarations: [BrushComponent, ProjectionChartUkComponent, ProjectionChartItComponent],
   providers: [ProjectionService, ProjectionTrendTypeService, ProjectionPlanSelectionService]
 
 })

@@ -206,26 +206,14 @@ export class ProjectionD3Chart {
     return (d, i) => {
       const bounds = chartParent.nativeElement.getBoundingClientRect();
 
-      console.log(bounds);
-
       const tooltipWidth = Number(d3.select(tooltipDomID).style('width').replace('px', ''));
-      // console.log(Number(d3.select(tooltipDomID).style('width').replace('px', '')));
       const tooltipBounds = d3.event.clientX - bounds.left + tooltipWidth;
 
-
-      const tooltipHeight = Number(d3.select(tooltipDomID).style('height').replace('px', ''));
-      // console.log(bounds.width, '- ', tooltipBounds);
-
-      console.log(tooltipWidth);
-
       if (tooltipBounds - 10 > bounds.width) {
-
-
 
         d3.select(tooltipDomID)
           .style('left', (d3.event.clientX - bounds.left - tooltipWidth - 20) + 'px')
           .style('top', d3.event.clientY - bounds.top + 10 + 'px');
-        // .style('transform', 'translate(-100% ,0)');
 
       } else {
 
@@ -234,28 +222,6 @@ export class ProjectionD3Chart {
           .style('top', d3.event.clientY - bounds.top + 10 + 'px');
 
       }
-
-
-
-      // if ((d3.event.clientX - bounds.left + d3.select(tooltipDomID).style('width')) > bounds.width) {
-      //   console.log('overflow');
-      // }
-
-
-
-      // console.log(d3.select(tooltipDomID).style('width'));
-
-
-      // console.log(bounds.width);
-
-
-
-      // d3.select(tooltipDomID)
-      //   .style('rgiht', d3.event.clientX - bounds.left - 10 + 'px')
-      //   .style('top', d3.event.clientY - bounds.top - 10 + 'px');
-
-
-
 
     };
   }

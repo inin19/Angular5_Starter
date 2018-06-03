@@ -41,7 +41,7 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
 
 
   @Input() private projectionJSON: any[];
-  @Input() private lossRatioData: any[];
+  @Input() private lossRatioRenewalRate: any[];
 
   @ViewChild('projectionChartContainer') private projectionChartContainer: ElementRef;
   @ViewChild('projectionChart') private projectionChart: ElementRef;
@@ -112,6 +112,7 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
 
   ngOnInit() {
     console.log('projection init, trend tpe : ', this.trendType);
+
     this.planSubscription = this.planSelectorService.plans$.subscribe(
       (plans) => {
         (plans.length === 0) ? this.planSelector.resetSelector() : this.planSelector.setSelectionNEW(plans);
@@ -153,7 +154,7 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
       this.projectionChartContainer,
       this.lossRatioChart,
       this.lossRatioMargin,
-      this.lossRatioData,
+      this.lossRatioRenewalRate,
       this.lossRatio
     );
   }
@@ -163,7 +164,7 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
       this.projectionChartContainer,
       this.lossRatioChart,
       this.lossRatioMargin,
-      this.lossRatioData,
+      this.lossRatioRenewalRate,
       this.lossRatio
     );
   }
@@ -323,7 +324,6 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
   }
 
   toggleFilterPanel() {
-    console.log('toggle!');
     this.filterPanelHidden = !this.filterPanelHidden;
   }
 
