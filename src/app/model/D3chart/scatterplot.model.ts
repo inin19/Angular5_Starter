@@ -20,7 +20,6 @@ export class Scatterplot {
 
   private margin: { top: number, right: number, bottom: number, left: number };
 
-  private type: string;
 
   constructor(
     chartParent: ElementRef,
@@ -41,14 +40,11 @@ export class Scatterplot {
   ) {
 
     if (lossRatio === true) {
-      this.type = 'lossRatio';
       data = data.filter(d => d.category === 'lossRatio');
-
     } else {
-      this.type = 'renewalRate';
       data = data.filter(d => d.category === 'renewalRate');
-
     }
+
     const color = d3.scaleOrdinal(d3.schemeCategory10);
     const domID = '#' + elementRef.nativeElement.id;
     this.margin = margin;

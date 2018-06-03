@@ -93,13 +93,13 @@
     </div>
 
     <div class="projection__content-gridgraph">
-      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph" aria-hidden="true" title="Graph"></i>
-      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph" aria-hidden="true" title="Grid"></i>
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart" aria-hidden="true" title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table" aria-hidden="true" title="Grid"></i>
     </div>
 
 
     <div class="projection__content-loss-ratio" id="lossRatioChart" #lossRatioChart>
-      <div class="projection__content-loss-ratio-header">
+      <div [hidden]='grid' class="projection__content-loss-ratio-header">
         <ul class="list-group">
           <li class="list-group-item" (click)="lossRatio && toggleLossRatioRenewalRate()">
             <span [ngClass]="{ 'li-wrapper-unselected': lossRatio, 'li-wrapper-selected': !lossRatio }">Loss Ratio</span>
@@ -108,9 +108,9 @@
             <span [ngClass]="{ 'li-wrapper-unselected': !lossRatio, 'li-wrapper-selected': lossRatio }">Renewal Rate</span>
           </li>
         </ul>
-
       </div>
-      <div [hidden]='grid' class="projection__content-loss-ratio-wrapper">
+
+      <div [hidden]='grid' class="projection__content-loss-ratio-graph">
         <svg class="projection__content-loss-ratio-svg scatterplot">
           <g class="scatterplotGroup">
             <path class="line currentPath"></path>
@@ -120,7 +120,52 @@
           </g>
         </svg>
       </div>
+
+      <div [hidden]='!grid' class="projection__content-loss-ratio-grid">
+        <table class="table">
+          <thead>
+            <tr class="bg-primary">
+              <th></th>
+              <th>Period</th>
+              <th *ngFor="let n of [1,2,3,4,5]">{{ n }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr style="position: relative;">
+              <td rowspan=2>
+                <span>Loss Ratio</span>
+              </td>
+              <td>Current</td>
+              <td *ngFor="let cell of lossRatioData_current"> {{ cell.value | percent }} </td>
+            </tr>
+            <tr>
+              <td>Proposed</td>
+              <td *ngFor="let cell of lossRatioData_proposed"> {{ cell.value | percent }} </td>
+            </tr>
+
+            <tr>
+              <td rowspan=2>
+                <span> Renewal Rate </span>
+              </td>
+              <td>Current</td>
+              <td *ngFor="let cell of renewalRateData_current"> {{ cell.value | percent }} </td>
+            </tr>
+
+            <tr>
+              <td>Proposed</td>
+              <td *ngFor="let cell of renewalRateData_proposed"> {{ cell.value | percent }} </td>
+            </tr>
+
+          </tbody>
+
+        </table>
+      </div>
+
+
+
     </div>
+
     <div class="projection__content-projection">
       <div [hidden]='grid' class="projection__content-projection-graph" id='projectionChart' #projectionChart>
         <svg class="projection__content-projection-svg">
@@ -150,11 +195,12 @@
             <tr *ngFor="let record of projectionGridData">
               <ng-container [ngSwitch]="record.attribute">
                 <ng-container *ngSwitchCase="'CURRENT'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">Current</td>
                 </ng-container>
 
                 <ng-container *ngSwitchCase="'PROPOSED'">
-                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">{{record.attribute}}</td>
+                    <!-- {{record.attribute}} -->
+                  <td [colSpan]="periodSelector.getCurrentSelction().length+1" class="bg-secondary">Proposed</td>
                 </ng-container>
 
                 <ng-container *ngSwitchDefault>

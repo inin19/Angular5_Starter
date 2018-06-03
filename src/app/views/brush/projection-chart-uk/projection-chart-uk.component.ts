@@ -63,6 +63,13 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
   projectionGridData: ProjectionGridData[];
   pieData: any[];
 
+  lossRatioData_current: any[];
+  renewalRateData_current: any[];
+  lossRatioData_proposed: any[];
+  renewalRateData_proposed: any[];
+
+
+
   categorySelector: Selector;
   planSelector: Selector;
   periodSelector: Selector;
@@ -113,6 +120,13 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
   ngOnInit() {
     console.log('projection init, trend tpe : ', this.trendType);
 
+
+
+
+    // this.lossRatioData_proposed.forEach(element => {
+    //   console.log(element);
+    // });
+
     this.planSubscription = this.planSelectorService.plans$.subscribe(
       (plans) => {
         (plans.length === 0) ? this.planSelector.resetSelector() : this.planSelector.setSelectionNEW(plans);
@@ -128,8 +142,17 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
     this.createSelector();
     this.createProjectionChart();
     this.createLossRatioChart();
+    this.createLossRatioRenewalRateGrid();
   }
 
+
+  createLossRatioRenewalRateGrid() {
+    this.lossRatioData_current = this.lossRatioRenewalRate.filter(d => d.currentProposed === 'CURRENT').filter(d => d.category === 'lossRatio').sort((a, b) => a.period - b.period);
+    this.renewalRateData_current = this.lossRatioRenewalRate.filter(d => d.currentProposed === 'CURRENT').filter(d => d.category === 'renewalRate').sort((a, b) => a.period - b.period);
+    this.lossRatioData_proposed = this.lossRatioRenewalRate.filter(d => d.currentProposed === 'PROPOSED').filter(d => d.category === 'lossRatio').sort((a, b) => a.period - b.period);
+    this.renewalRateData_proposed = this.lossRatioRenewalRate.filter(d => d.currentProposed === 'PROPOSED').filter(d => d.category === 'renewalRate').sort((a, b) => a.period - b.period);
+
+  }
 
   ngOnDestroy() {
     this.resizeDetector.removeAllListeners(this.projectionChartContainer.nativeElement);
@@ -144,6 +167,8 @@ export class ProjectionChartUkComponent implements OnInit, OnChanges, OnDestroy 
       this.createProjectionChartData();
       this.createSelector();
       this.createProjectionChart();
+      this.createLossRatioChart();
+      this.createLossRatioRenewalRateGrid();
     }
 
   }
