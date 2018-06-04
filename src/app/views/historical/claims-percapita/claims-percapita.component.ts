@@ -24,7 +24,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
   };
 
   @Input() private benchmarkClaimPerCapita: WaterfallData;
-  @Input() private proposalClaimPerCapita: WaterfallData;
+  @Input() proposalClaimPerCapita: WaterfallData;
   @Input() hasDemographicMemberCount: boolean;
 
 
@@ -135,15 +135,27 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
 
 
   listenToDivResize() {
-    if (this.proposalClaimPerCapita) {
-      this.resizeDetector.listenTo(this.proposalClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-        this.createUpdateChart_proposal();
-      });
-    }
-    this.resizeDetector.listenTo(this.benchmarkClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
-      this.createUpdateChart_benchmark();
+    // if (this.proposalClaimPerCapita) {
+    //   this.resizeDetector.listenTo(this.proposalClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
+    //     this.createUpdateChart_proposal();
+    //   });
+    // }
+    // this.resizeDetector.listenTo(this.benchmarkClaimsPerCapita.nativeElement, (elem: HTMLElement) => {
+    //   this.createUpdateChart_benchmark();
 
+    // });
+
+
+    this.resizeDetector.listenTo(this.claimsPerCapitaContainer.nativeElement, (elem: HTMLElement) => {
+      if (this.proposalClaimPerCapita) {
+        this.createUpdateChart_proposal();
+      }
+      this.createUpdateChart_benchmark();
     });
+
+
+
+    // claimsPerCapitaContainer
     console.log('listen to claims per capita divs');
   }
 
@@ -157,10 +169,12 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
 
 
   unListenToDivResize() {
-    if (this.proposalClaimPerCapita) {
-      this.resizeDetector.removeAllListeners(this.proposalClaimsPerCapita.nativeElement);
-    }
-    this.resizeDetector.removeAllListeners(this.benchmarkClaimsPerCapita.nativeElement);
+    // if (this.proposalClaimPerCapita) {
+    //   this.resizeDetector.removeAllListeners(this.proposalClaimsPerCapita.nativeElement);
+    // }
+    // this.resizeDetector.removeAllListeners(this.benchmarkClaimsPerCapita.nativeElement);
+
+    this.resizeDetector.removeAllListeners(this.claimsPerCapitaContainer.nativeElement);
     console.log('unlistenclaims per capita divs');
   }
 

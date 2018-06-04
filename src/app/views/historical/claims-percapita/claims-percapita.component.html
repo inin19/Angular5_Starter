@@ -45,8 +45,8 @@
 
     <div [hidden]='grid' class="claims-per-capita__content-client">
       <div class="claims-per-capita__content-client-title chart__tilte">Client Claims Per Capita</div>
-      <div class="claims-per-capita__content-client-graph" id="proposalClaimsPerCapita" #proposalClaimsPerCapita>
-        <svg *ngIf="proposalClaimsPerCapita" class="waterfallChart">
+      <div *ngIf="proposalClaimPerCapita" class="claims-per-capita__content-client-graph" id="proposalClaimsPerCapita" #proposalClaimsPerCapita>
+        <svg class="waterfallChart">
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>

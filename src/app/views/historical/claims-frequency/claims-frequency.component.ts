@@ -116,13 +116,35 @@ export class ClaimsFrequencyComponent implements OnInit, OnDestroy, AfterViewIni
   }
 
   listenToDivResize() {
-    if (this.proposalClaimFrequency) {
-      this.resizeDetector.listenTo(this.proposalClaimsFrequency.nativeElement, (elem: HTMLElement) => {
-        this.createUpdateChart_proposal();
-      });
+    // if (this.proposalClaimFrequency) {
+    //   this.resizeDetector.listenTo(this.proposalClaimsFrequency.nativeElement, (elem: HTMLElement) => {
+    //     this.createUpdateChart_proposal();
+    //   });
 
-    }
-    this.resizeDetector.listenTo(this.benchmarkClaimsFrequency.nativeElement, (elem: HTMLElement) => {
+    // }
+    // this.resizeDetector.listenTo(this.benchmarkClaimsFrequency.nativeElement, (elem: HTMLElement) => {
+    //   this.createUpdateChart_benchmark();
+    // });
+
+    // claimsFrequencyContainer
+
+
+
+    // if (this.proposalClaimFrequency) {
+    //   this.resizeDetector.listenTo(this.proposalClaimsFrequency.nativeElement, (elem: HTMLElement) => {
+    //     this.createUpdateChart_proposal();
+    //   });
+
+    // }
+    // this.resizeDetector.listenTo(this.benchmarkClaimsFrequency.nativeElement, (elem: HTMLElement) => {
+    //   this.createUpdateChart_benchmark();
+    // });
+
+
+    this.resizeDetector.listenTo(this.claimsFrequencyContainer.nativeElement, (elem: HTMLElement) => {
+      if (this.proposalClaimFrequency) {
+        this.createUpdateChart_proposal();
+      }
       this.createUpdateChart_benchmark();
     });
 
@@ -131,10 +153,12 @@ export class ClaimsFrequencyComponent implements OnInit, OnDestroy, AfterViewIni
 
 
   unListenToDivResize() {
-    if (this.proposalClaimFrequency) {
-      this.resizeDetector.removeAllListeners(this.proposalClaimsFrequency.nativeElement);
-    }
-    this.resizeDetector.removeAllListeners(this.benchmarkClaimsFrequency.nativeElement);
+    // if (this.proposalClaimFrequency) {
+    //   this.resizeDetector.removeAllListeners(this.proposalClaimsFrequency.nativeElement);
+    // }
+    // this.resizeDetector.removeAllListeners(this.benchmarkClaimsFrequency.nativeElement);
+
+    this.resizeDetector.removeAllListeners(this.claimsFrequencyContainer.nativeElement);
 
     console.log('unlistenclaims frequency divs');
   }
