@@ -9,7 +9,7 @@ export class WaterfallD3Chart {
     FREQUENCY: 'FREQUENCY'
   };
 
-  static stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
+  // static stackColor = { firstLastBar: '#6b9be2', fall: '#71bc78', rise: '#fcb97d' };
 
 
   private yScaleFormat: any;
@@ -78,7 +78,6 @@ export class WaterfallD3Chart {
     this.width = elementRef.nativeElement.offsetWidth - this.margin.left - this.margin.right;
     this.height = elementRef.nativeElement.offsetHeight - this.margin.top - this.margin.bottom;
 
-    console.log('height of svg:', chartType, ' ', this.height);
 
     this.svg = d3.select(domID).select('svg');
 
@@ -144,27 +143,18 @@ export class WaterfallD3Chart {
 
 
     bars
+      .classed('claims__waterfall-year', d => (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') ? true : false)
+      .classed('claims__waterfall-fall', d => (d.data.key !== 'PREVYEAR' && d.data.key !== 'CURRYEAR' && d.data.Fall > 0) ? true : false)
+      .classed('claims__waterfall-rise', d => (d.data.key !== 'PREVYEAR' && d.data.key !== 'CURRYEAR' && d.data.Fall === 0) ? true : false)
       .transition()
       .attr('x', d => this.xScale(conditionGroupTranslation[d.data.key]))
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
-
         if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && zoom) {
-          // min
           return this.yScale(d[0]) - this.yScale(d[1] - yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
-        }
-
-      })
-      .attr('fill', d => {
-        if (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') {
-          return this.stackColor.firstLastBar;
-        } else if (d.data.Fall > 0) {
-          return this.stackColor.fall;
-        } else {
-          return this.stackColor.rise;
         }
       });
 
@@ -178,25 +168,17 @@ export class WaterfallD3Chart {
       .attr('y', d => this.yScale(d[1]))
       .attr('width', this.xScale.bandwidth())
       .attr('height', d => {
-
-        // console.log(d);
-
         if ((d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') && zoom) {
-          // min
           return this.yScale(d[0]) - this.yScale(d[1] - yScaleDomain[0]);
         } else {
           return this.yScale(d[0]) - this.yScale(d[1]);
         }
       })
-      .attr('fill', d => {
-        if (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') {
-          return this.stackColor.firstLastBar;
-        } else if (d.data.Fall > 0) {
-          return this.stackColor.fall;
-        } else {
-          return this.stackColor.rise;
-        }
-      })
+
+      .classed('claims__waterfall-year', d => (d.data.key === 'PREVYEAR' || d.data.key === 'CURRYEAR') ? true : false)
+      .classed('claims__waterfall-fall', d => (d.data.key !== 'PREVYEAR' && d.data.key !== 'CURRYEAR' && d.data.Fall > 0) ? true : false)
+      .classed('claims__waterfall-rise', d => (d.data.key !== 'PREVYEAR' && d.data.key !== 'CURRYEAR' && d.data.Fall === 0) ? true : false)
+
       .on('mouseover', this.handleMouseOver(tooltipDomID, conditionGroupTranslation))
       .on('mousemove', this.handleMouseMove(chartParent, tooltipDomID))
       .on('mouseout', this.handleMouseOut(tooltipDomID));
@@ -207,9 +189,8 @@ export class WaterfallD3Chart {
   handleMouseOver(tooltipDomID: string, conditionGroupTranslation: any): (d, i) => void {
     return (d, i) => {
       // console.log('in mouseOver');
-
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 0.5);
+        .style('opacity', 0.5);
 
       d3.select(tooltipDomID)
         .style('opacity', 1)
@@ -225,7 +206,7 @@ export class WaterfallD3Chart {
     return (d, i) => {
       // console.log('in MouseOut');
       d3.select(d3.event.currentTarget)
-        .attr('opacity', 1);
+        .style('opacity', 1);
       d3.select(tooltipDom)
         .style('opacity', 0);
     };

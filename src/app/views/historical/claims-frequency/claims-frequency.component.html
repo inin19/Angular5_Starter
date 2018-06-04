@@ -38,7 +38,7 @@
         Client Claims Frequency
       </div>
       <div class="claims-frequency__content-client-graph" id="proposalClaimsFrequency" #proposalClaimsFrequency>
-        <svg class="waterfallChart">
+        <svg *ngIf="proposalClaimFrequency" class="waterfallChart">
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>

@@ -20,7 +20,7 @@ export class ClaimsFrequencyComponent implements OnInit, OnDestroy, AfterViewIni
   };
 
   @Input() private benchmarkClaimFrequency: WaterfallData;
-  @Input() private proposalClaimFrequency: WaterfallData;
+  @Input() proposalClaimFrequency: WaterfallData;
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
   @Input() private conditionGroups: string[];

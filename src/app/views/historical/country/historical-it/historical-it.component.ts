@@ -263,7 +263,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
       this.fetchBenchmarkProposalDemograpic();
       this.fetchBenchmarkProposalClaimAndMemberCount();
     } else {
-      this.fetchBenchmarkDemograpic();
+      // this.fetchBenchmarkDemograpic();
       this.fetchBenchmarkClaimAndMemberCount();
     }
 
@@ -673,7 +673,7 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   // HTTP Request
 
   fetchBenchmarkProposalDemograpic(): void {
-    this.demographicService.getBenchmarkProposalDemographicData(this.countryCode, this.proposalID, this.ageGroup)
+    this.demographicService.getDemographicData(this.countryCode, this.proposalID, this.ageGroup)
       .subscribe(
         data => {
           this.benchmarkDemographicData = data[0];
@@ -695,26 +695,26 @@ export class HistoricalItComponent implements OnInit, OnDestroy {
   }
 
 
-  fetchBenchmarkDemograpic(): void {
-    this.demographicService.getBenchmarkDemographicData(this.countryCode, this.proposalID, this.ageGroup)
-      .subscribe(
-        data => {
-          this.benchmarkDemographicData = data;
-        },
-        err => console.error(err),
-        () => {
-          this.createDemographicData();
-          this.createDemographicSelectors();
+  // fetchBenchmarkDemograpic(): void {
+  //   this.demographicService.getBenchmarkDemographicData(this.countryCode, this.proposalID, this.ageGroup)
+  //     .subscribe(
+  //       data => {
+  //         this.benchmarkDemographicData = data;
+  //       },
+  //       err => console.error(err),
+  //       () => {
+  //         this.createDemographicData();
+  //         this.createDemographicSelectors();
 
-          this.selectors = this.demographicSelectors;
+  //         this.selectors = this.demographicSelectors;
 
-          // release memory here
-          this.benchmarkDemographicData = null;
-          this.proposalDemographicData = null;
-          console.log('done loading demographic data');
-        }
-      );
-  }
+  //         // release memory here
+  //         this.benchmarkDemographicData = null;
+  //         this.proposalDemographicData = null;
+  //         console.log('done loading demographic data');
+  //       }
+  //     );
+  // }
 
 
   fetchBenchmarkProposalClaimAndMemberCount(): void {

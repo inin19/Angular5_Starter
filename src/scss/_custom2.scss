@@ -3,14 +3,12 @@ $axis-line-dark-grey: darkgrey;
 $graph-blue-primary: #5cbae6;
 $graph-green-primary: green;
 $graph-red-primary: red;
-
+$graph-red-secondary:  rgb(255, 40, 0);
 @mixin tooltip() {
     opacity: 0; // visibility: hidden;
     pointer-events: none;
     position: absolute;
-    min-width: 50px;
-    // max-width: 200px;
-
+    min-width: 50px; // max-width: 200px;
     width: 180px;
     height: auto;
     background: none repeat scroll 0 0 #ffffff;
@@ -21,17 +19,13 @@ $graph-red-primary: red;
     color: $primary-font-color;
     box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
     z-index: 9999;
-
 }
-
 
 @mixin chartTooltip() {
     opacity: 0; // visibility: hidden;
     pointer-events: none;
     position: absolute;
-    min-width: 50px;
-    // max-width: 200px;
-
+    min-width: 50px; // max-width: 200px;
     // width: 180px;
     height: auto;
     background: none repeat scroll 0 0 #ffffff;
@@ -42,10 +36,7 @@ $graph-red-primary: red;
     color: $primary-font-color;
     box-shadow: 0px 3px 9px rgba(0, 0, 0, .15);
     z-index: 9999;
-
 }
-
-
 
 @mixin chartTitle() {
     color: $primary-font-color;
@@ -65,7 +56,6 @@ $graph-red-primary: red;
 .projection__tooltip {
     @include tooltip();
 }
-
 
 .chart__tooltip {
     @include chartTooltip();
@@ -87,17 +77,25 @@ $graph-red-primary: red;
     &-curr {
         fill: $graph-green-primary;
         opacity: 0.8;
-        // .green {}
         &.red {
             fill: $graph-red-primary;
             opacity: 0.8;
         }
-
-
-
     }
     &-benchmark {
         fill: $graph-blue-primary;
         opacity: 0.8;
+    }
+}
+
+.claims__waterfall {
+    &-year {
+        fill: #6b9be2;
+    }
+    &-fall {
+        fill: #71bc78;
+    }
+    &-rise {
+        fill: $graph-red-secondary;
     }
 }

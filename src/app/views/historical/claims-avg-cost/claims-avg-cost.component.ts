@@ -79,11 +79,11 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
 
   ngAfterViewInit() {
     this.createOrUpdateChart();
-    console.log('after view init');
+    // console.log('after view init');
   }
 
   ngOnDestroy() {
-    console.log('claims avg');
+    // console.log('claims avg');
   }
 
   private getMaxAvgCost(): number {
@@ -229,10 +229,6 @@ export class ClaimsAvgCostComponent implements OnInit, OnDestroy, AfterViewInit 
       this.avgCostGraphData.push(total, total1, total2);
 
 
-
-      this.avgCostGraphData.forEach(element => {
-        console.log(element);
-      });
 
 
     } else {

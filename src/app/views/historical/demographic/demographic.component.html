@@ -1,6 +1,9 @@
 <div class="demographic">
   <div class="demographic__header">
-    <div class="demographic__header-combined-button" *ngIf="proposalDemographic">
+
+      <!-- *ngIf="proposalDemographic" -->
+
+    <div class="demographic__header-combined-button"  *ngIf="proposalDemographic">
       &nbsp;Combined Graph &nbsp;
       <label class="switch switch-3d switch-primary" title="Zoom">
         <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="toggleMergeChart()">
@@ -19,7 +22,7 @@
       <span id="demographicTooltip" class="chart__tooltip"> Tooltip </span>
       <div class="demographic__content-seperate-client">
         <div class="demographic__content-seperate-client-title chart__tilte">Client Demographic</div>
-        <div [hidden]='grid' class="demographic__content-seperate-client-graph" *ngIf="proposalDemographic" id="proposalDemographic"
+        <div [hidden]='grid' *ngIf="proposalDemographic" class="demographic__content-seperate-client-graph" id="proposalDemographic"
           #proposalDemographic>
           <svg class="tornadoChart demographic__content-seperate-graph-svg">
             <g class="bars">
@@ -127,7 +130,7 @@
 
     </div>
 
-    <div [hidden]='!zoom' class="demographic__content-combined" id="demographicCombinedChartArea" #demographicCombinedContainer>
+    <div [hidden]='!zoom' *ngIf="proposalDemographic" class="demographic__content-combined" id="demographicCombinedChartArea" #demographicCombinedContainer>
       <span id="demographicCombinedTooltip" class="chart__tooltip">Tooltip</span>
       <div class="demographic__content-combined-title">Client and Benchmark Demographic</div>
       <div [hidden]='grid' class="demographic__content-combined-graph" id="combinedDemographic" #combinedDemographic>

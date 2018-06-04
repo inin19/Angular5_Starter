@@ -25,6 +25,10 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
 
   @Input() private benchmarkClaimPerCapita: WaterfallData;
   @Input() private proposalClaimPerCapita: WaterfallData;
+  @Input() hasDemographicMemberCount: boolean;
+
+
+
   @Input() private conditionGroupTranslation: any;
   @Input() private claimMargin: any;
 
@@ -97,6 +101,7 @@ export class ClaimsPerCapitaComponent implements OnInit, OnDestroy, AfterViewIni
 
   ngOnInit() {
     console.log('claim PerCapita init');
+
     this.claimPerCapitaXDomain = Object.keys(this.conditionGroupTranslation).map(key => this.conditionGroupTranslation[key]);
     this.createOrUpdateGridGraphData();
   }

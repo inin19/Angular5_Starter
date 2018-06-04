@@ -6,8 +6,8 @@ $axis-line-dark-grey: darkgrey;
     justify-content: stretch;
     height: 100%;
     &__header {
-        flex-grow: 1;
-        position: relative; // background-color: aquamarine;
+        flex: 0 0 2.2rem;
+        position: relative;
         &-combined-button {
             display: inline-block;
         }
@@ -19,7 +19,7 @@ $axis-line-dark-grey: darkgrey;
         }
     }
     &__content {
-        flex-grow: 99; // background-color: orangered;
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
         &-seperate {
@@ -30,10 +30,8 @@ $axis-line-dark-grey: darkgrey;
                 display: flex;
                 flex-direction: column;
                 &-title {
-                    // color: $primary-font-color;
-                    // font-size: 1.15rem;
-                    // font-weight: 600;
-                    // text-align: center;
+                    flex: 0 0 3rem;
+                    line-height: 3rem;
                 }
                 &-graph {
                     flex: 1 0 auto;
@@ -50,10 +48,8 @@ $axis-line-dark-grey: darkgrey;
                 display: flex;
                 flex-direction: column;
                 &-title {
-                    // color: $primary-font-color;
-                    // font-size: 1.15rem;
-                    // font-weight: 600;
-                    // text-align: center;
+                    flex: 0 0 3rem;
+                    line-height: 3rem;
                 }
                 &-graph {
                     flex: 1 0 auto;

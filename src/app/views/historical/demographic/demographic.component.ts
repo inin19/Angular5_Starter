@@ -30,7 +30,10 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
   static percentage = 'Percentage';
   static averageAge = 'Average Age';
 
+  // check if undefined
   @Input() proposalDemographic: TornadoData;
+
+
   @Input() benchmarkDemographic: TornadoData;
   @Input() private ageGroup: string[];
   @Input() private demographicMargin: any;
@@ -89,6 +92,7 @@ export class DemographicComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit() {
     console.log('in demographic init');
+
     this.ageGroupReverse = this.ageGroup.slice().reverse();
     this.createOrUpdateData();
   }

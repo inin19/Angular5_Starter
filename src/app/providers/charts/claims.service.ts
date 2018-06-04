@@ -78,11 +78,12 @@ export class ClaimsService {
       this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
       this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions),
       this.http.get<Array<any>>('http://localhost:3000/benchmarkClaims' + '?' + l, httpOptions),
-      this.http.get<Array<any>>('http://localhost:3000/benchmarkMemberCount' + '?' + l, httpOptions)
+      this.http.get<Array<any>>('http://localhost:3000/proposalMemberCount' + '?' + l, httpOptions),
+      this.http.get<Array<any>>('http://localhost:3000/getLatestBenchmarkClaimsYears' + '?' + l, httpOptions)
+
     );
   }
 
-
-
+// proposalMemberCount
 
 }

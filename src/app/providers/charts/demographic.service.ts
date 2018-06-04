@@ -35,10 +35,10 @@ export class DemographicService {
   }
 
 
-  getBenchmarkDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<any> {
-    const l: number = new Date().getMilliseconds();
-    return this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions);
-  }
+  // getBenchmarkDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<any> {
+  //   const l: number = new Date().getMilliseconds();
+  //   return this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions);
+  // }
 
 
 
@@ -54,12 +54,11 @@ export class DemographicService {
 
 
   // localdata
-  getBenchmarkProposalDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<Array<any>> {
-
+  getDemographicData(countryCode: string, proposalId: string, ageGroup: string[]): Observable<Array<any>> {
     const l: number = new Date().getMilliseconds();
     return Observable.forkJoin(
       this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions),
-      this.http.get('http://localhost:3000/demographic' + '?' + l, httpOptions)
+      this.http.get('http://localhost:3000/demographicProposal' + '?' + l, httpOptions)
     );
   }
 

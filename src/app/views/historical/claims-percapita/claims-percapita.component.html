@@ -3,10 +3,10 @@
     <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="btn-group claims-per-capita__header-amount-type">
       <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="claim" tabindex="0" role="button" (click)="changeAmountType()">Claim</label>
       <label class="btn btn-primary btn-sm" [(ngModel)]="amountType" btnRadio="settled" tabindex="0" role="button" (click)="changeAmountType()">Settled</label>
-    
+
     </div>
 
-    
+
     <div [hidden]='grid' *ngIf="countryCode==='ISO2_IT'" class="separator-vertical"></div>
 
 
@@ -20,7 +20,8 @@
     <div [hidden]='grid' class="separator-vertical"></div>
 
 
-    <div [hidden]='grid' class="claims-per-capita__header-zoom"><span>Zoom in &nbsp; </span>
+    <div [hidden]='grid' class="claims-per-capita__header-zoom">
+      <span>Zoom in &nbsp; </span>
       <label class="switch switch-3d switch-primary" title="Zoom">
         <input type="checkbox" class="switch-input" [(ngModel)]="zoom" (change)="creatOrUpdateChart()">
         <span class="switch-label"></span>
@@ -32,8 +33,10 @@
 
 
     <div class="claims-per-capita__header-gridgraph">
-      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph grid-graph-toggle" aria-hidden="true" title="Graph"></i>
-      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph grid-graph-toggle" aria-hidden="true" title="Grid"></i>
+      <i [hidden]="!grid" (click)="toggleGridGraph()" class="fa fa-bar-chart fa-2x grid-graph grid-graph-toggle" aria-hidden="true"
+        title="Graph"></i>
+      <i [hidden]="grid" (click)="toggleGridGraph()" class="fa fa-table fa-2x grid-graph grid-graph-toggle" aria-hidden="true"
+        title="Grid"></i>
     </div>
   </div>
 
@@ -42,20 +45,25 @@
 
     <div [hidden]='grid' class="claims-per-capita__content-client">
       <div class="claims-per-capita__content-client-title chart__tilte">Client Claims Per Capita</div>
-      <div class="claims-per-capita__content-client-graph" id="proposalClaimsPerCapita"  #proposalClaimsPerCapita >
-        <svg class="waterfallChart" >
+      <div class="claims-per-capita__content-client-graph" id="proposalClaimsPerCapita" #proposalClaimsPerCapita>
+        <svg *ngIf="proposalClaimsPerCapita" class="waterfallChart">
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>
           </g>
         </svg>
       </div>
+
+      <div *ngIf="hasDemographicMemberCount === false" class="claims-per-capita__content-client-graph">
+        <p>Please Provide Demographic Data</p>
+      </div>
+
     </div>
 
     <div [hidden]='grid' class="claims-per-capita__content-benchmark">
       <div class="claims-per-capita__content-benchmark-title chart__tilte">Benchmark Claims Per Capita</div>
       <div class="claims-per-capita__content-benchmark-graph" id="benchmarkClaimsPerCapita" #benchmarkClaimsPerCapita>
-        <svg class="waterfallChart" >
+        <svg class="waterfallChart">
           <g class="bars">
             <g class="x axis"></g>
             <g class="y axis"></g>
@@ -125,4 +133,3 @@
 
 
 </div>
-

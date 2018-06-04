@@ -2,18 +2,21 @@ $primary-font-color: #666;
 $axis-line-dark-grey: darkgrey;
 
 .claims-avg-cost {
-    // background-color: beige;    display: flex;
+    // background-color: beige;
+    display: flex;
     flex-direction: column;
     position: relative;
     height: 100%;
     &__header {
+        flex: 0 0 2.2rem;
+
         display: flex;
         justify-content: flex-end;
     }
     &__content {
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-        height: 100%;
         &-title {
             flex: 0 0 3rem;
             line-height: 3rem;
